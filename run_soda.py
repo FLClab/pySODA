@@ -214,5 +214,5 @@ def main(directory):
 
 if __name__ == '__main__':
     start_time = time.clock()
-    main(r"cocultures/EXP-7-STED")
+    main(r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\R")
     print("--- Running time: %s seconds ---" % (time.clock() - start_time))
