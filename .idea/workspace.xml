@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ee34f15-c711-4903-9e31-f14f16b63956" name="Default" comment="" />
+    <list default="true" id="9ee34f15-c711-4903-9e31-f14f16b63956" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_soda.py" afterPath="$PROJECT_DIR$/run_soda.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wavelet_SODA.py" afterPath="$PROJECT_DIR$/wavelet_SODA.py" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,8 +18,8 @@
       <file leaf-file-name="select_ROI.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/select_ROI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="568">
-              <caret line="106" column="36" lean-forward="false" selection-start-line="106" selection-start-column="36" selection-end-line="106" selection-end-column="45" />
+            <state relative-caret-position="168">
+              <caret line="13" column="38" lean-forward="false" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
               <folding>
                 <element signature="e#1#13#0" expanded="true" />
               </folding>
@@ -23,34 +27,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run_soda.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="run_soda.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/run_soda.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-252">
-              <caret line="187" column="35" lean-forward="false" selection-start-line="187" selection-start-column="35" selection-end-line="187" selection-end-column="35" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wavelet_SODA.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1589">
-              <caret line="680" column="30" lean-forward="false" selection-start-line="680" selection-start-column="30" selection-end-line="680" selection-end-column="30" />
+            <state relative-caret-position="181">
+              <caret line="184" column="35" lean-forward="false" selection-start-line="184" selection-start-column="35" selection-end-line="184" selection-end-column="35" />
               <folding>
-                <element signature="e#0#12#0" expanded="true" />
+                <element signature="e#0#25#0" expanded="true" />
+                <element signature="e#4692#7085#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wavelet_SODA.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../wavelets_backup/wavelet_SODA.py">
+      <file leaf-file-name="synth_image.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/synth_image.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11172">
-              <caret line="624" column="13" lean-forward="false" selection-start-line="624" selection-start-column="13" selection-end-line="624" selection-end-column="13" />
+            <state relative-caret-position="42">
+              <caret line="5" column="53" lean-forward="false" selection-start-line="5" selection-start-column="53" selection-end-line="5" selection-end-column="53" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="wavelet_SODA.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="307">
+              <caret line="1095" column="40" lean-forward="true" selection-start-line="1095" selection-start-column="40" selection-end-line="1095" selection-end-column="40" />
+              <folding>
+                <element signature="e#0#12#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -78,36 +85,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>distance_pl</find>
-      <find>b</find>
-      <find>self.roiAREA</find>
-      <find>variance</find>
-      <find>cs</find>
-      <find>workbook</find>
-      <find>n1, n2</find>
-      <find>self.poly</find>
-      <find>self.poly =</find>
-      <find>weight</find>
-      <find>work</find>
-      <find>roivolum</find>
-      <find>mean_G</find>
-      <find>show_ROI</find>
-      <find>def mean</find>
+      <find>dist_fit</find>
+      <find>N_h</find>
+      <find>betacorrection(</find>
       <find>T_n</find>
-      <find>coupling_prob</find>
-      <find>main2D</find>
-      <find>17</find>
-      <find>print</find>
-      <find>print(</find>
-      <find>roivolume =</find>
+      <find>T[</find>
+      <find>T.append</find>
       <find>subdi</find>
-      <find>plt.show</find>
-      <find>max_label</find>
-      <find>plt.</find>
-      <find>pyplot.</find>
-      <find>plt</find>
-      <find>boxplot</find>
+      <find>MPP1_ROI =</find>
+      <find>db1</find>
+      <find>patch</find>
       <find>nearest_contour</find>
+      <find>N_fit =</find>
+      <find>intersection</find>
+      <find>reduced_RIPLEY</find>
+      <find>reduced</find>
+      <find>coupling_prob</find>
+      <find>masked_</find>
+      <find>test</find>
+      <find>scatter</find>
+      <find>hk</find>
+      <find>mask</find>
+      <find>find_ROI</find>
+      <find>hkmeans</find>
+      <find>weight</find>
+      <find>find_roi</find>
+      <find>maske</find>
+      <find>MPP1_ROI</find>
+      <find>find_roi_h</find>
+      <find>np.mean</find>
+      <find>boxplot</find>
     </findStrings>
     <replaceStrings>
       <replace>and</replace>
@@ -126,27 +133,32 @@
       <replace>=</replace>
       <replace>find_roi</replace>
       <replace>mask</replace>
+      <replace>filt</replace>
     </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/../threshsquares/beadlines.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
-        <option value="$USER_HOME$/Documents/GitHub/STED-GUI/launch_gui.spec" />
+        <option value="$PROJECT_DIR$/../STED-GUI/launch_gui.spec" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
         <option value="$PROJECT_DIR$/../wavelets_backup/test_program.py" />
         <option value="$PROJECT_DIR$/select_ROI.py" />
         <option value="$PROJECT_DIR$/../wavelets_backup/wavelet_SODA.py" />
         <option value="$PROJECT_DIR$/test_program.py" />
-        <option value="$PROJECT_DIR$/run_soda.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/synth_image.py" />
+        <option value="$PROJECT_DIR$/run_soda.py" />
         <option value="$PROJECT_DIR$/wavelet_SODA.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="428" />
+    <option name="x" value="-9" />
     <option name="y" value="-9" />
     <option name="width" value="976" />
     <option name="height" value="1038" />
@@ -170,14 +182,13 @@
         <subPane>
           <expand>
             <path>
-              <item name="wavelets" type="b2602c69:ProjectViewProjectNode" />
-              <item name="wavelets" type="462c0819:PsiDirectoryNode" />
+              <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pySODA" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches">
         <subPane>
           <expand>
@@ -189,10 +200,11 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Documents/GitHub/STED-GUI" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../STED-GUI" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Python" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
@@ -249,6 +261,23 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
+    <configuration name="synth_image" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="wavelets" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/synth_image.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
     <configuration name="test_program (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -283,37 +312,20 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
-    <configuration name="wavelet_SODA" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="wavelets" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/wavelet_SODA.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.test_program" />
-      <item index="1" class="java.lang.String" itemvalue="Python.wavelet_SODA" />
-      <item index="2" class="java.lang.String" itemvalue="Python.scratch_1" />
-      <item index="3" class="java.lang.String" itemvalue="Python.test_program (1)" />
-      <item index="4" class="java.lang.String" itemvalue="Python.run_soda" />
+      <item index="1" class="java.lang.String" itemvalue="Python.scratch_1" />
+      <item index="2" class="java.lang.String" itemvalue="Python.test_program (1)" />
+      <item index="3" class="java.lang.String" itemvalue="Python.run_soda" />
+      <item index="4" class="java.lang.String" itemvalue="Python.synth_image" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.run_soda" />
-        <item index="1" class="java.lang.String" itemvalue="Python.test_program" />
-        <item index="2" class="java.lang.String" itemvalue="Python.test_program (1)" />
-        <item index="3" class="java.lang.String" itemvalue="Python.scratch_1" />
-        <item index="4" class="java.lang.String" itemvalue="Python.wavelet_SODA" />
+        <item index="1" class="java.lang.String" itemvalue="Python.synth_image" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test_program" />
+        <item index="3" class="java.lang.String" itemvalue="Python.test_program (1)" />
+        <item index="4" class="java.lang.String" itemvalue="Python.scratch_1" />
       </list>
     </recent_temporary>
   </component>
@@ -344,24 +356,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.107948445" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11278196" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34851936" sideWeight="0.5064447" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26765376" sideWeight="0.4935553" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32801822" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2904328" sideWeight="0.4935553" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45671982" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -370,36 +383,12 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="22" />
+      <option name="time" value="23" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="10" lean-forward="false" selection-start-line="0" selection-start-column="10" selection-end-line="0" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1722">
-          <caret line="82" column="38" lean-forward="false" selection-start-line="82" selection-start-column="38" selection-end-line="82" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_program.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test_program.py" />
     <entry file="file://$PROJECT_DIR$/select_ROI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="651">
@@ -420,11 +409,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tiftest.tif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/tiftest.tif" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -432,14 +417,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_program.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="15" column="17" lean-forward="false" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test_program.py" />
     <entry file="file://$PROJECT_DIR$/select_ROI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="567">
@@ -450,11 +428,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tiftest.tif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/tiftest.tif" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="63">
@@ -472,14 +446,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_program.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="651">
-          <caret line="35" column="6" lean-forward="false" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test_program.py" />
     <entry file="file://$PROJECT_DIR$/select_ROI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2163">
@@ -490,11 +457,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tiftest.tif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/tiftest.tif" />
     <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5943">
@@ -505,14 +468,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_program.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="28" column="51" lean-forward="false" selection-start-line="28" selection-start-column="51" selection-end-line="28" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/test_program.py" />
     <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5124">
@@ -523,18 +479,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tiftest.tif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../threshsquares/beadlines.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="85" column="18" lean-forward="true" selection-start-line="85" selection-start-column="18" selection-end-line="85" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/tiftest.tif" />
+    <entry file="file://$PROJECT_DIR$/../threshsquares/beadlines.py" />
     <entry file="file://$USER_HOME$/.PyCharmCE2017.2/system/python_stubs/-313451744/builtins.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
@@ -550,11 +496,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tiftest.tif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/tiftest.tif" />
     <entry file="file://$PROJECT_DIR$/R/01_R-RIM-12_1-500_GAR-Alexa594_1-500_PSD-95_GAM-STAR-635P_1-250_Block-10_1.msr_STED640_STED561_merged.tif" />
     <entry file="file://$PROJECT_DIR$/R/ch2.tiff" />
     <entry file="file://$PROJECT_DIR$/R/ch1.tiff" />
@@ -567,20 +509,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/R/img.tif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/R/img.tif" />
     <entry file="file://$PROJECT_DIR$/R/tifteset2.tif" />
-    <entry file="file://$PROJECT_DIR$/../images_compareBACKUP/__init__.spec">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="25" column="20" lean-forward="true" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/GitHub/STED-GUI/launch_gui.spec">
+    <entry file="file://$PROJECT_DIR$/../images_compareBACKUP/__init__.spec" />
+    <entry file="file://$PROJECT_DIR$/../STED-GUI/launch_gui.spec">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
@@ -639,13 +571,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../wavelets_backup/test_program.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="59" column="0" lean-forward="true" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/../wavelets_backup/test_program.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="143">
@@ -660,60 +586,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DatasetPLProtéinessynaptiques/ProtéinesC(Bassoon)-B(PSD)/EXP8-21-11-2017/3_M-PSD95_1-250_GAM-Alexa Fluor 594_1-250_R-Bassoon_1-250_GAR-STAR-635P_1-250_10min_MeOH_+4C_KCl_2min_1.msr_STED640_STED561_merged.tif">
+    <entry file="file://$PROJECT_DIR$/DatasetPLProtéinessynaptiques/ProtéinesC(Bassoon)-B(PSD)/EXP8-21-11-2017/3_M-PSD95_1-250_GAM-Alexa Fluor 594_1-250_R-Bassoon_1-250_GAR-STAR-635P_1-250_10min_MeOH_+4C_KCl_2min_1.msr_STED640_STED561_merged.tif" />
+    <entry file="file://$PROJECT_DIR$/../wavelets_backup/wavelet_SODA.py" />
+    <entry file="file://$PROJECT_DIR$/test_program.py" />
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/synth.tif">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../wavelets_backup/wavelet_SODA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11172">
-          <caret line="624" column="13" lean-forward="false" selection-start-line="624" selection-start-column="13" selection-end-line="624" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_program.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="157" column="14" lean-forward="false" selection-start-line="157" selection-start-column="10" selection-end-line="157" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/select_ROI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="568">
-          <caret line="106" column="36" lean-forward="false" selection-start-line="106" selection-start-column="36" selection-end-line="106" selection-end-column="45" />
+        <state relative-caret-position="168">
+          <caret line="13" column="38" lean-forward="false" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
           <folding>
             <element signature="e#1#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
+    <entry file="file://$PROJECT_DIR$/run_soda.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="181">
+          <caret line="184" column="35" lean-forward="false" selection-start-line="184" selection-start-column="35" selection-end-line="184" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+            <element signature="e#4692#7085#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/synth_image.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="5" column="53" lean-forward="false" selection-start-line="5" selection-start-column="53" selection-end-line="5" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1589">
-          <caret line="680" column="30" lean-forward="false" selection-start-line="680" selection-start-column="30" selection-end-line="680" selection-end-column="30" />
+        <state relative-caret-position="307">
+          <caret line="1095" column="40" lean-forward="true" selection-start-line="1095" selection-start-column="40" selection-end-line="1095" selection-end-column="40" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/run_soda.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-252">
-          <caret line="187" column="35" lean-forward="false" selection-start-line="187" selection-start-column="35" selection-end-line="187" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>

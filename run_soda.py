@@ -6,6 +6,7 @@ import time
 import matplotlib.pyplot as plt
 from matplotlib import patches
 from skimage.measure import find_contours, regionprops, label, subdivide_polygon
+from skimage.segmentation import slic
 import numpy as np
 import xlsxwriter
 
@@ -63,7 +64,7 @@ class SodaImageAnalysis:
         :return: Marked Point Process of each binary image in detections
         """
         print("Computing spatial distribution...")
-        marks = [wv.Spatial_Distribution(d, i, cs=10).mark() for d, i in detections]
+        marks = [wv.Spatial_Distribution(d, i).mark() for d, i in detections]
         for m in range(len(marks)):
             print("\tSpots in channel {}:".format(m), len(marks[m]))
         return marks
@@ -103,6 +104,72 @@ class SodaImageAnalysis:
 
         return prob_write, CIndex, mean_dist, raw_mean_dist, coupling, n_couples
 
+    def find_roi_hkmeans(self):
+        """
+        Attemps to replicate the cell mask from Icy SODA.
+        Doesn't work very well!
+        :return:
+        """
+        filt = self.image[0] + self.image[1]
+        filt = (filters.gaussian(filt, 1))
+        filt = slic(filt, n_segments=2, compactness=0.0001, enforce_connectivity=False)
+        plt.imshow(filt)
+        plt.show()
+        filt[filt > 0] = 1
+        filt = morphology.binary_dilation(filt, np.ones((20, 20)))
+        filt = morphology.binary_closing(filt)
+        filt = morphology.binary_fill_holes(filt)
+
+        # Keep only areas with a significant volume
+        labels = label(filt, connectivity=2)
+        label_props = regionprops(labels)
+        mask = np.copy(labels)
+        arealist = []
+        for i in range(len(label_props)):
+            arealist.append(label_props[i].area)
+
+        for i in range(len(label_props)):
+            if label_props[i].area < np.mean(arealist):
+                mask[mask == i + 1] = 0
+        mask[mask > 0] = 1
+
+        plt.imshow(mask)
+        plt.show()
+
+        roivolume = len(mask[np.nonzero(mask)])
+
+        # Find contours around the mask. Padding is used to properly find contours near maximum edges
+        contlabel = np.pad(mask, ((0, 2), (0, 2)), mode='constant', constant_values=0)
+        cont = find_contours(contlabel, level=0, fully_connected='high', positive_orientation='high')
+        for c in range(len(cont)):
+            if len(cont[c]) < 5:
+                cont[c] = 0
+        cont = [value for value in cont if type(value) != int]
+
+        print('Number of regions in ROI:', len(cont))
+        print('Volume of ROI:', roivolume)
+        # For smoother contours and more precise points for distance to boundary
+        for c in range(len(cont)):
+            cont[c] = subdivide_polygon(cont[c], 7)
+
+        masked_detections = [(self.detections[i][0] * mask, self.image[i]) for i in range(len(self.detections))]
+
+        # Display ROI
+        patch = [patches.Polygon(np.fliplr(c), fill=False, color='white', linewidth=1) for c in
+                 cont]
+
+        fig, ax = plt.subplots()
+        for p in patch:
+            ax.add_patch(p)
+
+        plt.imshow((masked_detections[0][0] * 0.995) + (masked_detections[1][0] * 0.5), cmap='nipy_spectral')
+        plt.show()
+
+        for c in range(len(cont)):
+            cont[c] = np.array(cont[c])
+
+        return cont, roivolume, masked_detections
+
     def find_roi(self):
         """
         Finds the ROI based on a gaussian filter and threshold.
@@ -113,9 +180,9 @@ class SodaImageAnalysis:
         
         # Filtered image for masking: gaussian filter + threshold + fill holes
         filt = self.image[0] + self.image[1]
-        filt = (filters.gaussian(filt, 3))
+        filt = (filters.gaussian(filt, 10))
 
-        threshold = np.median(filt) * 1.2
+        threshold = np.mean(filt) * 0.8
         filt[filt < threshold] = 0
         filt[filt >= threshold] = 1
         filt = morphology.binary_closing(filt)
@@ -130,32 +197,41 @@ class SodaImageAnalysis:
             arealist.append(label_props[i].area)
 
         for i in range(len(label_props)):
-            if label_props[i].area < np.mean(arealist) + np.std(arealist):
+            if label_props[i].area < np.mean(arealist):
                 mask[mask == i + 1] = 0
-        roivolume = len(mask[np.nonzero(mask)])
         mask[mask > 0] = 1
-        #plt.imshow(mask)
-        #plt.show()
+
+        # TEST MASK
+        # mask = io.imread('mask.tif')
+        # mask[mask > 0] = 1
+        roivolume = len(mask[np.nonzero(mask)])
 
         # Find contours around the mask. Padding is used to properly find contours near maximum edges
         contlabel = np.pad(mask, ((0, 2), (0, 2)), mode='constant', constant_values=0)
         cont = find_contours(contlabel, level=0, fully_connected='high', positive_orientation='high')
+        for c in range(len(cont)):
+            if len(cont[c]) < 5:
+                cont[c] = 0
+        cont = [value for value in cont if type(value) != int]
+
         print('Number of regions in ROI:', len(cont))
         print('Volume of ROI:', roivolume)
         # For smoother contours and more precise points for distance to boundary
         for c in range(len(cont)):
-            cont[c] = subdivide_polygon(cont[c], 7)
+           cont[c] = subdivide_polygon(cont[c], 7)
 
         masked_detections = [(self.detections[i][0]*mask, self.image[i]) for i in range(len(self.detections))]
 
         # Display ROI
-        # fig, ax = plt.subplots()
-        # patch = [patches.Polygon(np.fliplr(c), fill=False, color='white', linewidth=0.5, linestyle='dashed') for c in
-        #          cont]
-        # for p in patch:
-        #     ax.add_patch(p)
-        # plt.imshow((self.detections[0][0] * 0.995) + (self.detections[1][0] * 0.5), cmap='nipy_spectral')
-        # plt.show()
+        patch = [patches.Polygon(np.fliplr(c), fill=False, color='white', linewidth=1) for c in
+                 cont]
+
+        fig, ax = plt.subplots()
+        for p in patch:
+            ax.add_patch(p)
+
+        plt.imshow((masked_detections[0][0] * 0.995) + (masked_detections[1][0] * 0.5), cmap='nipy_spectral')
+        plt.show()
 
         for c in range(len(cont)):
             cont[c] = np.array(cont[c])
@@ -188,7 +264,7 @@ def main(directory):
             file_path = os.path.join(directory, file)
             soda = SodaImageAnalysis(file_path, [2], 100)
 
-            prob_write, spots0, spots1, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = soda.analysis(0, 1, 10, 2)
+            prob_write, spots0, spots1, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = soda.analysis(0, 1, 10, 1)
 
             elemlist = [file, spots0, spots1, n_couples, CIndex[0], CIndex[1], mean_dist, raw_mean_dist]
             for index in range(len(elemlist)):
@@ -214,5 +290,5 @@ def main(directory):
 
 if __name__ == '__main__':
     start_time = time.clock()
-    main(r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\R")
+    main(r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\cocultures\EXP-7-STED")
     print("--- Running time: %s seconds ---" % (time.clock() - start_time))

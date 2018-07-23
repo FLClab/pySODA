@@ -374,7 +374,9 @@ class Spatial_Distribution():
                     min_axis = p.minor_axis_length
                     cent_int = p.weighted_centroid
 
-                    if s > self.cs and min_axis > 0:  # Make sure that the spot has a good enough shape to be analysed
+                    # TODO: Put back the shape filter
+                    # if s > self.cs and min_axis > 0:  # Make sure that the spot has a good enough shape to be analysed
+                    if s > self.cs:
                         mark.append(
                             (p, s, cent_int)
                         )
@@ -477,6 +479,7 @@ class Spatial_Relations():
         # self.MPP2_ROI = self.mpp_in_contours(self.MPP2)
         self.MPP1_ROI = self.MPP1
         self.MPP2_ROI = self.MPP2
+        print(len(self.MPP1_ROI), len(self.MPP2_ROI))
 
         self.sROI = sROI
         self.max_dist = max_dist
@@ -485,9 +488,6 @@ class Spatial_Relations():
         self.rings = numpy.array([r for r in range(0, self.max_dist+1, self.pas)])
         self.imgw1 = self.image_windows(self.MPP1_ROI)
         self.imgw2 = self.image_windows(self.MPP2_ROI)
-
-        nbN = 1 / (1 / 100)
-        self.N_h = int(nbN) + 1
 
         self.neighbors = self.nearest_neighbors()
 
@@ -646,7 +646,7 @@ class Spatial_Relations():
                                     if temp > d:
                                         weight = 1 - (numpy.arccos(d / temp)) / numpy.pi
                                     for m in range(1, self.N_fit):
-                                        if (temp <= self.distance_fit[m]) & (temp > self.distance_fit[0]):
+                                        if (temp < self.distance_fit[m]) & (temp >= self.distance_fit[0]):
                                             delta_K[m - 1] += (1 / weight) * self.ROIarea / (n1 * n2)
                                             count[m - 1] += 1
                                             d_mean[m - 1] += temp
@@ -760,7 +760,7 @@ class Spatial_Relations():
         n1, n2 = len(self.MPP1_ROI), len(self.MPP2_ROI)
         mu = self.mean_G()
         result = numpy.zeros(self.N_fit - 1)
-        results = self.betaCorrection(self.max_dist/10, 100)
+        results, N_h = self.betaCorrection(self.max_dist/10, 100)
         # results = numpy.zeros(results.shape)
         ROIy, ROIx = self.sROI
 
@@ -785,12 +785,12 @@ class Spatial_Relations():
                         # dist = min(x1, ROIx - x1, y1, ROIy - y1)  # min distance from ROI
                         dist = db1
                         if (dist < distancek) & (dist >= self.distance_fit[0]):
-                            sum_h_a += results[math.ceil(self.N_h * dist / distancek)]
+                            sum_h_a += results[math.ceil(N_h * dist / distancek)]
                         else:
                             sum_h_a += 1
                         if k > 1:
                             if (dist < distancek_1) & (dist > self.distance_fit[0]):
-                                sum_h_a_bis += results[math.ceil(self.N_h * dist / distancek_1)]
+                                sum_h_a_bis += results[math.ceil(N_h * dist / distancek_1)]
                             else:
                                 sum_h_a_bis += 1
 
@@ -824,7 +824,8 @@ class Spatial_Relations():
         return result
 
     def intersection2D_new(self):
-        """ This function computes the A matrix
+        """
+        This function computes the A matrix
         """
         n1, n2 = len(self.MPP1_ROI), len(self.MPP2_ROI)
         A = numpy.zeros((self.N_fit - 1, self.N_fit - 1))
@@ -860,7 +861,7 @@ class Spatial_Relations():
                 A[i, j] = A[i, j] + (S[i + 1, j + 1] + S[i, j] - S[i, j + 1] - S[i + 1, j]) / vol
         return A
 
-    def reduced_Ripley_vector(self, threshold = True, **kwargs):
+    def reduced_Ripley_vector(self, **kwargs):
         """
         Vector G0 from paper. This function returns the estimation of the coupling probability
         """
@@ -938,10 +939,9 @@ class Spatial_Relations():
             G0 = self.reduced_Ripley_vector(**kwargs)
         mean = self.mean_G()
 
-        T = numpy.sqrt(2 * numpy.log(len(G0)))
-
+        T = [numpy.sqrt(2 * numpy.log(i+1)) if i > 0 else numpy.sqrt(2) for i in range(self.N_fit)]
         coupling = numpy.array([
-            (numpy.sqrt(var[i]) * G0[i]) / G[i] if G0[i] > T else 0 for i in range(len(self.rings)-1)
+            (numpy.sqrt(var[i]) * G0[i]) / G[i] if G0[i] > T[i] else 0 for i in range(len(self.rings)-1)
         ])
         probability = []
 
@@ -961,7 +961,7 @@ class Spatial_Relations():
                     problist = [x1, y1, x2, y2, dist, p]
                     prob_write.append(problist)
 
-        self.data_boxplot(prob_write)
+        # self.data_boxplot(prob_write)
 
         n_couples = len(probability)
         probability = numpy.array(probability)
@@ -974,6 +974,10 @@ class Spatial_Relations():
         return prob_write, (coupling_index[0] / n1, coupling_index[0] / n2), mean_coupling_distance, raw_mean_distance, coupling, n_couples
 
     def data_boxplot(self, prob_write):
+        """
+        Plots a boxplot of a spot property by channels and coupling
+        :param prob_write: List of couples and their properties
+        """
         fig, axs = pyplot.subplots(1,2)
 
         dataC = []
@@ -1082,7 +1086,6 @@ class Spatial_Relations():
 
     def betaCorrection(self, step, nbN):
         """ This function computes the boundary condition
-
         betaCorrection(maxdist / 10, 100);
         """
         valN = 1/(1/nbN)
@@ -1100,7 +1103,7 @@ class Spatial_Relations():
                 h = alpha[i] + j * step
                 j += 1
             results[i] = results[i] * 2 + alpha[i] * alpha[i]
-        return results
+        return results, N_h
 
     def distance(self, x1, x2, y1, y2):
         """ This function computes the distance between two points
@@ -1176,7 +1179,8 @@ class Spatial_Relations():
         return mean
 
     # Not used
-    def PolyArea(self, x, y):
+    @staticmethod
+    def PolyArea(x, y):
         """ This function computes the area of a cluster
         :param x: A numpy array of x coordinates
         :param y: A numpy array of y coordinates
