@@ -10,7 +10,7 @@ Adapts the SODA colocalisation method from https://www.nature.com/articles/s4146
     DIRECTORY : String containing the path to a folder containing 2 colors TIF files
 
     For spot detection:
-    SCALE_LIST : Scales to be used for wavelet transform for spot detection. [2] usually gives decent results.
+    SCALE_LIST : (list) Scales to be used for wavelet transform for spot detection. [2] usually gives decent results.
     SCALE_THRESHOLD : Percent modifier of wavelet transform threshold
 
     For SODA analysis:
