@@ -459,7 +459,7 @@ class Spatial_Relations():
     objects (spots or localisations), we use the Ripley’s K function, a gold standard for analysing
     the second-order properties (i.e., distance to neigh- bours) of point processes.
     """
-    def __init__(self, MPP1, MPP2, sROI, roivolume, poly, img, max_dist, step, filename):
+    def __init__(self, MPP1, MPP2, sROI, roivolume, poly, img, n_rings, step, filename):
         """ The init function
         :param MPP1: The marked point process of every clusters in the first channel
         :param MPP2: The marked point process of every clusters in the second channel
@@ -482,10 +482,10 @@ class Spatial_Relations():
         print(len(self.MPP1_ROI), len(self.MPP2_ROI))
 
         self.sROI = sROI
-        self.max_dist = max_dist
+        self.max_dist = n_rings*step
         self.pas = step
 
-        self.rings = numpy.array([r for r in range(0, self.max_dist+1, self.pas)])
+        self.rings = numpy.array([r*step for r in range(0, n_rings+1, 1)])
         self.imgw1 = self.image_windows(self.MPP1_ROI)
         self.imgw2 = self.image_windows(self.MPP2_ROI)
 
@@ -939,9 +939,10 @@ class Spatial_Relations():
             G0 = self.reduced_Ripley_vector(**kwargs)
         mean = self.mean_G()
 
-        T = [numpy.sqrt(2 * numpy.log(i+1)) if i > 0 else numpy.sqrt(2) for i in range(self.N_fit)]
+        # T = [numpy.sqrt(2 * numpy.log(i+1)) if i > 0 else numpy.sqrt(2) for i in range(self.N_fit)]
+        T = numpy.sqrt(2 * numpy.log(len(G0)))
         coupling = numpy.array([
-            (numpy.sqrt(var[i]) * G0[i]) / G[i] if G0[i] > T[i] else 0 for i in range(len(self.rings)-1)
+            (numpy.sqrt(var[i]) * G0[i]) / G[i] if G0[i] > T else 0 for i in range(len(self.rings)-1)
         ])
         probability = []
 
