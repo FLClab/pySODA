@@ -8,13 +8,12 @@ Work in progress of a code to create synthetic images
 """
 
 A = 100
-snr = 0.6
 B = 50
 
-sigma = np.sqrt((A**2/snr**2)-(A+B))
-
 for i in range(500):
-    sigma = np.sqrt((A**2/(snr)**2) - (A + 50))
+    snr = np.random.random()
+    sigma = np.sqrt((A ** 2 / snr ** 2) - (A + B))
+    print(snr)
     G = np.random.random_sample((256,256))
     G[G < 0.9985] = 0
     G[G > 0] = 32000

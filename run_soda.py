@@ -11,17 +11,18 @@ import numpy as np
 import xlsxwriter
 
 """ Change parameters here! """
+DIRECTORY = r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\cocultures\EXP-8-STED"  # Path containing TIF files
+
 # For spot detection
 SCALE_LIST = [2]  # Scales to be used for wavelet transform for spot detection
 SCALE_THRESHOLD = 100  # Percent modifier of wavelet transform threshold
 
 # For SODA analysis
-DIRECTORY = r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\cocultures\EXP-8-STED"  # Path containing TIF files
 N_RINGS = 10  # Number of rings around spots
 STEP = 1  # Width of rings in pixels
 
 # Other
-SHOW_ROI = False  # Set to True to show the ROI mask contour and detected spots
+SHOW_ROI = False  # Set to True to display the ROI mask contour and detected spots for every image
 
 
 class SodaImageAnalysis:
@@ -68,7 +69,7 @@ class SodaImageAnalysis:
         #roivolume = self.image.shape[1] * self.image.shape[2]
         SR = wv.Spatial_Relations(*marks, self.image[0].shape, roivolume, contours, self.image, n_rings, step, os.path.basename(self.file))
         prob_write, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = self.spatial_relations(SR)
-        SR.write_spots_and_probs(prob_write, 'PySODA_spots_{}_ch{}{}.xlsx'.format(os.path.basename(self.file), ch1, ch2))
+        SR.write_spots_and_probs(prob_write, DIRECTORY, 'PySODA_spots_{}_ch{}{}.xlsx'.format(os.path.basename(self.file), ch1, ch2))
 
         return prob_write, len(marks[0]), len(marks[1]), CIndex, mean_dist, raw_mean_dist, coupling, n_couples
 
@@ -114,13 +115,18 @@ class SodaImageAnalysis:
               "\nCoupling Index 2:", CIndex[1],
               "\nMean Coupling Distance:", mean_dist, "pixels",
               "\nUnweighted Mean Coupling Distance:", raw_mean_dist, "pixels")
+
+        # SR.data_scatter(mean_dist, prob_write)
         # print('Probabilities (Javascript version):', SR.main2D_corr(G, var, A))
         probs = np.ndarray.tolist(coupling)
         print('Probabilities', probs, '\n\n')
-        #dists = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-        #plt.bar(dists, probs, align='edge', width=1, edgecolor='black', linewidth=0.75)
-        #plt.savefig('hist_{}.png'.format(os.path.basename(self.file)))
-        #plt.close()
+        dists = [i for i in range(N_RINGS)]
+        plt.bar(dists, probs, align='edge', width=1, edgecolor='black', linewidth=0.75)
+        plt.locator_params(axis='x', nbins=N_RINGS)
+        plt.xlabel('Distance (pixels)')
+        plt.ylabel('Coupling probability')
+        plt.savefig('hist_{}.png'.format(os.path.basename(self.file)))
+        plt.close()
 
         return prob_write, CIndex, mean_dist, raw_mean_dist, coupling, n_couples
 
@@ -235,7 +241,7 @@ class SodaImageAnalysis:
 
         # Remove any small residual contours that may appear
         for c in range(len(cont)):
-            if len(cont[c]) < 5:
+            if len(cont[c]) < 5 and len(cont) > 1:
                 cont[c] = 0
         cont = [value for value in cont if type(value) != int]
 
@@ -248,18 +254,17 @@ class SodaImageAnalysis:
 
         masked_detections = [(self.detections[i][0]*mask, self.image[i]) for i in range(len(self.detections))]
 
+        # Display ROI
         if SHOW_ROI:
-            # Display ROI
-            patch = [patches.Polygon(np.fliplr(c), fill=False, color='white', linewidth=1) for c in
-                    cont]
+            patch = [patches.Polygon(np.fliplr(c), fill=False, color='white', linewidth=1) for c in cont]
             fig, ax = plt.subplots()
             for p in patch:
                ax.add_patch(p)
             plt.imshow((self.detections[0][0] * 0.995) + (self.detections[1][0] * 0.5), cmap='nipy_spectral')
             # plt.imshow(self.image[0], cmap='hot')
-            # plt.savefig('ROI_{}.tif'.format(os.path.basename(self.file)))
-            #plt.close()
-            plt.show()
+            plt.savefig('ROI_{}.tif'.format(os.path.basename(self.file)))
+            plt.close()
+            #plt.show()
 
         for c in range(len(cont)):
             cont[c] = np.array(cont[c])
@@ -272,7 +277,7 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
     Runs the SODA analysis on all images in the chosen directory. Also writes excel files with results.
     :param directory: string; folder from which to analyse every .tif image
     """
-    results_workbook = xlsxwriter.Workbook("PySODA_results_{}.xlsx".format(os.path.basename(directory)), {'nan_inf_to_errors': True})
+    results_workbook = xlsxwriter.Workbook(os.path.join(directory,"PySODA_results_{}.xlsx".format(os.path.basename(directory))), {'nan_inf_to_errors': True})
     results01 = results_workbook.add_worksheet(name="SODA")
     results00 = results_workbook.add_worksheet(name="SODAseul 0")
     results11 = results_workbook.add_worksheet(name="SODAseul 1")
@@ -291,18 +296,17 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
             print(file)
             file_path = os.path.join(directory, file)
 
-            try:
-                soda = SodaImageAnalysis(file_path, scale_list, scale_threshold)
+            #try:
+            soda = SodaImageAnalysis(file_path, scale_list, scale_threshold)
 
-                prob_write, spots0, spots1, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = soda.analysis(0, 1,
-                                                                                                                  n_rings,
-                                                                                                                  step)
-
-                elemlist = [file, spots0, spots1, n_couples, CIndex[0], CIndex[1], mean_dist, raw_mean_dist]
-                for index in range(len(elemlist)):
-                    results01.write(row, index, elemlist[index])
-            except ValueError:
-                print("Skipping invalid TIF file...")
+            prob_write, spots0, spots1, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = soda.analysis(0, 1,
+                                                                                                              n_rings,
+                                                                                                              step)
+            elemlist = [file, spots0, spots1, n_couples, CIndex[0], CIndex[1], mean_dist, raw_mean_dist]
+            for index in range(len(elemlist)):
+                results01.write(row, index, elemlist[index])
+            #except ValueError:
+            #    print("Skipping invalid TIF file...")
 
             #print("********Computing SODAseul for channel 0********")
             #prob_write, spots0, spots1, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = soda.analysis(0, 0, 10,
@@ -321,6 +325,7 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
             row += 1
     results_workbook.close()
 
+print('lol ok')
 
 if __name__ == '__main__':
     start_time = time.clock()

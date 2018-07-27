@@ -5,9 +5,9 @@ import xlsxwriter
 
 from skimage.measure import find_contours, regionprops, label
 from skimage.draw import polygon
-import scipy.spatial
 from matplotlib import pyplot
 from scipy import ndimage
+import os
 import select_ROI
 from matplotlib import patches
 
@@ -987,10 +987,10 @@ class Spatial_Relations():
             coupled = False
             for xa, ya, xb, yb, dist, p in prob_write:
                 if (y1, x1) == (ya, xa):
-                    dataC.append(p1.eccentricity)
+                    dataC.append(p1.inertia_tensor_eigvals[0])
                     coupled = True
             if not coupled:
-                dataU.append(p1.eccentricity)
+                dataU.append(p1.inertia_tensor_eigvals[0])
 
         data1 = [dataC, dataU]
 
@@ -1000,10 +1000,10 @@ class Spatial_Relations():
             coupled = False
             for xa, ya, xb, yb, dist, p in prob_write:
                 if (y1, x1) == (yb, xb):
-                    dataC.append(p1.eccentricity)
+                    dataC.append(p1.inertia_tensor_eigvals[0])
                     coupled = True
             if not coupled:
-                dataU.append(p1.eccentricity)
+                dataU.append(p1.inertia_tensor_eigvals[0])
 
         data2 = [dataC, dataU]
 
@@ -1017,13 +1017,67 @@ class Spatial_Relations():
         pyplot.savefig('boxplot_{}'.format(self.filename))
         pyplot.close()
 
-    def write_spots_and_probs(self, prob_write, title):
+    def data_scatter(self, mean_coupling_dist, prob_write):
+        X = []
+        Y = []
+
+        blue = []
+        dist_tot = 0
+
+        # for i in range(len(self.MPP1_ROI)):
+        #     p1, s1, (y, x) = self.MPP1_ROI[i]
+        #     for xa, ya, xb, yb, dist, p in prob_write:
+        #         if (y, x) == (ya, xa):
+        #             X.append(dist)
+        #             Y.append(p1.eccentricity)
+        #             blue.append('blue')
+        #
+        # red = []
+        # for i in range(len(self.MPP2_ROI)):
+        #     p1, s1, (y, x) = self.MPP2_ROI[i]
+        #     for xa, ya, xb, yb, dist, p in prob_write:
+        #         if (y, x) == (yb, xb):
+        #             X.append(dist)
+        #             Y.append(p1.eccentricity)
+        #             red.append('red')
+
+        for i in range(len(self.MPP1_ROI)):
+            p1, s1, (y,x) = self.MPP1_ROI[i]
+            neighbor = self.neighbors[1][i][1]
+            p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
+            Y.append(p1.inertia_tensor_eigvals[0])
+            X.append(self.neighbors[1][i][0])
+            dist_tot += self.neighbors[1][i][0]
+            blue.append('blue')
+
+        red = []
+        for i in range(len(self.MPP2_ROI)):
+            p1, s1, (y,x) = self.MPP2_ROI[i]
+            neighbor = self.neighbors[2][i][1]
+            p2, s2, (y2, x2) = self.MPP1_ROI[neighbor]
+            Y.append(p1.inertia_tensor_eigvals[0])
+            X.append(self.neighbors[2][i][0])
+            dist_tot += self.neighbors[2][i][0]
+            red.append('red')
+
+        dist_mean = dist_tot/(len(red)+len(blue))
+        pyplot.scatter(X, Y, color=blue+red, marker='.', linewidths=0.5, edgecolors='black')
+        pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
+        pyplot.axvline(x=dist_mean, color='cyan', linestyle='dashed')
+        pyplot.xlabel('Distance to nearest neigbor (Pixels)')
+        pyplot.ylabel('Inertia Tensor Eigen value 1')
+        pyplot.savefig('scatter_{}'.format(self.filename))
+        pyplot.close()
+        #pyplot.show()
+
+    def write_spots_and_probs(self, prob_write, directory, title):
         """
         Writes informations about couples and single spots
         :param prob_write: list containing lists of information to write about each couple
+        :param directory: string containing the path of the output file
         :param title: name of the output excel file as string
         """
-        workbook = xlsxwriter.Workbook(title, {'nan_inf_to_errors': True})
+        workbook = xlsxwriter.Workbook(os.path.join(directory, title), {'nan_inf_to_errors': True})
         couples = workbook.add_worksheet(name='Couples')
         titles = ['X1', 'Y1', 'X2', 'Y2', 'Distance', 'Coupling probability']
         for t in range(len(titles)):

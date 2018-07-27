@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/wavelets.iml" filepath="$PROJECT_DIR$/.idea/wavelets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/pySODA.iml" filepath="$PROJECT_DIR$/.idea/pySODA.iml" />
     </modules>
   </component>
 </project>
