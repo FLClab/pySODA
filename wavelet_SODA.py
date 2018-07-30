@@ -1045,7 +1045,7 @@ class Spatial_Relations():
             p1, s1, (y,x) = self.MPP1_ROI[i]
             neighbor = self.neighbors[1][i][1]
             p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
-            Y.append(p1.inertia_tensor_eigvals[0])
+            Y.append(p1.eccentricity)
             X.append(self.neighbors[1][i][0])
             dist_tot += self.neighbors[1][i][0]
             blue.append('blue')
@@ -1055,7 +1055,7 @@ class Spatial_Relations():
             p1, s1, (y,x) = self.MPP2_ROI[i]
             neighbor = self.neighbors[2][i][1]
             p2, s2, (y2, x2) = self.MPP1_ROI[neighbor]
-            Y.append(p1.inertia_tensor_eigvals[0])
+            Y.append(p1.eccentricity)
             X.append(self.neighbors[2][i][0])
             dist_tot += self.neighbors[2][i][0]
             red.append('red')
@@ -1065,7 +1065,7 @@ class Spatial_Relations():
         pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
         pyplot.axvline(x=dist_mean, color='cyan', linestyle='dashed')
         pyplot.xlabel('Distance to nearest neigbor (Pixels)')
-        pyplot.ylabel('Inertia Tensor Eigen value 1')
+        pyplot.ylabel('Eccentricity')
         pyplot.savefig('scatter_{}'.format(self.filename))
         pyplot.close()
         #pyplot.show()

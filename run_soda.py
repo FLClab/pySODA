@@ -11,18 +11,25 @@ import numpy as np
 import xlsxwriter
 
 """ Change parameters here! """
-DIRECTORY = r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\cocultures\EXP-8-STED"  # Path containing TIF files
+DIRECTORY = r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\Pierre-Luc EXP4"  # Path containing TIF files
 
 # For spot detection
-SCALE_LIST = [2]  # Scales to be used for wavelet transform for spot detection
+SCALE_LIST = [1,2]  # Scales to be used for wavelet transform for spot detection
 SCALE_THRESHOLD = 100  # Percent modifier of wavelet transform threshold
 
 # For SODA analysis
 N_RINGS = 10  # Number of rings around spots
 STEP = 1  # Width of rings in pixels
 
-# Other
+# Display and graphs
 SHOW_ROI = False  # Set to True to display the ROI mask contour and detected spots for every image
+WRITE_HIST = True  # Set to True to create a .png of the coupling probabilities by distance histogram
+
+
+class ImageError(ValueError):
+    """
+    Error to raise when image shape is invalid
+    """
 
 
 class SodaImageAnalysis:
@@ -33,14 +40,19 @@ class SodaImageAnalysis:
         """
         Constructor function.
         :param file: Path of the image file to analyse
-        :param scale_list: List of wavelet scales to use
+        :param scale_list: array-like of ints; scales to use for wavelet transform
         :param scale_threshold: Percentage of the wavelet threshold to use.
         """
         self.file = file
         self.scale_list = scale_list
         self.scale_threshold = scale_threshold
 
-        self.image = io.imread(file)
+        try:
+            self.image = io.imread(file)
+            if len(self.image.shape) != 3:
+                raise ImageError
+        except ValueError:
+            raise ImageError
 
         z, y, x = self.image.shape
         print('X:', x, '\nY:', y)
@@ -59,15 +71,16 @@ class SodaImageAnalysis:
         Runs the analysis for chosen channels.
         :param ch1: int; first channel to use in analysis
         :param ch2: int; second channel to use in analysis
-        :param max_dist: int; maximum distance in which to detect coupling
-        :param step: int; width of rings (number of rings = max_dist/step)
+        :param n_rings: int; number of rings around spots in which to detect coupling
+        :param step: float; width of rings in pixels
         """
         contours, roivolume, masked_detections = self.find_roi()
         marks = self.spatial_distribution(masked_detections)
-        max_dist = n_rings*step
         #contours = self.poly
         #roivolume = self.image.shape[1] * self.image.shape[2]
-        SR = wv.Spatial_Relations(*marks, self.image[0].shape, roivolume, contours, self.image, n_rings, step, os.path.basename(self.file))
+        SR = wv.Spatial_Relations(*marks, self.image[0].shape,
+                                  roivolume, contours, self.image,
+                                  n_rings, step, os.path.basename(self.file))
         prob_write, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = self.spatial_relations(SR)
         SR.write_spots_and_probs(prob_write, DIRECTORY, 'PySODA_spots_{}_ch{}{}.xlsx'.format(os.path.basename(self.file), ch1, ch2))
 
@@ -88,7 +101,14 @@ class SodaImageAnalysis:
     def spatial_relations(self, SR):
         """
         Computes every step of the spatial relations analysis for the chosen Spatial_Relations object
+        (G, variance, A, G0, coupling index and probabilities)
         :param SR: Spatial Relations object
+        :return prob write: List of lists containing information on each couple (spots coordinates, coupling prob.)
+        :return CIndex: Coupling indices for both channels
+        :return mean_dist: Mean coupling distance, weighted by coupling probability
+        :return raw_mean_dist: Unweighted mean coupling distance, such as exported in Icy results excel files
+        :return coupling: List of coupling probability for each ring
+        :return n_couples: Total number of couples
         """
         print("Computing G...")
         G = SR.correlation_new()
@@ -120,20 +140,23 @@ class SodaImageAnalysis:
         # print('Probabilities (Javascript version):', SR.main2D_corr(G, var, A))
         probs = np.ndarray.tolist(coupling)
         print('Probabilities', probs, '\n\n')
-        dists = [i for i in range(N_RINGS)]
-        plt.bar(dists, probs, align='edge', width=1, edgecolor='black', linewidth=0.75)
-        plt.locator_params(axis='x', nbins=N_RINGS)
-        plt.xlabel('Distance (pixels)')
-        plt.ylabel('Coupling probability')
-        plt.savefig('hist_{}.png'.format(os.path.basename(self.file)))
-        plt.close()
+
+        # Coupling prob. by distance histogram
+        if WRITE_HIST:
+            dists = [i for i in range(N_RINGS)]
+            plt.bar(dists, probs, align='edge', width=1, edgecolor='black', linewidth=0.75)
+            plt.locator_params(axis='x', nbins=N_RINGS)
+            plt.xlabel('Distance (pixels)')
+            plt.ylabel('Coupling probability')
+            plt.savefig('hist_{}.png'.format(os.path.basename(self.file)))
+            plt.close()
 
         return prob_write, CIndex, mean_dist, raw_mean_dist, coupling, n_couples
 
     def find_roi_hkmeans(self):
         """
         Attempt to replicate the cell mask from Icy SODA.
-        Doesn't work very well!
+        Doesn't work very well, in fact not at all for some images!
         :return:
         """
         filt = self.image[0] + self.image[1]
@@ -199,6 +222,7 @@ class SodaImageAnalysis:
     def find_roi(self):
         """
         Finds the ROI based on a gaussian filter and threshold.
+        Using this mask gives similar results to the Icy mask
         :return: cont: Numpy array of all the points determining the shape of the ROI
         :return: roivolume: Area of the detected ROI
         :return: masked_detections: list of tuples (binary image, base image) with only the spots inside the ROI
@@ -211,7 +235,6 @@ class SodaImageAnalysis:
         threshold = np.mean(filt)/2
         filt[filt < threshold] = 0
         filt[filt >= threshold] = 1
-        # filt = morphology.binary_dilation(filt, np.ones((10, 10)))
         filt = morphology.binary_closing(filt)
 
         #filt = morphology.binary_fill_holes(filt).astype('uint16')
@@ -228,12 +251,8 @@ class SodaImageAnalysis:
             if label_props[i].area < np.mean(arealist):
                 mask[mask == i + 1] = 0
         mask[mask > 0] = 1
-        # io.imsave('MASK_{}.tif'.format(os.path.basename(self.file)), mask.astype('uint16'))
-
-        # TEST MASK
-        # mask = io.imread('mask.tif')
-        # mask[mask > 0] = 1
         roivolume = len(mask[np.nonzero(mask)])
+        # io.imsave('MASK_{}.tif'.format(os.path.basename(self.file)), mask.astype('uint16'))
 
         # Find contours around the mask. Padding is used to properly find contours near maximum edges
         contlabel = np.pad(mask, ((0, 2), (0, 2)), mode='constant', constant_values=0)
@@ -243,7 +262,7 @@ class SodaImageAnalysis:
         for c in range(len(cont)):
             if len(cont[c]) < 5 and len(cont) > 1:
                 cont[c] = 0
-        cont = [value for value in cont if type(value) != int]
+        cont = [value for value in cont if value != 0]
 
         print('Number of regions in ROI:', len(cont))
         print('Volume of ROI:', roivolume)
@@ -276,8 +295,18 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
     """
     Runs the SODA analysis on all images in the chosen directory. Also writes excel files with results.
     :param directory: string; folder from which to analyse every .tif image
+    :param scale_list: array-like of ints; list of scales to use for wavelet transform
+    :param scale_threshold: int; percent modifier of wavelet threshold
+    :param n_rings: int; number of rings around spots in which to detect coupling
+    :param step: float; width of rings around spots
     """
-    results_workbook = xlsxwriter.Workbook(os.path.join(directory,"PySODA_results_{}.xlsx".format(os.path.basename(directory))), {'nan_inf_to_errors': True})
+    if type(n_rings) != int:
+        raise TypeError("Number of rings must be an integer.")
+
+    # Writing Excel file
+    results_workbook = xlsxwriter.Workbook(os.path.join(directory,
+                                                        "PySODA_results_{}.xlsx".format(os.path.basename(directory))),
+                                           {'nan_inf_to_errors': True})
     results01 = results_workbook.add_worksheet(name="SODA")
     results00 = results_workbook.add_worksheet(name="SODAseul 0")
     results11 = results_workbook.add_worksheet(name="SODAseul 1")
@@ -296,17 +325,16 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
             print(file)
             file_path = os.path.join(directory, file)
 
-            #try:
-            soda = SodaImageAnalysis(file_path, scale_list, scale_threshold)
-
-            prob_write, spots0, spots1, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = soda.analysis(0, 1,
-                                                                                                              n_rings,
-                                                                                                              step)
-            elemlist = [file, spots0, spots1, n_couples, CIndex[0], CIndex[1], mean_dist, raw_mean_dist]
-            for index in range(len(elemlist)):
-                results01.write(row, index, elemlist[index])
-            #except ValueError:
-            #    print("Skipping invalid TIF file...")
+            try:
+                # Analysis happens here
+                soda = SodaImageAnalysis(file_path, scale_list, scale_threshold)
+                prob_write, spots0, spots1, CIndex, mean_dist, \
+                    raw_mean_dist, coupling, n_couples = soda.analysis(0, 1, n_rings, step)
+                elemlist = [file, spots0, spots1, n_couples, CIndex[0], CIndex[1], mean_dist, raw_mean_dist]
+                for index in range(len(elemlist)):
+                    results01.write(row, index, elemlist[index])
+            except ImageError:  # Checks if image has the right shape (multiple channels)
+                print("Skipping invalid TIF file...")
 
             #print("********Computing SODAseul for channel 0********")
             #prob_write, spots0, spots1, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = soda.analysis(0, 0, 10,
@@ -325,7 +353,6 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
             row += 1
     results_workbook.close()
 
-print('lol ok')
 
 if __name__ == '__main__':
     start_time = time.clock()
