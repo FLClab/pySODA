@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9ee34f15-c711-4903-9e31-f14f16b63956" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run_soda.py" afterPath="$PROJECT_DIR$/run_soda.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/synth_image.py" afterPath="$PROJECT_DIR$/synth_image.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wavelet_SODA.py" afterPath="$PROJECT_DIR$/wavelet_SODA.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,10 +18,11 @@
       <file leaf-file-name="run_soda.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_soda.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="8" column="23" lean-forward="true" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+            <state relative-caret-position="5712">
+              <caret line="336" column="64" lean-forward="true" selection-start-line="336" selection-start-column="64" selection-end-line="336" selection-end-column="64" />
               <folding>
-                <element signature="e#6749#9180#0" expanded="false" />
+                <element signature="e#0#25#0" expanded="true" />
+                <element signature="e#7308#9739#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -32,24 +31,11 @@
       <file leaf-file-name="wavelet_SODA.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="456" column="20" lean-forward="false" selection-start-line="456" selection-start-column="20" selection-end-line="456" selection-end-column="20" />
+            <state relative-caret-position="1381">
+              <caret line="1028" column="17" lean-forward="true" selection-start-line="1028" selection-start-column="17" selection-end-line="1028" selection-end-column="17" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="483">
-                <caret line="23" column="23" lean-forward="false" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
-                <folding />
-              </first_editor>
-              <second_editor />
             </state>
           </provider>
         </entry>
@@ -65,10 +51,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>write_s</find>
-      <find>endswith</find>
-      <find>G0</find>
-      <find>bar</find>
       <find>self.imgw1</find>
       <find>image_windows</find>
       <find>skipping</find>
@@ -81,7 +63,6 @@
       <find>imsave</find>
       <find>=</find>
       <find>scatter_</find>
-      <find>cs=</find>
       <find>skip</find>
       <find>SODA</find>
       <find>cs</find>
@@ -91,10 +72,15 @@
       <find>scale_list</find>
       <find>.tif</find>
       <find>DimensionsException</find>
-      <find>scatter</find>
       <find>DimensionsError</find>
       <find>valueerror</find>
       <find>basename</find>
+      <find>02_R-RIM-12_1-500_GAR-Alexa594_1-500_PSD-95_GAM-STAR-635P_1-250_0Mg-Gly-Bicc-10_1.msr_STED640_STED561_merged.tif</find>
+      <find>05_R-Bassoon_1-250_GAR-STAR-653P_1-250_M-PSD-95_GAM-Alexa fluor 594_1-500_0Mg-Gly-Bicc_1.msr_STED640_STED561_merged.tif</find>
+      <find>scatter</find>
+      <find>area</find>
+      <find>cs=</find>
+      <find>raise im</find>
     </findStrings>
     <replaceStrings>
       <replace>and</replace>
@@ -116,8 +102,8 @@
       <replace>filt</replace>
       <replace>,</replace>
       <replace>kony2012</replace>
-      <replace>ImageError</replace>
       <replace>DimensionsError</replace>
+      <replace>ImageError</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -135,10 +121,10 @@
         <option value="$PROJECT_DIR$/../wavelets_backup/wavelet_SODA.py" />
         <option value="$PROJECT_DIR$/test_program.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
-        <option value="$PROJECT_DIR$/wavelet_SODA.py" />
         <option value="$PROJECT_DIR$/synth_image.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/run_soda.py" />
+        <option value="$PROJECT_DIR$/wavelet_SODA.py" />
       </list>
     </option>
   </component>
@@ -210,7 +196,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.synth_image">
+  <component name="RunManager" selected="Python.run_soda">
     <configuration name="couronne" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -305,8 +291,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.synth_image" />
-        <item index="1" class="java.lang.String" itemvalue="Python.run_soda" />
+        <item index="0" class="java.lang.String" itemvalue="Python.run_soda" />
+        <item index="1" class="java.lang.String" itemvalue="Python.synth_image" />
         <item index="2" class="java.lang.String" itemvalue="Python.couronne" />
         <item index="3" class="java.lang.String" itemvalue="Python.test_program" />
         <item index="4" class="java.lang.String" itemvalue="Python.test_program (1)" />
@@ -347,7 +333,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2596811" sideWeight="0.5128894" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32801822" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30637813" sideWeight="0.48711064" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2574032" sideWeight="0.48711064" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
@@ -538,13 +524,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/synth_image.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
@@ -552,6 +531,14 @@
           <folding>
             <element signature="e#0#36#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -564,8 +551,8 @@
       </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="483">
-            <caret line="23" column="23" lean-forward="false" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
+          <first_editor relative-caret-position="126">
+            <caret line="9" column="37" lean-forward="true" selection-start-line="9" selection-start-column="37" selection-end-line="9" selection-end-column="37" />
             <folding />
           </first_editor>
           <second_editor />
@@ -574,8 +561,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="456" column="20" lean-forward="false" selection-start-line="456" selection-start-column="20" selection-end-line="456" selection-end-column="20" />
+        <state relative-caret-position="1381">
+          <caret line="1028" column="17" lean-forward="true" selection-start-line="1028" selection-start-column="17" selection-end-line="1028" selection-end-column="17" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
@@ -584,10 +571,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/run_soda.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="23" lean-forward="true" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+        <state relative-caret-position="5712">
+          <caret line="336" column="64" lean-forward="true" selection-start-line="336" selection-start-column="64" selection-end-line="336" selection-end-column="64" />
           <folding>
-            <element signature="e#6749#9180#0" expanded="false" />
+            <element signature="e#0#25#0" expanded="true" />
+            <element signature="e#7308#9739#0" expanded="false" />
           </folding>
         </state>
       </provider>

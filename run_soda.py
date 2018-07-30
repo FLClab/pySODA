@@ -11,7 +11,7 @@ import numpy as np
 import xlsxwriter
 
 """ Change parameters here! """
-DIRECTORY = r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\Pierre-Luc EXP4"  # Path containing TIF files
+DIRECTORY = r"C:\Users\Renaud\PycharmProjects\WAVELETS_IMAGES\cocultures\EXP-8-STED"  # Path containing TIF files
 
 # For spot detection
 SCALE_LIST = [1,2]  # Scales to be used for wavelet transform for spot detection
@@ -28,7 +28,7 @@ WRITE_HIST = True  # Set to True to create a .png of the coupling probabilities 
 
 class ImageError(ValueError):
     """
-    Error to raise when image shape is invalid
+    Error to raise when an image has invalid dimensions or can't read
     """
 
 
@@ -47,6 +47,7 @@ class SodaImageAnalysis:
         self.scale_list = scale_list
         self.scale_threshold = scale_threshold
 
+        # Checks if image is valid, if not raises error to skip image
         try:
             self.image = io.imread(file)
             if len(self.image.shape) != 3:
@@ -59,8 +60,9 @@ class SodaImageAnalysis:
         self.poly = [np.array([[0, 0],
                                [x, 0],
                                [x, y],
-                               [0, y]])]
+                               [0, y]])]  # This is for testing purposes
 
+        # Create the binary spots image using wavelet transform
         print("Computing wavelet spot detection...\nScales: {}".format(self.scale_list))
         self.detections = [(wv.Detection_Wavelets((self.image[i]), J_list=self.scale_list,
                                                   scale_threshold=self.scale_threshold).computeDetection(),
@@ -74,15 +76,25 @@ class SodaImageAnalysis:
         :param n_rings: int; number of rings around spots in which to detect coupling
         :param step: float; width of rings in pixels
         """
+
+        # Find ROI for volume and boundary correction
         contours, roivolume, masked_detections = self.find_roi()
+
+        # Compute Marked Point Process for both channels
         marks = self.spatial_distribution(masked_detections)
         #contours = self.poly
         #roivolume = self.image.shape[1] * self.image.shape[2]
+
+        # Initialize spatial relations object for analysis
         SR = wv.Spatial_Relations(*marks, self.image[0].shape,
                                   roivolume, contours, self.image,
                                   n_rings, step, os.path.basename(self.file))
+        # Calls SODA spatial relations analysis
         prob_write, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = self.spatial_relations(SR)
-        SR.write_spots_and_probs(prob_write, DIRECTORY, 'PySODA_spots_{}_ch{}{}.xlsx'.format(os.path.basename(self.file), ch1, ch2))
+
+        # Write Excel file for spots and couples
+        SR.write_spots_and_probs(prob_write, DIRECTORY, 'PySODA_spots_{}_ch{}{}.xlsx'.format(os.path.basename(self.file)
+                                                                                             , ch1, ch2))
 
         return prob_write, len(marks[0]), len(marks[1]), CIndex, mean_dist, raw_mean_dist, coupling, n_couples
 
@@ -93,7 +105,7 @@ class SodaImageAnalysis:
         :return: Marked Point Process of each binary image in detections
         """
         print("Computing spatial distribution...")
-        marks = [wv.Spatial_Distribution(d, i, cs=0).mark() for d, i in detections]
+        marks = [wv.Spatial_Distribution(d, i, cs=6).mark() for d, i in detections]
         for m in range(len(marks)):
             print("\tSpots in channel {}:".format(m), len(marks[m]))
         return marks
@@ -136,7 +148,7 @@ class SodaImageAnalysis:
               "\nMean Coupling Distance:", mean_dist, "pixels",
               "\nUnweighted Mean Coupling Distance:", raw_mean_dist, "pixels")
 
-        # SR.data_scatter(mean_dist, prob_write)
+        #SR.data_scatter(mean_dist, prob_write)
         # print('Probabilities (Javascript version):', SR.main2D_corr(G, var, A))
         probs = np.ndarray.tolist(coupling)
         print('Probabilities', probs, '\n\n')
@@ -230,9 +242,9 @@ class SodaImageAnalysis:
 
         # Filtered image for masking: gaussian filter + threshold + fill holes
         filt = self.image[0] + self.image[1]
-        filt = (filters.gaussian(filt, 10))
+        filt = (filters.gaussian(filt, 10))  # High sigma for smoother edges
 
-        threshold = np.mean(filt)/2
+        threshold = np.mean(filt)/2  # mean/2 seems to be a decent intensity threshold for most images
         filt[filt < threshold] = 0
         filt[filt >= threshold] = 1
         filt = morphology.binary_closing(filt)
@@ -246,7 +258,6 @@ class SodaImageAnalysis:
         arealist = []
         for i in range(len(label_props)):
             arealist.append(label_props[i].area)
-
         for i in range(len(label_props)):
             if label_props[i].area < np.mean(arealist):
                 mask[mask == i + 1] = 0
@@ -258,12 +269,6 @@ class SodaImageAnalysis:
         contlabel = np.pad(mask, ((0, 2), (0, 2)), mode='constant', constant_values=0)
         cont = find_contours(contlabel, level=0, fully_connected='high', positive_orientation='high')
 
-        # Remove any small residual contours that may appear
-        for c in range(len(cont)):
-            if len(cont[c]) < 5 and len(cont) > 1:
-                cont[c] = 0
-        cont = [value for value in cont if value != 0]
-
         print('Number of regions in ROI:', len(cont))
         print('Volume of ROI:', roivolume)
 
@@ -271,6 +276,7 @@ class SodaImageAnalysis:
         for c in range(len(cont)):
            cont[c] = subdivide_polygon(cont[c], 7)
 
+        # Binary image of spots inside the ROI
         masked_detections = [(self.detections[i][0]*mask, self.image[i]) for i in range(len(self.detections))]
 
         # Display ROI
@@ -326,7 +332,7 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
             file_path = os.path.join(directory, file)
 
             try:
-                # Analysis happens here
+                # Analysis happens here!
                 soda = SodaImageAnalysis(file_path, scale_list, scale_threshold)
                 prob_write, spots0, spots1, CIndex, mean_dist, \
                     raw_mean_dist, coupling, n_couples = soda.analysis(0, 1, n_rings, step)

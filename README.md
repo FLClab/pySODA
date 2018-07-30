@@ -19,6 +19,7 @@ Adapts the SODA colocalisation method from https://www.nature.com/articles/s4146
 
     Other
     SHOW_ROI : Set to True to display the ROI mask contour and detected spots
+    WRITE_HIST : Set to True to create a .png of the coupling probabilities by distance histogram
    
 
 2 - Execute run_soda.py

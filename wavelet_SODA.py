@@ -1018,6 +1018,11 @@ class Spatial_Relations():
         pyplot.close()
 
     def data_scatter(self, mean_coupling_dist, prob_write):
+        """
+        Plots a scatter plot of two spot proprieties. Saves the resulting plot in a .png
+        :param mean_coupling_dist: Mean coupling distance
+        :param prob_write: List of couples and their properties
+        """
         X = []
         Y = []
 
@@ -1045,7 +1050,7 @@ class Spatial_Relations():
             p1, s1, (y,x) = self.MPP1_ROI[i]
             neighbor = self.neighbors[1][i][1]
             p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
-            Y.append(p1.eccentricity)
+            Y.append(abs(p1.eccentricity))
             X.append(self.neighbors[1][i][0])
             dist_tot += self.neighbors[1][i][0]
             blue.append('blue')
