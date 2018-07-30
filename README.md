@@ -21,7 +21,7 @@ Adapts the SODA colocalisation method from https://www.nature.com/articles/s4146
     SHOW_ROI : Set to True to display the ROI mask contour and detected spots
    
 
-2 - Execute run_soda.py using your favorite IDE
+2 - Execute run_soda.py using your favorite python console
 
 ### Output:
 
