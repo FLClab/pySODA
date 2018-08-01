@@ -16,7 +16,9 @@ Adapts the SODA colocalisation method from https://www.nature.com/articles/s4146
     For SODA analysis:
     N_RINGS : (int) Number of rings around spots in which to detect colocalisations
     STEP : Width of rings in pixels
-
+    MIN_SIZE: Minimum area of spots to analyze
+    SELF_SODA : Set to True to compute SODA for couples in the same channel as well
+    
     Other
     SHOW_ROI : Set to True to display the ROI mask contour and detected spots
     WRITE_HIST : Set to True to create a .png of the coupling probabilities by distance histogram

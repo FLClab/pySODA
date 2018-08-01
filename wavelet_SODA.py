@@ -534,9 +534,9 @@ class Spatial_Relations():
         for x in mpp1_data:
             repmat = numpy.tile(x, (mpp2_data.shape[0], 1))
             distance = self.matrix_dist(repmat, mpp2_data)
-            #distance = distance[numpy.where((distance > 0))]
+            distance_pos = distance[numpy.where((distance > 0))]
             distances.append(distance)
-            m = distance.min()
+            m = distance_pos.min()
             m_index = numpy.argmin(distance)
             min_distance.append((m, m_index))
         min_dist_12 = min_distance
@@ -547,9 +547,9 @@ class Spatial_Relations():
         for x in mpp2_data:
             repmat = numpy.tile(x, (mpp1_data.shape[0], 1))
             distance = self.matrix_dist(repmat, mpp1_data)
-            # distance = distance[numpy.where((distance > 0))]
+            distance_pos = distance[numpy.where((distance > 0))]
             distances.append(distance)
-            m = distance.min()
+            m = distance_pos.min()
             m_index = numpy.argmin(distance)
             min_distance.append((m, m_index))
         min_dist_21 = min_distance
@@ -891,6 +891,7 @@ class Spatial_Relations():
 
     def main2D_corr(self, G, var, A):
         """
+        Currently unused
         P calculation from the SODA code (non_parametric_object.java)
         Works; very nearly gives the same results as coupling_prob
         """
@@ -924,7 +925,8 @@ class Spatial_Relations():
         return proba_dist
 
     def coupling_prob(self, **kwargs):
-        """ This function computes the coupling probability between the two channels
+        """
+        This function computes the coupling probability between the two channels
         """
         n1, n2 = len(self.MPP1_ROI), len(self.MPP2_ROI)
         if kwargs:
@@ -1049,20 +1051,26 @@ class Spatial_Relations():
         for i in range(len(self.MPP1_ROI)):
             p1, s1, (y,x) = self.MPP1_ROI[i]
             neighbor = self.neighbors[1][i][1]
+            #r1, c1 = p1.centroid
+            #r2, c2 = p1.weighted_centroid
+            #d = self.distance(c1, c2, r1, r2)
             p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
-            Y.append(abs(p1.eccentricity))
-            X.append(self.neighbors[1][i][0])
-            dist_tot += self.neighbors[1][i][0]
+            Y.append(p1.eccentricity)
+            X.append(self.neighbors[0][i][0])
+            dist_tot += self.neighbors[0][i][0]
             blue.append('blue')
 
         red = []
         for i in range(len(self.MPP2_ROI)):
             p1, s1, (y,x) = self.MPP2_ROI[i]
             neighbor = self.neighbors[2][i][1]
+            #r1, c1 = p1.centroid
+            #r2, c2 = p1.weighted_centroid
+            #d = self.distance(c1, c2, r1, r2)
             p2, s2, (y2, x2) = self.MPP1_ROI[neighbor]
             Y.append(p1.eccentricity)
-            X.append(self.neighbors[2][i][0])
-            dist_tot += self.neighbors[2][i][0]
+            X.append(self.neighbors[3][i][0])
+            dist_tot += self.neighbors[3][i][0]
             red.append('red')
 
         dist_mean = dist_tot/(len(red)+len(blue))
