@@ -5,9 +5,9 @@ import xlsxwriter
 
 from skimage.measure import find_contours, regionprops, label
 from skimage.draw import polygon
-import scipy.spatial
 from matplotlib import pyplot
 from scipy import ndimage
+import os
 import select_ROI
 from matplotlib import patches
 
@@ -534,9 +534,9 @@ class Spatial_Relations():
         for x in mpp1_data:
             repmat = numpy.tile(x, (mpp2_data.shape[0], 1))
             distance = self.matrix_dist(repmat, mpp2_data)
-            #distance = distance[numpy.where((distance > 0))]
+            distance_pos = distance[numpy.where((distance > 0))]
             distances.append(distance)
-            m = distance.min()
+            m = distance_pos.min()
             m_index = numpy.argmin(distance)
             min_distance.append((m, m_index))
         min_dist_12 = min_distance
@@ -547,9 +547,9 @@ class Spatial_Relations():
         for x in mpp2_data:
             repmat = numpy.tile(x, (mpp1_data.shape[0], 1))
             distance = self.matrix_dist(repmat, mpp1_data)
-            # distance = distance[numpy.where((distance > 0))]
+            distance_pos = distance[numpy.where((distance > 0))]
             distances.append(distance)
-            m = distance.min()
+            m = distance_pos.min()
             m_index = numpy.argmin(distance)
             min_distance.append((m, m_index))
         min_dist_21 = min_distance
@@ -891,6 +891,7 @@ class Spatial_Relations():
 
     def main2D_corr(self, G, var, A):
         """
+        Currently unused
         P calculation from the SODA code (non_parametric_object.java)
         Works; very nearly gives the same results as coupling_prob
         """
@@ -924,7 +925,8 @@ class Spatial_Relations():
         return proba_dist
 
     def coupling_prob(self, **kwargs):
-        """ This function computes the coupling probability between the two channels
+        """
+        This function computes the coupling probability between the two channels
         """
         n1, n2 = len(self.MPP1_ROI), len(self.MPP2_ROI)
         if kwargs:
@@ -987,10 +989,10 @@ class Spatial_Relations():
             coupled = False
             for xa, ya, xb, yb, dist, p in prob_write:
                 if (y1, x1) == (ya, xa):
-                    dataC.append(p1.eccentricity)
+                    dataC.append(p1.inertia_tensor_eigvals[0])
                     coupled = True
             if not coupled:
-                dataU.append(p1.eccentricity)
+                dataU.append(p1.inertia_tensor_eigvals[0])
 
         data1 = [dataC, dataU]
 
@@ -1000,10 +1002,10 @@ class Spatial_Relations():
             coupled = False
             for xa, ya, xb, yb, dist, p in prob_write:
                 if (y1, x1) == (yb, xb):
-                    dataC.append(p1.eccentricity)
+                    dataC.append(p1.inertia_tensor_eigvals[0])
                     coupled = True
             if not coupled:
-                dataU.append(p1.eccentricity)
+                dataU.append(p1.inertia_tensor_eigvals[0])
 
         data2 = [dataC, dataU]
 
@@ -1017,13 +1019,78 @@ class Spatial_Relations():
         pyplot.savefig('boxplot_{}'.format(self.filename))
         pyplot.close()
 
-    def write_spots_and_probs(self, prob_write, title):
+    def data_scatter(self, mean_coupling_dist, prob_write):
+        """
+        Plots a scatter plot of two spot proprieties. Saves the resulting plot in a .png
+        :param mean_coupling_dist: Mean coupling distance
+        :param prob_write: List of couples and their properties
+        """
+        X = []
+        Y = []
+
+        blue = []
+        dist_tot = 0
+
+        # for i in range(len(self.MPP1_ROI)):
+        #     p1, s1, (y, x) = self.MPP1_ROI[i]
+        #     for xa, ya, xb, yb, dist, p in prob_write:
+        #         if (y, x) == (ya, xa):
+        #             X.append(dist)
+        #             Y.append(p1.eccentricity)
+        #             blue.append('blue')
+        #
+        # red = []
+        # for i in range(len(self.MPP2_ROI)):
+        #     p1, s1, (y, x) = self.MPP2_ROI[i]
+        #     for xa, ya, xb, yb, dist, p in prob_write:
+        #         if (y, x) == (yb, xb):
+        #             X.append(dist)
+        #             Y.append(p1.eccentricity)
+        #             red.append('red')
+
+        for i in range(len(self.MPP1_ROI)):
+            p1, s1, (y,x) = self.MPP1_ROI[i]
+            neighbor = self.neighbors[1][i][1]
+            #r1, c1 = p1.centroid
+            #r2, c2 = p1.weighted_centroid
+            #d = self.distance(c1, c2, r1, r2)
+            p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
+            Y.append(p1.eccentricity)
+            X.append(self.neighbors[0][i][0])
+            dist_tot += self.neighbors[0][i][0]
+            blue.append('blue')
+
+        red = []
+        for i in range(len(self.MPP2_ROI)):
+            p1, s1, (y,x) = self.MPP2_ROI[i]
+            neighbor = self.neighbors[2][i][1]
+            #r1, c1 = p1.centroid
+            #r2, c2 = p1.weighted_centroid
+            #d = self.distance(c1, c2, r1, r2)
+            p2, s2, (y2, x2) = self.MPP1_ROI[neighbor]
+            Y.append(p1.eccentricity)
+            X.append(self.neighbors[3][i][0])
+            dist_tot += self.neighbors[3][i][0]
+            red.append('red')
+
+        dist_mean = dist_tot/(len(red)+len(blue))
+        pyplot.scatter(X, Y, color=blue+red, marker='.', linewidths=0.5, edgecolors='black')
+        pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
+        pyplot.axvline(x=dist_mean, color='cyan', linestyle='dashed')
+        pyplot.xlabel('Distance to nearest neigbor (Pixels)')
+        pyplot.ylabel('Eccentricity')
+        pyplot.savefig('scatter_{}'.format(self.filename))
+        pyplot.close()
+        #pyplot.show()
+
+    def write_spots_and_probs(self, prob_write, directory, title):
         """
         Writes informations about couples and single spots
         :param prob_write: list containing lists of information to write about each couple
+        :param directory: string containing the path of the output file
         :param title: name of the output excel file as string
         """
-        workbook = xlsxwriter.Workbook(title, {'nan_inf_to_errors': True})
+        workbook = xlsxwriter.Workbook(os.path.join(directory, title), {'nan_inf_to_errors': True})
         couples = workbook.add_worksheet(name='Couples')
         titles = ['X1', 'Y1', 'X2', 'Y2', 'Distance', 'Coupling probability']
         for t in range(len(titles)):
