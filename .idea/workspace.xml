@@ -1,40 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9ee34f15-c711-4903-9e31-f14f16b63956" name="Default" comment="" />
+    <list default="true" id="9ee34f15-c711-4903-9e31-f14f16b63956" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_soda.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_soda.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/synth_image.py" beforeDir="false" afterPath="$PROJECT_DIR$/synth_image.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wavelet_SODA.py" beforeDir="false" afterPath="$PROJECT_DIR$/wavelet_SODA.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="472894983">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="10" />
+          <entry key="project.open.time.0" value="2" />
+          <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.11" value="2" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.6" value="3" />
+          <entry key="project.open.time.7" value="4" />
+          <entry key="project.open.time.8" value="2" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="16" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="Python Console" value="144" />
+          <entry key="dummy" value="57" />
+          <entry key="py" value="24904" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="57" />
+          <entry key="Python" value="23890" />
+          <entry key="Scratch" value="1158" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="png" value="17" />
+          <entry key="py" value="23" />
+          <entry key="tif" value="7" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Image" value="24" />
+          <entry key="Python" value="18" />
+          <entry key="Scratch" value="5" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="run_soda.py" pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_soda.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="21" column="36" lean-forward="true" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
+            <state relative-caret-position="153">
+              <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
-                <element signature="e#7809#10240#0" expanded="false" />
+                <marker date="1535396593205" expanded="true" signature="1434:1436" ph="..." />
+                <marker date="1535396593205" expanded="true" signature="8613:8622" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="wavelet_SODA.py" pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1344">
-              <caret line="287" column="0" lean-forward="false" selection-start-line="287" selection-start-column="0" selection-end-line="287" selection-end-column="0" />
+            <state relative-caret-position="-1837">
+              <caret line="1174" column="15" lean-forward="true" selection-start-line="1174" selection-start-column="15" selection-end-line="1174" selection-end-column="15" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
-                <element signature="e#34017#35106#0" expanded="false" />
+                <element signature="e#34127#35216#0" />
+                <marker date="1535393722381" expanded="true" signature="37814:37819" ph="..." />
+                <marker date="1535393722381" expanded="true" signature="41818:41824" ph="..." />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/measure/_regionprops.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="122">
+              <caret line="282" selection-start-line="282" selection-end-line="282" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/synth_image.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -48,59 +132,68 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>scale_list</find>
-      <find>.tif</find>
-      <find>DimensionsException</find>
-      <find>DimensionsError</find>
-      <find>valueerror</find>
-      <find>basename</find>
-      <find>02_R-RIM-12_1-500_GAR-Alexa594_1-500_PSD-95_GAM-STAR-635P_1-250_0Mg-Gly-Bicc-10_1.msr_STED640_STED561_merged.tif</find>
-      <find>05_R-Bassoon_1-250_GAR-STAR-653P_1-250_M-PSD-95_GAM-Alexa fluor 594_1-500_0Mg-Gly-Bicc_1.msr_STED640_STED561_merged.tif</find>
-      <find>area</find>
-      <find>raise im</find>
-      <find>cs=</find>
-      <find>data_</find>
-      <find>detection</find>
-      <find>data_scatter</find>
-      <find>scat</find>
+      <find>CIndex_list1</find>
+      <find>A_{}</find>
+      <find>a_index</find>
+      <find>img_index</find>
+      <find>17</find>
+      <find>ecc_a</find>
+      <find>couples_results_list</find>
+      <find>self.couples_Data</find>
+      <find>couples_r</find>
+      <find>label</find>
+      <find>labels=</find>
+      <find>bin_list</find>
+      <find>bin_list =</find>
+      <find>coupling</find>
+      <find>soda =</find>
+      <find>invalid</find>
+      <find>get_spots</find>
+      <find>mean_ecc</find>
+      <find>spotserror</find>
+      <find>coupling_prob_density</find>
+      <find>get_</find>
+      <find>filter_wat</find>
+      <find>coupling_prob_scatter</find>
+      <find>def mark</find>
+      <find>write_h</find>
+      <find>only</find>
       <find>show_ROI</find>
-      <find>masked_</find>
-      <find>nearest_nei</find>
-      <find>nearest_neighbor</find>
-      <find>scatter</find>
-      <find>spatial_distribution(</find>
-      <find>sheet_</find>
-      <find>sheet_name</find>
-      <find>COMPUTING SODA</find>
-      <find>Computing statistics</find>
-      <find>scatt</find>
-      <find>worksheet</find>
-      <find>channels</find>
-      <find>if min</find>
-      <find>hist</find>
+      <find>detectionwavelets</find>
+      <find>Spatial</find>
+      <find>def find</find>
     </findStrings>
     <replaceStrings>
-      <replace>and</replace>
-      <replace>shape</replace>
-      <replace>m</replace>
-      <replace>prevArray</replace>
-      <replace>j</replace>
-      <replace>P_pad</replace>
-      <replace>cent_int</replace>
-      <replace>J_list</replace>
-      <replace>&quot;&quot;&quot;</replace>
-      <replace>/</replace>
-      <replace>A</replace>
-      <replace>2</replace>
-      <replace>self.detections</replace>
-      <replace>=</replace>
-      <replace>find_roi</replace>
-      <replace>mask</replace>
-      <replace>filt</replace>
-      <replace>,</replace>
-      <replace>kony2012</replace>
       <replace>DimensionsError</replace>
       <replace>ImageError</replace>
+      <replace>pad_mask</replace>
+      <replace>SpatialRelations</replace>
+      <replace>beta_correction</replace>
+      <replace>DetectionWavelets</replace>
+      <replace>poly_area</replace>
+      <replace>data</replace>
+      <replace>p</replace>
+      <replace>(14,1)</replace>
+      <replace>stack</replace>
+      <replace>1,14</replace>
+      <replace>np.ndarray((0</replace>
+      <replace>[]</replace>
+      <replace>append</replace>
+      <replace>c</replace>
+      <replace>filt_data</replace>
+      <replace>15</replace>
+      <replace>6</replace>
+      <replace>8</replace>
+      <replace>spots_ch</replace>
+      <replace>17</replace>
+      <replace>ax</replace>
+      <replace>pickeledBears</replace>
+      <replace>KCl</replace>
+      <replace>Block</replace>
+      <replace>0Mg + Bicc + Gly</replace>
+      <replace>draw_iso_density</replace>
+      <replace>18</replace>
+      <replace>coupling_prob_scatter</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -116,48 +209,28 @@
         <option value="$PROJECT_DIR$/select_ROI.py" />
         <option value="$PROJECT_DIR$/../wavelets_backup/wavelet_SODA.py" />
         <option value="$PROJECT_DIR$/test_program.py" />
-        <option value="$PROJECT_DIR$/synth_image.py" />
-        <option value="$PROJECT_DIR$/wavelet_SODA.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
-        <option value="$PROJECT_DIR$/run_soda.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py" />
+        <option value="$PROJECT_DIR$/synth_image.py" />
+        <option value="$PROJECT_DIR$/wavelet_SODA.py" />
+        <option value="$PROJECT_DIR$/run_soda.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-9" />
-    <option name="y" value="-9" />
-    <option name="width" value="976" />
-    <option name="height" value="1038" />
+    <option name="x" value="260" />
+    <option name="y" value="-10" />
+    <option name="width" value="980" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
-      <flattenPackages />
-      <showMembers />
-      <showModules />
-      <showLibraryContents />
-      <hideEmptyPackages />
-      <abbreviatePackageNames />
-      <autoscrollToSource />
-      <autoscrollFromSource />
-      <sortByType />
-      <manualOrder />
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches">
-        <subPane>
-          <expand>
-            <path>
-              <item name="" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -165,16 +238,27 @@
               <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
               <item name="pySODA" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+            <path>
+              <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/images_score" />
+    <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Python" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/images_score" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -195,24 +279,8 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.run_soda">
-    <configuration name="couronne" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/PycharmProjects/TP1" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="wavelets" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/PycharmProjects/TP1/couronne.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
     <configuration name="run_soda" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pySODA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -223,13 +291,17 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pySODA" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_soda.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration name="scratch_1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pySODA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -240,13 +312,59 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pySODA" />
       <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pySODA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_3" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pySODA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
     <configuration name="synth_image" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pySODA" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -257,48 +375,31 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pySODA" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/synth_image.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
     </configuration>
-    <configuration name="test_program" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="wavelets" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_program.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-    </configuration>
-    <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.test_program" />
-      <item index="1" class="java.lang.String" itemvalue="Python.run_soda" />
-      <item index="2" class="java.lang.String" itemvalue="Python.synth_image" />
-      <item index="3" class="java.lang.String" itemvalue="Python.couronne" />
-      <item index="4" class="java.lang.String" itemvalue="Python.scratch_1" />
+    <list>
+      <item itemvalue="Python.run_soda" />
+      <item itemvalue="Python.synth_image" />
+      <item itemvalue="Python.scratch_1" />
+      <item itemvalue="Python.scratch_2" />
+      <item itemvalue="Python.scratch_3" />
     </list>
     <recent_temporary>
-      <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.run_soda" />
-        <item index="1" class="java.lang.String" itemvalue="Python.scratch_1" />
-        <item index="2" class="java.lang.String" itemvalue="Python.synth_image" />
-        <item index="3" class="java.lang.String" itemvalue="Python.couronne" />
-        <item index="4" class="java.lang.String" itemvalue="Python.test_program" />
+      <list>
+        <item itemvalue="Python.run_soda" />
+        <item itemvalue="Python.synth_image" />
+        <item itemvalue="Python.scratch_3" />
+        <item itemvalue="Python.scratch_2" />
+        <item itemvalue="Python.scratch_1" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -323,152 +424,45 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13856068" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2596811" sideWeight="0.5128894" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32801822" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28473803" sideWeight="0.48711064" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32915717" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33940774" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32962137" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.12491738" />
+      <window_info id="Structure" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Event Log" order="0" sideWeight="0.516193" side_tool="true" weight="0.3177305" />
+      <window_info anchor="bottom" id="Version Control" order="1" weight="0.32907802" />
+      <window_info anchor="bottom" id="Python Console" order="2" weight="0.32765958" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.32907802" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" weight="0.17021276" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.483807" visible="true" weight="0.25815603" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.25531915" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="10" weight="0.32907802" />
+      <window_info anchor="right" id="Data View" order="0" weight="0.32962137" />
+      <window_info anchor="right" id="Commander" order="1" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <option name="time" value="26" />
-    </breakpoint-manager>
-    <watches-manager />
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../threshsquares/beadlines.py" />
-    <entry file="file://$USER_HOME$/.PyCharmCE2017.2/system/python_stubs/-313451744/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="1244" column="8" lean-forward="false" selection-start-line="1244" selection-start-column="8" selection-end-line="1244" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/prob.txt" />
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/scipy/ndimage/filters.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="48" column="0" lean-forward="false" selection-start-line="48" selection-start-column="0" selection-end-line="48" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tiftest.tif" />
-    <entry file="file://$PROJECT_DIR$/R/01_R-RIM-12_1-500_GAR-Alexa594_1-500_PSD-95_GAM-STAR-635P_1-250_Block-10_1.msr_STED640_STED561_merged.tif" />
-    <entry file="file://$PROJECT_DIR$/R/ch2.tiff" />
-    <entry file="file://$PROJECT_DIR$/R/ch1.tiff" />
-    <entry file="file://$PROJECT_DIR$/mask1.tiff" />
-    <entry file="file://$PROJECT_DIR$/mask2.tiff" />
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/artist.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="609" column="31" lean-forward="false" selection-start-line="609" selection-start-column="31" selection-end-line="609" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/R/img.tif" />
-    <entry file="file://$PROJECT_DIR$/R/tifteset2.tif" />
-    <entry file="file://$PROJECT_DIR$/../images_compareBACKUP/__init__.spec" />
-    <entry file="file://$PROJECT_DIR$/../STED-GUI/launch_gui.spec">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/io/manage_plugins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3161">
-          <caret line="222" column="54" lean-forward="false" selection-start-line="222" selection-start-column="54" selection-end-line="222" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/morphology/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="21">
-          <caret line="1" column="35" lean-forward="true" selection-start-line="1" selection-start-column="35" selection-end-line="1" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/scipy/sparse/csgraph/_laplacian.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="530">
-          <caret line="103" column="9" lean-forward="true" selection-start-line="103" selection-start-column="9" selection-end-line="103" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/measure/_regionprops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="182" column="8" lean-forward="false" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/scipy/ndimage/morphology.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7980">
-          <caret line="385" column="14" lean-forward="false" selection-start-line="385" selection-start-column="14" selection-end-line="385" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../wavelets_backup/test_program.py" />
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="1016" column="15" lean-forward="false" selection-start-line="1016" selection-start-column="15" selection-end-line="1016" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/xlsxwriter/worksheet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="388" column="0" lean-forward="false" selection-start-line="388" selection-start-column="0" selection-end-line="388" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DatasetPLProtéinessynaptiques/ProtéinesC(Bassoon)-B(PSD)/EXP8-21-11-2017/3_M-PSD95_1-250_GAM-Alexa Fluor 594_1-250_R-Bassoon_1-250_GAR-STAR-635P_1-250_10min_MeOH_+4C_KCl_2min_1.msr_STED640_STED561_merged.tif" />
-    <entry file="file://$PROJECT_DIR$/../wavelets_backup/wavelet_SODA.py" />
-    <entry file="file://$PROJECT_DIR$/test_program.py" />
-    <entry file="file://$PROJECT_DIR$/synth.tif" />
     <entry file="file://$USER_HOME$/PycharmProjects/TP1/couronne.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="231">
-          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/PycharmProjects/images_yesno/interface_app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$USER_HOME$/PycharmProjects/images_score/interface_menu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/mask.png" />
     <entry file="file://$PROJECT_DIR$/hist_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_3.msr_STED640_STED561_merged.tif.png" />
@@ -482,99 +476,172 @@
     <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/color/colorconv.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
-          <caret line="90" column="0" lean-forward="false" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+          <caret line="90" selection-start-line="90" selection-end-line="90" />
         </state>
       </provider>
     </entry>
     <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/axes/_axes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
-          <caret line="4242" column="0" lean-forward="false" selection-start-line="4242" selection-start-column="0" selection-end-line="4242" selection-end-column="0" />
+          <caret line="4242" selection-start-line="4242" selection-end-line="4242" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/select_ROI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="206">
-          <caret line="24" column="35" lean-forward="false" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="35" />
+          <caret line="24" column="35" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/pyplot.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="206">
-          <caret line="3469" column="0" lean-forward="false" selection-start-line="3469" selection-start-column="0" selection-end-line="3469" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/synth_image.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="15" column="18" lean-forward="false" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+          <caret line="3469" selection-start-line="3469" selection-end-line="3469" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hist_5_M-PSD95_1-250_GAM-Alexa Fluor 594_1-250_R-Bassoon_1-250_GAR-STAR-635P_1-250_10min_MeOH_+4C_0Mg+Bicc+Glyc_10min_5.msr_STED640_STED561_merged.tif.png" />
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
-          <caret line="6" column="26" lean-forward="false" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+          <caret line="6" column="26" selection-start-line="6" selection-start-column="26" selection-end-line="6" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/boxplot_5_M-PSD95_1-250_GAM-Alexa Fluor 594_1-250_R-Bassoon_1-250_GAR-STAR-635P_1-250_10min_MeOH_+4C_0Mg+Bicc+Glyc_10min_5.msr_STED640_STED561_merged.tif" />
+    <entry file="file://$PROJECT_DIR$/scatter_5_M-PSD95_1-250_GAM-Alexa Fluor 594_1-250_R-Bassoon_1-250_GAR-STAR-635P_1-250_10min_MeOH_+4C_0Mg+Bicc+Glyc_10min_5.msr_STED640_STED561_merged.tif" />
+    <entry file="file://$PROJECT_DIR$/boxplot_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_1.msr_STED640_STED561_merged.tif" />
+    <entry file="file://$PROJECT_DIR$/ecc_hist.png" />
+    <entry file="file://$PROJECT_DIR$/mean_ecc_PSD95.png" />
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/backend_bases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="35377">
+          <caret line="2104" selection-start-line="2104" selection-end-line="2104" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cdist_condition.tif" />
+    <entry file="file://$PROJECT_DIR$/ecc_global_1.png" />
+    <entry file="file://$PROJECT_DIR$/ecc_global.png" />
+    <entry file="file://$PROJECT_DIR$/ecc_global_0.png" />
+    <entry file="file://$PROJECT_DIR$/ecc_all_global0.png" />
+    <entry file="file://$PROJECT_DIR$/ecc_global0.png" />
+    <entry file="file://$PROJECT_DIR$/ecc_max_0.6_global0.png" />
+    <entry file="file://$PROJECT_DIR$/ecc_max_0.8_global0.png" />
+    <entry file="file://$PROJECT_DIR$/ecc_max_1.0_global0.png" />
+    <entry file="file://$PROJECT_DIR$/ecc_max_0.4_global0.png" />
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/figure.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="2087" selection-start-line="2087" selection-end-line="2087" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/numpy/lib/npyio.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="369" selection-start-line="369" selection-end-line="369" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/density_map_ecc_nn0.png" />
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="2908" selection-start-line="2908" selection-end-line="2908" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/numpy/core/_methods.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="454">
+          <caret line="83" column="14" lean-forward="true" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/numpy/core/numeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8687">
+          <caret line="530" selection-start-line="530" selection-end-line="530" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/cbook/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34833">
+          <caret line="2079" selection-start-line="2079" selection-end-line="2079" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/numpy/lib/function_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="921" selection-start-line="921" selection-end-line="921" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
           <folding>
-            <element signature="e#0#22#0" expanded="false" />
+            <element signature="e#0#18#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/synth_image.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/measure/_regionprops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="282" selection-start-line="282" selection-end-line="282" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1344">
-          <caret line="287" column="0" lean-forward="false" selection-start-line="287" selection-start-column="0" selection-end-line="287" selection-end-column="0" />
+        <state relative-caret-position="-1837">
+          <caret line="1174" column="15" lean-forward="true" selection-start-line="1174" selection-start-column="15" selection-end-line="1174" selection-end-column="15" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
-            <element signature="e#34017#35106#0" expanded="false" />
+            <element signature="e#34127#35216#0" />
+            <marker date="1535393722381" expanded="true" signature="37814:37819" ph="..." />
+            <marker date="1535393722381" expanded="true" signature="41818:41824" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="273">
-            <caret line="13" column="63" lean-forward="false" selection-start-line="13" selection-start-column="63" selection-end-line="13" selection-end-column="63" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run_soda.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="21" column="36" lean-forward="true" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
+        <state relative-caret-position="153">
+          <caret line="9" column="17" lean-forward="true" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
-            <element signature="e#7809#10240#0" expanded="false" />
+            <marker date="1535396593205" expanded="true" signature="1434:1436" ph="..." />
+            <marker date="1535396593205" expanded="true" signature="8613:8622" ph="..." />
           </folding>
         </state>
       </provider>

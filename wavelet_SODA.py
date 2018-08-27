@@ -2,17 +2,19 @@ import numpy
 import math
 import sys
 import xlsxwriter
+import random
 
-from skimage.measure import find_contours, regionprops, label
+from skimage import io
+from skimage.measure import regionprops, label
 from skimage.draw import polygon
 from matplotlib import pyplot
-from scipy import ndimage
+from math import atan2
 import os
 import select_ROI
-from matplotlib import patches
 
 
-"""This script is intended to perform a cluster analysis based on the paper
+"""
+This script is intended to perform a cluster analysis based on the paper
 
 Mapping molecular assemblies with fluorescence microscopy and object-based spatial statistics
 Thibault Lagache, Alexandre Grassart, Stéphane Dallongeville, Orestis Faklaris, 
@@ -24,11 +26,10 @@ The second sted is to characterize the spatial distribution of the clusters usin
 a Marked Point Process.
 The third and final step is to characterize the spatial relations between the clusters.
 The Ripley's K Function will be of great help.
-
 """
 
 
-class Detection_Wavelets():
+class DetectionWavelets:
     """
     This is based on the paper
         "Extraction of spots in biological images using multiscale products"
@@ -45,8 +46,8 @@ class Detection_Wavelets():
     def __init__(self, img, J_list=(2,), scale_threshold=100):
         """Init function
         :param img: A numpy 2D array
-        :param J: The maximum scale
         :param J_list: List of all chosen scales
+        :param scale_threshold: Percent modifier of wavelet image threshold
         """
         self.img = img
         self.J = max(J_list)
@@ -56,37 +57,24 @@ class Detection_Wavelets():
     def computeDetection(self):
         """
         Computes the binary correlation image
-        :return: numpy array representing the binary image
+        :return image_out: numpy array representing the binary image
         """
 
-        dataIn = numpy.copy(self.img)
-        #pyplot.imshow(dataIn)
-        #pyplot.title('Base')
-        #pyplot.show()
-        h, w = dataIn.shape
-        prevArray = self.array_to_list(dataIn)
+        data_in = numpy.copy(self.img)
+        h, w = data_in.shape
+        prevArray = self.array_to_list(data_in)
 
         scales = self.b3WaveletScales2D(prevArray, h, w)
 
-        #for i in scales:
-        #    pyplot.imshow(self.list_to_array(i,h,w))
-        #    pyplot.title('Convolution')
-        #    pyplot.show()
         coefficients = self.b3WaveletCoefficients2D(scales, prevArray, h, w)
 
         for i in range(len(coefficients)-1):
             coefficients[i] = self.filter_wat(coefficients[i], i, w, h)
-        #    pyplot.imshow(self.list_to_array(coefficients[i],h,w))
-        #    pyplot.title('Wavelet')
-        #    pyplot.show()
 
         for i in range(len(coefficients[-1])):
             coefficients[-1][i] = 0
 
         binaryDetectionResult = self.spot_construction(coefficients)
-        # pyplot.imshow(self.list_to_array(binaryDetectionResult,h,w))
-        # pyplot.title('Correlation')
-        # pyplot.show()
 
         for i in range(len(binaryDetectionResult)):
             if binaryDetectionResult[i] != 0:
@@ -94,20 +82,16 @@ class Detection_Wavelets():
             else:
                 binaryDetectionResult[i] = 0
 
-        # pyplot.imshow(self.list_to_array(binaryDetectionResult,h,w))
-        # pyplot.title('Binary')
-        # pyplot.show()
+        image_out = self.list_to_array(binaryDetectionResult, h, w)
 
-        imgout = self.list_to_array(binaryDetectionResult, h, w)
-
-        return imgout
+        return image_out
 
     @staticmethod
     def array_to_list(arrayin):
         """
         Turns 2D numpy array into 1D list
         :param arrayin: 2D numpy array
-        :return: 1D list
+        :return listout: 1D list
         """
         listout = []
         datalist = arrayin.tolist()
@@ -123,16 +107,16 @@ class Detection_Wavelets():
         :param listin: 1D list
         :param h: Array height
         :param w: Array width
-        :return: 2D numpy array
+        :return image_out: 2D numpy array
         """
-        imgout = numpy.zeros((h,w))
+        image_out = numpy.zeros((h,w))
         for y in range(h):
             a = y * w
             for x in range(w):
                 if a < len(listin):
-                    imgout[y, x] = listin[a]
+                    image_out[y, x] = listin[a]
                 a += 1
-        return imgout
+        return image_out
 
     def b3WaveletScales2D(self, dataIn, h, w):
         """
@@ -140,7 +124,7 @@ class Detection_Wavelets():
         :param dataIn: Base image as 1D list
         :param h: image height
         :param w: image width
-        :return: List of convoluted images as 1D lists
+        :return resArray: List of convoluted images as 1D lists
         """
 
         prevArray = dataIn.copy()
@@ -175,7 +159,7 @@ class Detection_Wavelets():
         :param originalImage: Original image as 1D list
         :param h: Image height
         :param w: Image width
-        :return: List of wavelet images as 1D lists
+        :return waveletCoefficients: List of wavelet images as 1D lists
         """
 
         waveletCoefficients = []
@@ -197,7 +181,7 @@ class Detection_Wavelets():
         :param depth: number of scale
         :param width: image width
         :param height: image height
-        :return: filtered image
+        :return output: filtered image
         """
 
         output = data.copy()
@@ -230,9 +214,8 @@ class Detection_Wavelets():
         """
         Reconstructs correlation image
         :param inputCoefficients: List of wavelet coefficient images as 1D lists
-        :return: Correlation image as 1D list
+        :return output: Correlation image as 1D list
         """
-
         output = []
         for i in range(len(inputCoefficients[0])):
             allNotNull = True
@@ -250,10 +233,18 @@ class Detection_Wavelets():
 
         return output
 
-    def filter_and_swap(self, arrayIn, w, h, stepS):
-        #print(len(arrayIn))
+    @staticmethod
+    def filter_and_swap(array_in, w, h, stepS):
+        """
+        Convolves the image in one dimension (filter) and rotates it 90 degrees (swap) as in java code
+        :param array_in: 1D list containing image data
+        :param w: int, Image width
+        :param h: int, Image height
+        :param stepS: int, Number of zeroes between values in kernel (calculated in b3WaveletScales2D)
+        :return: 1D list containing convoluted and swapped image data
+        """
 
-        arrayOut = arrayIn.copy()
+        array_out = array_in.copy()
 
         w2 = 1/16
         w1 = 1/4
@@ -263,7 +254,7 @@ class Detection_Wavelets():
 
         for y in range(h):
 
-            arrayOutIter = 0 + y
+            array_out_iter = 0 + y
             w1idx1 = w0idx + stepS - 1
             w2idx1 = w1idx1 + stepS
             w1idx2 = w0idx + stepS
@@ -271,83 +262,84 @@ class Detection_Wavelets():
 
             cntX = 0
             while cntX < stepS:
-                arrayOut[arrayOutIter] = w2*((arrayIn[w2idx1]) + (arrayIn[w2idx2])) + \
-                                         w1*((arrayIn[w1idx1]) + (arrayIn[w1idx2])) + \
-                                         w0*(arrayIn[w0idx])
+                array_out[array_out_iter] = w2 * ((array_in[w2idx1]) + (array_in[w2idx2])) + \
+                                         w1 * ((array_in[w1idx1]) + (array_in[w1idx2])) + \
+                                         w0 * (array_in[w0idx])
                 w1idx1 -= 1
                 w2idx1 -= 1
                 w1idx2 += 1
                 w2idx2 += 1
                 w0idx += 1
-                arrayOutIter += h
+                array_out_iter += h
                 cntX += 1
             w1idx1 += 1
 
             while cntX < 2*stepS:
-                arrayOut[arrayOutIter] = w2*((arrayIn[w2idx1]) + (arrayIn[w2idx2])) + \
-                                         w1*((arrayIn[w1idx1]) + (arrayIn[w1idx2])) + \
-                                         w0*(arrayIn[w0idx])
+                array_out[array_out_iter] = w2 * ((array_in[w2idx1]) + (array_in[w2idx2])) + \
+                                         w1 * ((array_in[w1idx1]) + (array_in[w1idx2])) + \
+                                         w0 * (array_in[w0idx])
                 w1idx1 += 1
                 w2idx1 -= 1
                 w1idx2 += 1
                 w2idx2 += 1
                 w0idx += 1
-                arrayOutIter += h
+                array_out_iter += h
                 cntX += 1
             w2idx1 += 1
 
             while cntX < (w - 2*stepS):
-                arrayOut[arrayOutIter] = w2*((arrayIn[w2idx1]) + (arrayIn[w2idx2])) + \
-                                         w1*((arrayIn[w1idx1]) + (arrayIn[w1idx2])) + \
-                                         w0*(arrayIn[w0idx])
+                array_out[array_out_iter] = w2 * ((array_in[w2idx1]) + (array_in[w2idx2])) + \
+                                         w1 * ((array_in[w1idx1]) + (array_in[w1idx2])) + \
+                                         w0 * (array_in[w0idx])
                 w1idx1 += 1
                 w2idx1 += 1
                 w1idx2 += 1
                 w2idx2 += 1
                 w0idx += 1
-                arrayOutIter += h
+                array_out_iter += h
                 cntX += 1
             w2idx2 -= 1
 
             while cntX < (w - stepS):
-                arrayOut[arrayOutIter] = w2*((arrayIn[w2idx1]) + (arrayIn[w2idx2])) + \
-                                         w1*((arrayIn[w1idx1]) + (arrayIn[w1idx2])) + \
-                                         w0*(arrayIn[w0idx])
+                array_out[array_out_iter] = w2 * ((array_in[w2idx1]) + (array_in[w2idx2])) + \
+                                         w1 * ((array_in[w1idx1]) + (array_in[w1idx2])) + \
+                                         w0 * (array_in[w0idx])
                 w1idx1 += 1
                 w2idx1 += 1
                 w1idx2 += 1
                 w2idx2 -= 1
                 w0idx += 1
-                arrayOutIter += h
+                array_out_iter += h
                 cntX += 1
             w1idx2 -= 1
 
             while cntX < w:
-                arrayOut[arrayOutIter] = w2*((arrayIn[w2idx1]) + (arrayIn[w2idx2])) + \
-                                         w1*((arrayIn[w1idx1]) + (arrayIn[w1idx2])) + \
-                                         w0*(arrayIn[w0idx])
+                array_out[array_out_iter] = w2 * ((array_in[w2idx1]) + (array_in[w2idx2])) + \
+                                         w1 * ((array_in[w1idx1]) + (array_in[w1idx2])) + \
+                                         w0 * (array_in[w0idx])
                 w1idx1 += 1
                 w2idx1 += 1
                 w1idx2 -= 1
                 w2idx2 -= 1
                 w0idx += 1
-                arrayOutIter += h
+                array_out_iter += h
                 cntX += 1
 
-        return arrayOut
+        return array_out
 
 
-class Spatial_Distribution():
+class SpatialDistribution:
     """ This is based on the Marked Point Process as shown in the cited above paper
     Marked is the attributes of the cluster (shape, size, color)
     Point Process is the position of the clusters (centroid)
 
-    :returns : A list of tuple (polygon, area, centroid)
+    :returns : A list of tuple (regionprops, area, centroid)
     NOTE. Centroid is (y, x) coordinates
     """
     def __init__(self, prob_map, img, cs=0):
         """This is the init function
         :param prob_map: A 2D numpy array of boolean detected clusters
+        :param img: numpy array, image data used for intensity weighting for centroid
         :param cs: Minimum area of a cluster
         """
         self.img = img
@@ -356,96 +348,68 @@ class Spatial_Distribution():
         self.cs = cs
 
     def mark(self):
-        """ This function creates the Marked Point Processed of every clusters
+        """
+        This function creates the Marked Point Processed of every cluster
+        :return mark: List of every spot in the current channel as (regionprops, area, centroid) tuples
         """
 
         # Label each spot for regionprops
         labels = label(self.P, connectivity=2)
 
         props = regionprops(labels, intensity_image=self.img)
-
         mark = []
         for p in props:
-            nonzero = (p.area != 0)
-
-            if nonzero:  # Make sure that detected contours are not holes in actual contours
+            s = p.area
+            if s > 0:
                 try:
-                    s = p.area
-                    min_axis = p.minor_axis_length
-                    cent_int = p.weighted_centroid
+                    try:
+                        cent_int = p.weighted_centroid
+                        int(cent_int[0])
+                    except ValueError:
+                        cent_int = p.centroid
 
-                    # TODO: Put back the shape filter
-                    # if s > self.cs and min_axis > 0:  # Make sure that the spot has a good enough shape to be analysed
-                    if s > self.cs:
+                    if s >= self.cs and p.minor_axis_length > 0:  # Reject small and linear clusters
                         mark.append(
-                            (p, s, cent_int)
+                            (p, s, cent_int)  # p is the regionprops for a spot: every characteristic can be accessed
+                                              # as an attribute ie. p.eccentricity
                         )
-
                 except IndexError:
                     print('Index error: spot was ignored.')
 
+        # for m in range(100):
+        #     p, s, (y,x) = random.choice(mark)
+        #     y2,x2 = p.weighted_local_centroid
+        #     y3, x3 = p.local_centroid
+        #     fig, axs = pyplot.subplots(1,2)
+        #
+        #     axs[0].imshow(p.intensity_image)
+        #     axs[0].plot(x2, y2, 'ro')
+        #     axs[0].plot(x3, y3, 'bo')
+        #     axs[1].imshow(p.image)
+        #     vol = p.area - p.perimeter / 2
+        #     iso = (4*numpy.pi*vol)/(p.perimeter**2)
+        #
+        #
+        #     print("""Spot info:
+        #     Number: {}
+        #     X: {}
+        #     Y: {}
+        #     Area: {}
+        #     Adjusted area: {}
+        #     Convex area: {}
+        #     Eccentricity: {}
+        #     Isoperimetric quotient: {}
+        #     Minor axis length: {}
+        #     Major axis length: {}
+        #     Min/Max: {}
+        #     Perimeter: {}""".format(mark.index((p, s, (y,x))), y,x,p.area, vol, p.convex_area, p.eccentricity, iso, p.minor_axis_length,
+        #                             p.major_axis_length,p.minor_axis_length/p.major_axis_length,p.perimeter))
+        #
+        #     pyplot.show()
+
         return mark
 
-    # def mark(self):
-    #     """ This function creates the Marked Point Processed of every clusters
-    #     """
-    #
-    #     # Pad the image so contours along the maximum edges are well detected
-    #     P_pad = numpy.pad(self.P, ((0,2), (0,2)), mode='constant', constant_values=0)
-    #     img_pad = numpy.pad(self.img, ((0, 2), (0, 2)), mode='constant', constant_values=0)
-    #
-    #     contours = []
-    #     rois = []
-    #
-    #     # Label each spot with a different value to isolate them and create accurate contours
-    #     labels = ndimage.label(P_pad, structure=[[1,1,1],
-    #                                              [1,1,1],
-    #                                              [1,1,1]])
-    #     for lab in range(1, numpy.max(labels[0])+1):
-    #         roipoly = numpy.zeros(P_pad.shape)
-    #         roipoly[labels[0] == lab] = 1
-    #         roipoly = roipoly.astype('uint8')
-    #         cont = find_contours(roipoly, 0, fully_connected='high')
-    #         contours.append(cont[0])
-    #         rois.append(roipoly)
-    #
-    #     mark = []
-    #     # pat = []
-    #     roi_i = 0
-    #     for c in contours:
-    #         roipoly = rois[roi_i]
-    #         nonzeros = numpy.count_nonzero(roipoly)
-    #
-    #         if nonzeros:  # Make sure that detected contours are not holes in actual contours
-    #             try:
-    #                 props = regionprops(roipoly, intensity_image=img_pad)
-    #                 s = nonzeros
-    #                 cent_int = props[0].weighted_centroid
-    #                 cent_mass = props[0].centroid
-    #                 #pyplot.imshow(roipoly*framedI)
-    #                 #pyplot.show()
-    #
-    #                 if s > self.cs:
-    #                     mark.append(
-    #                         (c, s, cent_int, cent_mass)
-    #                     )
-    #                     # pat.append(patches.Polygon(numpy.fliplr(c), color='lime', fill=False, alpha=0.5))
-    #
-    #             except IndexError:
-    #                 print('Index error: spot was ignored.')
-    #
-    #         roi_i += 1
-    #
-    #     # fig, ax = pyplot.subplots()
-    #     # ax.imshow((self.P*self.img).astype('uint16'))
-    #     # pyplot.draw()
-    #     # for p in pat:
-    #     #     ax.add_patch(p)
-    #     # pyplot.show()
-    #
-    #     return mark
-
-    def PolyArea(self, x, y):
+    def poly_area(self, x, y):
         """ This function computes the area of a cluster
         :param x: A numpy array of x coordinates
         :param y: A numpy array of y coordinates
@@ -453,21 +417,29 @@ class Spatial_Distribution():
         return 0.5*numpy.abs(numpy.dot(x,numpy.roll(y,1))-numpy.dot(y,numpy.roll(x,1)))
 
 
-class Spatial_Relations():
+class SpatialRelations:
     """ This is based on the the paper cited above
     To characterise the spatial relations between two populations A1 (green) and A2 (red) of
     objects (spots or localisations), we use the Ripley’s K function, a gold standard for analysing
     the second-order properties (i.e., distance to neigh- bours) of point processes.
     """
-    def __init__(self, MPP1, MPP2, sROI, roivolume, poly, img, n_rings, step, filename):
+    def __init__(self, MPP1, MPP2, sROI, roivolume, poly, img, n_rings, step, filename, img_index):
         """ The init function
         :param MPP1: The marked point process of every clusters in the first channel
         :param MPP2: The marked point process of every clusters in the second channel
         :param sROI: A tuple (y, x) of the window size
+        :param roivolume: Volume of the detected ROI
+        :param poly: List of vertices of the ROI
+        :param img: numpy array containing image data
+        :param n_rings: int, number of rings around each spot
+        :param step: numeric, width of each ring
+        :param filename: string, name of the current image, used for naming output files
         """
 
         self.img = img
         self.filename = filename
+
+        self.img_index = img_index
 
         self.MPP1 = MPP1
         self.MPP2 = MPP2
@@ -493,7 +465,14 @@ class Spatial_Relations():
 
         self.distance_fit, self.N_fit = self.dist_fit()
 
-    def matrix_dist(self, X, Y):
+    @staticmethod
+    def matrix_dist(X, Y):
+        """
+        Calculates the distance between every point contained in matrices
+        :param X: numpy array with shape (len(MPP1), 2), coordinates of every points in channel 1
+        :param Y: numpy array with shape (len(MPP2), 2), coordinates of every points in channel 2
+        :return: numpy array of distances between every combination of points in the two channels
+        """
         return numpy.sqrt((X[:, 0] - Y[:, 0]) ** 2 + (X[:, 1] - Y[:, 1]) ** 2)
 
     def nearest_neighbors(self):
@@ -525,7 +504,11 @@ class Spatial_Relations():
             distances.append(distance)
             m = distance_pos.min()
             m_index = numpy.where((distance == m))[0][0]
-            min_distance.append((m, m_index))
+            p2, s2, (y2, x2) = self.MPP1_ROI[m_index]
+            delta_x = x2 - x[0]
+            delta_y = y2 - x[1]
+            angle = atan2(delta_y, delta_x)
+            min_distance.append((m, m_index, angle))
         min_dist_11 = min_distance
 
         # MPP1 with MPP2
@@ -537,8 +520,12 @@ class Spatial_Relations():
             distance_pos = distance[numpy.where((distance > 0))]
             distances.append(distance)
             m = distance_pos.min()
-            m_index = numpy.argmin(distance)
-            min_distance.append((m, m_index))
+            m_index = numpy.where((distance == m))[0][0]
+            p2, s2, (y2, x2) = self.MPP2_ROI[m_index]
+            delta_x = x2 - x[0]
+            delta_y = y2 - x[1]
+            angle = atan2(delta_y, delta_x)
+            min_distance.append((m, m_index, angle))
         min_dist_12 = min_distance
 
         # MPP2 with MPP1
@@ -550,51 +537,40 @@ class Spatial_Relations():
             distance_pos = distance[numpy.where((distance > 0))]
             distances.append(distance)
             m = distance_pos.min()
-            m_index = numpy.argmin(distance)
-            min_distance.append((m, m_index))
+            m_index = numpy.where((distance == m))[0][0]
+            p2, s2, (y2, x2) = self.MPP1_ROI[m_index]
+            delta_x = x2 - x[0]
+            delta_y = y2 - x[1]
+            angle = atan2(delta_y, delta_x)
+            min_distance.append((m, m_index, angle))
         min_dist_21 = min_distance
 
         # MPP2 with MPP2
         min_distance = []
         distances = []
-        for y in mpp2_data:
-            repmat = numpy.tile(y, (mpp2_data.shape[0], 1))
+        for x in mpp2_data:
+            repmat = numpy.tile(x, (mpp2_data.shape[0], 1))
             distance = self.matrix_dist(repmat, mpp2_data)
             distance_pos = distance[numpy.where((distance > 0))]
             distances.append(distance)
             m = distance_pos.min()
             m_index = numpy.where((distance == m))[0][0]
-            min_distance.append((m, m_index))
+            p2, s2, (y2, x2) = self.MPP2_ROI[m_index]
+            delta_x = x2 - x[0]
+            delta_y = y2 - x[1]
+            angle = atan2(delta_y, delta_x)
+            min_distance.append((m, m_index, angle))
         min_dist_22 = min_distance
 
         return min_dist_11, min_dist_12, min_dist_21, min_dist_22
 
-        #tree1 = scipy.spatial.KDTree(mpp1_data)
-        #tree2 = scipy.spatial.KDTree(mpp2_data)
-
-        # neighbors_MPP11 = []
-        # neighbors_MPP12 = []
-        # neighbors_MPP22 = []
-        #
-        # # Spots in channel 1 with spots in both channels
-        # for spot in self.MPP1:
-        #     neighbor_MPP1 = self.nearest_neighbors(spot, self.MPP1)
-        #     neighbor_MPP2 = self.nearest_neighbors(spot, self.MPP2)
-        #     neighbors_MPP11.append((spot, neighbor_MPP1))
-        #     neighbors_MPP12.append((spot, neighbor_MPP2))
-        #
-        # # Spots in channel 2 with spots in channel 2
-        # for spot in self.MPP1:
-        #     neighbor_MPP2 = self.nearest_neighbors(spot, self.MPP2)
-        #     neighbors_MPP22.append((spot, neighbor_MPP2))
-        #
-        # return neighbors_MPP11, neighbors_MPP12, neighbors_MPP22
-
     def dist_fit(self):
-        """ Allows to generate the distance_fit and N_fit as in the paper
         """
-        distance_fit = []
-        distance_fit.append(0)
+        Allows to generate the distance_fit and N_fit as in the paper
+        :return distance_fit: List of distances for every ring
+        :return N_fit: Number of rings
+        """
+        distance_fit = [0]
         temp = distance_fit[0]
         while temp + self.pas <= self.max_dist:
             temp += self.pas
@@ -607,7 +583,8 @@ class Spatial_Relations():
         return distance_fit, N_fit
 
     def image_windows(self, points):
-        """ This function implements the image windows as proposed in the java script
+        """
+        This function implements the image windows as proposed in the java script
         version of the algorithm.
         """
         h, w = self.sROI
@@ -622,6 +599,9 @@ class Spatial_Relations():
     def correlation_new(self):
         """
         This function computes the Ripley's Correlation as in Ripley2D.java (G)
+        results[][1]=K et results[][2]=moyenne distances results[][3]=moyenne
+        distances^2
+        :return result: numpy array in which the first row is Ripley's G matrix
         """
         result = numpy.zeros((3, self.N_fit - 1))
         delta_K = numpy.zeros(self.N_fit - 1)
@@ -699,11 +679,12 @@ class Spatial_Relations():
 
     def dist_to_contour(self, x, y):
         '''
+        (Unused alternative to nearest_contour)
         Meant to calculate the distance between a point and the edge of a ROI if
         the ROI is composed of multiple contours
         :param x: x coordinate of the point
         :param y: y coordinate of the point
-        :return:
+        :return: Minimum distance between a point and the contour of the ROI
         '''
         dist = sys.maxsize
         min_dist = dist
@@ -747,22 +728,27 @@ class Spatial_Relations():
         return MPP_ROI
 
     def mpp_in_contours(self, MPP):
+        """
+        Calls mpp_in_poly in a loop for every region of the ROI if it's composed of multiple shapes
+        :param MPP: Marked Point Process; list of marks
+        :return: List of spots inside ROI
+        """
 
-        polist = []
+        spots_in_contour = []
         for poly in self.poly:
-            polist += self.mpp_in_poly(MPP, poly)
+            spots_in_contour += self.mpp_in_poly(MPP, poly)
 
-        return polist
+        return spots_in_contour
 
     def variance_theo_delta_new(self):
-        """ This function implements the computation of the standard deviation of G
+        """
+        This function implements the computation of the standard deviation of G
+        :return result: numpy array, variance matrix
         """
         n1, n2 = len(self.MPP1_ROI), len(self.MPP2_ROI)
         mu = self.mean_G()
         result = numpy.zeros(self.N_fit - 1)
-        results, N_h = self.betaCorrection(self.max_dist/10, 100)
-        # results = numpy.zeros(results.shape)
-        ROIy, ROIx = self.sROI
+        results, N_h = self.beta_correction(self.max_dist/10, 100)
 
         for k in range(1, self.N_fit):
             distancek_1 = self.distance_fit[k - 1]
@@ -826,6 +812,7 @@ class Spatial_Relations():
     def intersection2D_new(self):
         """
         This function computes the A matrix
+        :return A: numpy array, A matrix
         """
         n1, n2 = len(self.MPP1_ROI), len(self.MPP2_ROI)
         A = numpy.zeros((self.N_fit - 1, self.N_fit - 1))
@@ -883,6 +870,10 @@ class Spatial_Relations():
         return G0
 
     def draw_G0(self, G0):
+        """
+        Displays a bar graph of G0 by ring distance with a line for the G0 threshold, like figure 1d of the paper
+        :param G0: numpy array, G0 matrix
+        """
         T = numpy.sqrt(2 * numpy.log(len(G0)))
         pyplot.bar(self.rings[1:], G0)
         pyplot.axhline(y=T, color='red', linestyle='dashed')
@@ -936,7 +927,7 @@ class Spatial_Relations():
             G0 = kwargs["G0"]
         else:
             G = self.correlation_new()[0, :]
-            var = self.variance_theo_delta_new()
+            var = self.variance_theo_delta_new
             A = self.intersection2D_new()
             G0 = self.reduced_Ripley_vector(**kwargs)
         mean = self.mean_G()
@@ -964,8 +955,6 @@ class Spatial_Relations():
                     problist = [x1, y1, x2, y2, dist, p]
                     prob_write.append(problist)
 
-        # self.data_boxplot(prob_write)
-
         n_couples = len(probability)
         probability = numpy.array(probability)
         probability = probability[probability[:,0] > 0]
@@ -978,7 +967,7 @@ class Spatial_Relations():
 
     def data_boxplot(self, prob_write):
         """
-        Plots a boxplot of a spot property by channels and coupling
+        Plots a box plot of a spot property by channels and coupling
         :param prob_write: List of couples and their properties
         """
         fig, axs = pyplot.subplots(1,2)
@@ -988,11 +977,11 @@ class Spatial_Relations():
         for p1, s1, (y1, x1) in self.MPP1_ROI:
             coupled = False
             for xa, ya, xb, yb, dist, p in prob_write:
-                if (y1, x1) == (ya, xa):
-                    dataC.append(p1.inertia_tensor_eigvals[0])
+                if (y1, x1) == (ya, xa) and p1.minor_axis_length > 0:
+                    dataC.append(p1.eccentricity)
                     coupled = True
-            if not coupled:
-                dataU.append(p1.inertia_tensor_eigvals[0])
+            if not coupled and p1.minor_axis_length > 0:
+                dataU.append(p1.eccentricity)
 
         data1 = [dataC, dataU]
 
@@ -1001,16 +990,16 @@ class Spatial_Relations():
         for p1, s1, (y1, x1) in self.MPP2_ROI:
             coupled = False
             for xa, ya, xb, yb, dist, p in prob_write:
-                if (y1, x1) == (yb, xb):
-                    dataC.append(p1.inertia_tensor_eigvals[0])
+                if (y1, x1) == (yb, xb) and p1.minor_axis_length > 0:
+                    dataC.append(p1.eccentricity)
                     coupled = True
-            if not coupled:
-                dataU.append(p1.inertia_tensor_eigvals[0])
+            if not coupled and p1.minor_axis_length > 0:
+                dataU.append(p1.eccentricity)
 
         data2 = [dataC, dataU]
 
-        axs[0].boxplot(data1, showmeans=True)
-        axs[1].boxplot(data2, showmeans=True)
+        axs[0].boxplot(data1, showmeans=True, labels=['Coupled', 'Uncoupled'])
+        axs[1].boxplot(data2, showmeans=True, labels=['Coupled', 'Uncoupled'])
 
         pyplot.title('Eccentricity')
         axs[0].set_title('Channel 0')
@@ -1018,6 +1007,60 @@ class Spatial_Relations():
 
         pyplot.savefig('boxplot_{}'.format(self.filename))
         pyplot.close()
+
+    def get_spots_data(self, prob_write):
+        """
+        Used to get information on all spots and couples as numpy arrays
+        :param prob_write: List of couples and their properties
+        :return mpp1_array: Numpy array of information on all spots in channel 1 (1 spot/row)
+        :return mpp2_array: Numpy array of information on all spots in channel 2 (1 spot/row)
+        :return couples_array: Numpy array of information on all couples (1 couple/row)
+        """
+        mpp1_array = numpy.ndarray((len(self.MPP1_ROI), 18))
+        mpp2_array = numpy.ndarray((len(self.MPP2_ROI), 18))
+
+        couples_list = []
+        # couples_array = numpy.array((0, 0, 0, 0, 0, 0))
+
+        for i in range(len(self.MPP1_ROI)):
+            p1, s1, (y1, x1) = self.MPP1_ROI[i]
+            coupled = 0
+            for xa, ya, xb, yb, dist, p in prob_write:
+                if (y1, x1) == (ya, xa):
+                    coupled = 1
+            dnn11, nn11, angle = self.neighbors[0][i]
+            dnn12, nn12, angle = self.neighbors[1][i]
+            datarow = [x1, y1, s1, dnn12, dnn11, p1.eccentricity, nn12, nn11,
+                       p1.max_intensity, p1.min_intensity, p1.mean_intensity,
+                       p1.major_axis_length, p1.minor_axis_length, p1.orientation,
+                       p1.perimeter, p1.equivalent_diameter, self.img_index, coupled]
+
+            for j in range(len(datarow)):
+                mpp1_array[i, j] = datarow[j]
+
+        for i in range(len(self.MPP2_ROI)):
+            p1, s1, (y1, x1) = self.MPP2_ROI[i]
+            coupled = 0
+            for xa, ya, xb, yb, dist, p in prob_write:
+                if (y1, x1) == (yb, xb):
+                    coupled = 1
+            dnn21, nn21, angle = self.neighbors[2][i]
+            dnn22, nn22, angle = self.neighbors[3][i]
+            datarow = [x1, y1, s1, dnn21, dnn22, p1.eccentricity, nn21, nn22,
+                       p1.max_intensity, p1.min_intensity, p1.mean_intensity,
+                       p1.major_axis_length, p1.minor_axis_length, p1.orientation,
+                       p1.perimeter, p1.equivalent_diameter, self.img_index, coupled]
+
+            for j in range(len(datarow)):
+                mpp2_array[i, j] = datarow[j]
+
+        for xa, ya, xb, yb, dist, p in prob_write:
+            couple_data = [xa, ya, xb, yb, dist, p, self.img_index]
+            couples_list.append(couple_data)
+
+        couples_array = numpy.asarray(couples_list)
+
+        return mpp1_array, mpp2_array, couples_array
 
     def data_scatter(self, mean_coupling_dist, prob_write):
         """
@@ -1030,15 +1073,26 @@ class Spatial_Relations():
 
         blue = []
         dist_tot = 0
+        dist_to_border = self.nearest_contour(self.MPP1_ROI)
 
         # for i in range(len(self.MPP1_ROI)):
         #     p1, s1, (y, x) = self.MPP1_ROI[i]
         #     for xa, ya, xb, yb, dist, p in prob_write:
-        #         if (y, x) == (ya, xa):
+        #         if (y, x) == (ya, xa) and p1.minor_axis_length > 0:
         #             X.append(dist)
         #             Y.append(p1.eccentricity)
         #             blue.append('blue')
         #
+        # pyplot.scatter(X, Y, color=blue, marker='.', linewidths=0.5, edgecolors='black')
+        # pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
+        # pyplot.xlabel('Coupling distance')
+        # pyplot.ylabel('Eccentricity')
+        # pyplot.title('Channel 0')
+        # pyplot.savefig('scatter_{}_ch0.tif'.format(self.filename))
+        # pyplot.close()
+        #
+        # X = []
+        # Y = []
         # red = []
         # for i in range(len(self.MPP2_ROI)):
         #     p1, s1, (y, x) = self.MPP2_ROI[i]
@@ -1047,40 +1101,62 @@ class Spatial_Relations():
         #             X.append(dist)
         #             Y.append(p1.eccentricity)
         #             red.append('red')
+        #
+        # pyplot.scatter(X, Y, color=red, marker='.', linewidths=0.5, edgecolors='black')
+        # pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
+        # pyplot.xlabel('Coupling distance')
+        # pyplot.ylabel('Eccentricity')
+        # pyplot.title('Channel 1')
+        # pyplot.savefig('scatter_{}_ch1.tif'.format(self.filename))
+        # pyplot.close()
 
         for i in range(len(self.MPP1_ROI)):
             p1, s1, (y,x) = self.MPP1_ROI[i]
-            neighbor = self.neighbors[1][i][1]
-            #r1, c1 = p1.centroid
-            #r2, c2 = p1.weighted_centroid
-            #d = self.distance(c1, c2, r1, r2)
-            p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
-            Y.append(p1.eccentricity)
-            X.append(self.neighbors[0][i][0])
-            dist_tot += self.neighbors[0][i][0]
-            blue.append('blue')
+            if p1.minor_axis_length > 0:
+                neighbor = self.neighbors[1][i][1]
+                #r1, c1 = p1.centroid
+                #r2, c2 = p1.weighted_centroid
+                #d = self.distance(c1, c2, r1, r2)
+                p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
+                Y.append(p1.eccentricity)
+                X.append(self.neighbors[1][i][0])
+                dist_tot += self.neighbors[1][i][0]
+                blue.append('blue')
 
+        pyplot.scatter(X, Y, color=blue, marker='.', linewidths=0.5, edgecolors='black')
+        pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
+        pyplot.xlabel('Distance to nearest neighbor (pixels)')
+        pyplot.ylabel('Eccentricity')
+        pyplot.title('Channel 0')
+        pyplot.savefig('scatter_{}_ch0.tif'.format(self.filename))
+        pyplot.close()
+
+        X = []
+        Y = []
         red = []
         for i in range(len(self.MPP2_ROI)):
             p1, s1, (y,x) = self.MPP2_ROI[i]
-            neighbor = self.neighbors[2][i][1]
-            #r1, c1 = p1.centroid
-            #r2, c2 = p1.weighted_centroid
-            #d = self.distance(c1, c2, r1, r2)
-            p2, s2, (y2, x2) = self.MPP1_ROI[neighbor]
-            Y.append(p1.eccentricity)
-            X.append(self.neighbors[3][i][0])
-            dist_tot += self.neighbors[3][i][0]
-            red.append('red')
+            if p1.minor_axis_length > 0:
+                neighbor = self.neighbors[2][i][1]
+                #r1, c1 = p1.centroid
+                #r2, c2 = p1.weighted_centroid
+                #d = self.distance(c1, c2, r1, r2)
+                p2, s2, (y2, x2) = self.MPP1_ROI[neighbor]
+                Y.append(p1.eccentricity)
+                X.append(self.neighbors[2][i][0])
+                dist_tot += self.neighbors[2][i][0]
+                red.append('red')
 
-        dist_mean = dist_tot/(len(red)+len(blue))
-        pyplot.scatter(X, Y, color=blue+red, marker='.', linewidths=0.5, edgecolors='black')
+        pyplot.scatter(X, Y, color=red, marker='.', linewidths=0.5, edgecolors='black')
         pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        pyplot.axvline(x=dist_mean, color='cyan', linestyle='dashed')
-        pyplot.xlabel('Distance to nearest neigbor (Pixels)')
+        pyplot.xlabel('Distance to nearest neighbor (pixels)')
         pyplot.ylabel('Eccentricity')
-        pyplot.savefig('scatter_{}'.format(self.filename))
+        pyplot.title('Channel 1')
+        pyplot.savefig('scatter_{}_ch1.tif'.format(self.filename))
         pyplot.close()
+
+        #dist_mean = dist_tot/(len(red)+len(blue))
+
         #pyplot.show()
 
     def write_spots_and_probs(self, prob_write, directory, title):
@@ -1104,7 +1180,7 @@ class Spatial_Relations():
 
         spots1 = workbook.add_worksheet(name="Spots ch0")
         spots2 = workbook.add_worksheet(name="Spots ch1")
-        titles = ['X1', 'Y1', 'Area', 'Distance to Neighbor Ch0', 'Distance to Neighbor Ch1', 'Eccentricity',
+        titles = ['X1', 'Y1', 'Area', 'Distance to Neighbor Same Ch', 'Distance to Neighbor Other Ch', 'Eccentricity',
                   'Max intensity', 'Min intensity', 'Mean intensity',
                   'Major axis length', 'Minor axis length', 'Orientation',
                   'Perimeter', 'Coupled']
@@ -1116,8 +1192,8 @@ class Spatial_Relations():
             for xa, ya, xb, yb, dist, p in prob_write:
                 if (y1, x1) == (ya, xa):
                     coupled = 1
-            dnn1, nn1 = self.neighbors[0][row-1]
-            dnn2, nn2 = self.neighbors[1][row-1]
+            dnn1, nn1, angle = self.neighbors[0][row-1]
+            dnn2, nn2, angle = self.neighbors[1][row-1]
             datarow = [x1, y1, s1, dnn1, dnn2, p1.eccentricity,
                        p1.max_intensity, p1.min_intensity, p1.mean_intensity,
                        p1.major_axis_length, p1.minor_axis_length, p1.orientation,
@@ -1126,7 +1202,7 @@ class Spatial_Relations():
                 spots1.write(row, i, datarow[i])
             row += 1
 
-        titles = ['X2', 'Y2', 'Area', 'Distance to Neighbor Ch0', 'Distance to Neighbor Ch1', 'Eccentricity',
+        titles = ['X2', 'Y2', 'Area', 'Distance to Neighbor Same Ch', 'Distance to Other Ch', 'Eccentricity',
                   'Max intensity', 'Min intensity', 'Mean intensity',
                   'Major axis length', 'Minor axis length', 'Orientation',
                   'Perimeter', 'Coupled']
@@ -1138,8 +1214,8 @@ class Spatial_Relations():
             for xc, yc, xd, yd, dist, p in prob_write:
                 if (y2, x2) == (yd, xd):
                     coupled = 1
-            dnn1, nn1 = self.neighbors[2][row-1]
-            dnn2, nn2 = self.neighbors[3][row-1]
+            dnn1, nn1, angle = self.neighbors[2][row-1]
+            dnn2, nn2, angle = self.neighbors[3][row-1]
             datarow = [x2, y2, s2, dnn1, dnn2, p2.eccentricity,
                        p2.max_intensity, p2.min_intensity, p2.mean_intensity,
                        p2.major_axis_length, p2.minor_axis_length, p2.orientation,
@@ -1152,9 +1228,10 @@ class Spatial_Relations():
         except PermissionError:
             print("Warning: Workbook is open and couldn't be overwritten!")
 
-    def betaCorrection(self, step, nbN):
+    @staticmethod
+    def beta_correction(step, nbN):
         """ This function computes the boundary condition
-        betaCorrection(maxdist / 10, 100);
+        beta_correction(maxdist / 10, 100);
         """
         valN = 1/(1/nbN)
         N_h = int(valN) + 1
@@ -1185,9 +1262,9 @@ class Spatial_Relations():
     # Not used
     def distance_pl(self, polygon, x0, y0):
         """ This function computes the shortest distance between a point and a line
-
         :param polygon: A polygon object
         :param x0, y0: x and y coordinate of the points
+        :return min_dist: minimum distance between the point and the edge of the polygon
         """
         min_dist = sys.maxsize
         for i in range(polygon.shape[0]):
@@ -1246,14 +1323,15 @@ class Spatial_Relations():
         mean = numpy.pi * numpy.diff(numpy.array(self.distance_fit) ** 2)
         return mean
 
-    # Not used
-    @staticmethod
-    def PolyArea(x, y):
-        """ This function computes the area of a cluster
-        :param x: A numpy array of x coordinates
-        :param y: A numpy array of y coordinates
-        """
-        return 0.5*numpy.abs(numpy.dot(x,numpy.roll(y,1))-numpy.dot(y,numpy.roll(x,1)))
+
+# Not used
+def poly_area(x, y):
+    """ This function computes the area of a cluster
+    :param x: A numpy array of x coordinates
+    :param y: A numpy array of y coordinates
+    """
+    return 0.5*numpy.abs(numpy.dot(x,numpy.roll(y,1))-numpy.dot(y,numpy.roll(x,1)))
+
 
 # Not used
 def create_mask(img):
