@@ -2,9 +2,7 @@ import numpy
 import math
 import sys
 import xlsxwriter
-import random
 
-from skimage import io
 from skimage.measure import regionprops, label
 from skimage.draw import polygon
 from matplotlib import pyplot
@@ -33,16 +31,9 @@ class DetectionWavelets:
     """
     This is based on the paper
         "Extraction of spots in biological images using multiscale products"
-    Some modifications were made to the algorithm:
-    .   The threshold in the wavelet function is inverse of what is in the article.
-        I had to make these modifications to obtain results that made sense.
-    .   The formula for w in the paper is mistaken for W1 = A0 - A1, but is okay for
-        Wi = Ai - Ai_1.
-    .   Note that the function convolve1d on an array vs on every line on the array
-        did not seem to produce the same results.
-
-    :returns : A probability map of clusters
+    All functions from the Java code for the Icy Spot Detector plugin are implemented here.
     """
+
     def __init__(self, img, J_list=(2,), scale_threshold=100):
         """Init function
         :param img: A numpy 2D array
@@ -62,11 +53,11 @@ class DetectionWavelets:
 
         data_in = numpy.copy(self.img)
         h, w = data_in.shape
-        prevArray = self.array_to_list(data_in)
+        prev_array = self.array_to_list(data_in)
 
-        scales = self.b3WaveletScales2D(prevArray, h, w)
+        scales = self.b3WaveletScales2D(prev_array, h, w)
 
-        coefficients = self.b3WaveletCoefficients2D(scales, prevArray, h, w)
+        coefficients = self.b3WaveletCoefficients2D(scales, prev_array, h, w)
 
         for i in range(len(coefficients)-1):
             coefficients[i] = self.filter_wat(coefficients[i], i, w, h)
@@ -74,105 +65,102 @@ class DetectionWavelets:
         for i in range(len(coefficients[-1])):
             coefficients[-1][i] = 0
 
-        binaryDetectionResult = self.spot_construction(coefficients)
+        binary_detection_result = self.spot_construction(coefficients)
 
-        for i in range(len(binaryDetectionResult)):
-            if binaryDetectionResult[i] != 0:
-                binaryDetectionResult[i] = 255
+        for i in range(len(binary_detection_result)):
+            if binary_detection_result[i] != 0:
+                binary_detection_result[i] = 255
             else:
-                binaryDetectionResult[i] = 0
+                binary_detection_result[i] = 0
 
-        image_out = self.list_to_array(binaryDetectionResult, h, w)
+        image_out = self.list_to_array(binary_detection_result, h, w)
 
         return image_out
 
     @staticmethod
-    def array_to_list(arrayin):
+    def array_to_list(array_in):
         """
         Turns 2D numpy array into 1D list
-        :param arrayin: 2D numpy array
+        :param array_in: 2D numpy array
         :return listout: 1D list
         """
-        listout = []
-        datalist = arrayin.tolist()
-        for line in datalist:
+        list_out = []
+        data_list = array_in.tolist()
+        for line in data_list:
             for i in line:
-                listout.append(i)
-        return listout
+                list_out.append(i)
+        return list_out
 
     @staticmethod
-    def list_to_array(listin, h, w):
+    def list_to_array(list_in, h, w):
         """
         Turns 1D list back into 2D numpy array
-        :param listin: 1D list
+        :param list_in: 1D list
         :param h: Array height
         :param w: Array width
         :return image_out: 2D numpy array
         """
-        image_out = numpy.zeros((h,w))
+        image_out = numpy.zeros((h, w))
         for y in range(h):
             a = y * w
             for x in range(w):
-                if a < len(listin):
-                    image_out[y, x] = listin[a]
+                if a < len(list_in):
+                    image_out[y, x] = list_in[a]
                 a += 1
         return image_out
 
-    def b3WaveletScales2D(self, dataIn, h, w):
+    def b3WaveletScales2D(self, data_in, h, w):
         """
         Computes the convolution images for scales J
-        :param dataIn: Base image as 1D list
+        :param data_in: Base image as 1D list
         :param h: image height
         :param w: image width
-        :return resArray: List of convoluted images as 1D lists
+        :return res_array: List of convoluted images as 1D lists
         """
 
-        prevArray = dataIn.copy()
-        resArray = []
+        prev_array = data_in.copy()
+        res_array = []
 
         for s in range(1, self.J+1):
             stepS = 2**(s-1)
 
-            currentArray = self.filter_and_swap(prevArray, w, h, stepS)
+            current_array = self.filter_and_swap(prev_array, w, h, stepS)
 
             if s == 1:
-                prevArray = currentArray
-                currentArray = []
+                prev_array = current_array
             else:
-                tmp = currentArray
-                currentArray = prevArray
-                prevArray = tmp
+                tmp = current_array
+                prev_array = tmp
 
-            currentArray = self.filter_and_swap(prevArray, h, w, stepS)
-            tmp = currentArray
-            currentArray = prevArray
-            prevArray = tmp
+            current_array = self.filter_and_swap(prev_array, h, w, stepS)
+            tmp = current_array
+            prev_array = tmp
 
-            resArray.append(prevArray)
+            res_array.append(prev_array)
 
-        return resArray
+        return res_array
 
-    def b3WaveletCoefficients2D(self, scaleCoefficients, originalImage, h, w):
+    def b3WaveletCoefficients2D(self, scale_coefficients, original_image, h, w):
         """
         Computes wavelet images as 1D lists
-        :param scaleCoefficients: List of  convoluted images as 1D lists
-        :param originalImage: Original image as 1D list
+        :param scale_coefficients: List of  convoluted images as 1D lists
+        :param original_image: Original image as 1D list
         :param h: Image height
         :param w: Image width
-        :return waveletCoefficients: List of wavelet images as 1D lists
+        :return wavelet_coefficients: List of wavelet images as 1D lists
         """
 
-        waveletCoefficients = []
-        iterPrev = originalImage.copy()
+        wavelet_coefficients = []
+        iter_prev = original_image.copy()
         for j in range(self.J):
-            iterCurrent = scaleCoefficients[j]
-            wCoefficients = []
+            iter_current = scale_coefficients[j]
+            w_coefficients = []
             for i in range(h*w):
-                wCoefficients.append(iterPrev[i] - iterCurrent[i])
-            waveletCoefficients.append(wCoefficients)
-            iterPrev = iterCurrent
-        waveletCoefficients.append(scaleCoefficients[self.J-1])
-        return waveletCoefficients
+                w_coefficients.append(iter_prev[i] - iter_current[i])
+            wavelet_coefficients.append(w_coefficients)
+            iter_prev = iter_current
+        wavelet_coefficients.append(scale_coefficients[self.J-1])
+        return wavelet_coefficients
 
     def filter_wat(self, data, depth, width, height):
         """
@@ -199,34 +187,33 @@ class DetectionWavelets:
             a += numpy.abs(s)
         mad = a/size
 
-        # dcoeff = ld?
         dcoeff = (self.scale_threshold/100.0)
 
-        coeffThr = (lambdac[depth+1] * mad)/dcoeff
+        coeff_thr = (lambdac[depth+1] * mad)/dcoeff
 
         for i in range(len(data)):
-            if data[i] < coeffThr:
+            if data[i] < coeff_thr:
                 output[i] = 0
 
         return output
 
-    def spot_construction(self, inputCoefficients):
+    def spot_construction(self, input_coefficients):
         """
         Reconstructs correlation image
-        :param inputCoefficients: List of wavelet coefficient images as 1D lists
+        :param input_coefficients: List of wavelet coefficient images as 1D lists
         :return output: Correlation image as 1D list
         """
         output = []
-        for i in range(len(inputCoefficients[0])):
-            allNotNull = True
+        for i in range(len(input_coefficients[0])):
+            all_not_null = True
             v = 0
             for j in range(self.J):
                 if j+1 in self.J_list:
-                    if inputCoefficients[j][i] == 0:
-                        allNotNull = False
-                    v += inputCoefficients[j][i]
+                    if input_coefficients[j][i] == 0:
+                        all_not_null = False
+                    v += input_coefficients[j][i]
 
-            if allNotNull:
+            if all_not_null:
                 output.append(v)
             else:
                 output.append(0)
@@ -368,10 +355,11 @@ class SpatialDistribution:
                     except ValueError:
                         cent_int = p.centroid
 
-                    if s >= self.cs and p.minor_axis_length > 0:  # Reject small and linear clusters
+                    # Reject small and linear clusters
+                    if s >= self.cs and p.minor_axis_length > 1 and p.major_axis_length > 1:
                         mark.append(
                             (p, s, cent_int)  # p is the regionprops for a spot: every characteristic can be accessed
-                                              # as an attribute ie. p.eccentricity
+                                              # as an attribute e.g. p.eccentricity
                         )
                 except IndexError:
                     print('Index error: spot was ignored.')
