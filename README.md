@@ -18,7 +18,7 @@ Adapts the SODA colocalisation method from https://www.nature.com/articles/s4146
     For SODA analysis:
     ROI_THRESHOLD: # Percent modifier of ROI threshold. Higher value = more pixels taken.
     N_RINGS : (int) Number of rings around spots in which to detect colocalisations
-    STEP : Width of rings in pixels
+    RING_WIDTH : Width of rings in pixels
     SELF_SODA : Set to True to compute SODA for couples in the same channel as well
     
     Other
