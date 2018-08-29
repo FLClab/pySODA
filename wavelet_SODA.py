@@ -323,7 +323,7 @@ class SpatialDistribution:
     :returns : A list of tuple (regionprops, area, centroid)
     NOTE. Centroid is (y, x) coordinates
     """
-    def __init__(self, prob_map, img, cs=0):
+    def __init__(self, prob_map, img, cs=0, min_axis=1):
         """This is the init function
         :param prob_map: A 2D numpy array of boolean detected clusters
         :param img: numpy array, image data used for intensity weighting for centroid
@@ -333,6 +333,7 @@ class SpatialDistribution:
         self.P = prob_map
         self.P[self.P > 0] = 1
         self.cs = cs
+        self.min_axis = min_axis
 
     def mark(self):
         """
@@ -356,7 +357,9 @@ class SpatialDistribution:
                         cent_int = p.centroid
 
                     # Reject small and linear clusters
-                    if s >= self.cs and p.minor_axis_length > 1 and p.major_axis_length > 1:
+                    if s >= self.cs and p.minor_axis_length >= self.min_axis \
+                            and p.major_axis_length >= self.min_axis\
+                            and p.perimeter > 0:
                         mark.append(
                             (p, s, cent_int)  # p is the regionprops for a spot: every characteristic can be accessed
                                               # as an attribute e.g. p.eccentricity
@@ -944,13 +947,20 @@ class SpatialRelations:
                     prob_write.append(problist)
 
         n_couples = len(probability)
-        probability = numpy.array(probability)
-        probability = probability[probability[:,0] > 0]
-        coupling_index = numpy.sum(probability, axis=0)
-        mean_coupling_distance = 0
-        if coupling_index[0] > 0:
-            mean_coupling_distance = numpy.sum(numpy.prod(probability, axis=1)) / coupling_index[0]
-        raw_mean_distance = coupling_index[1]/probability[:,1].shape[0]  # Icy/SODA returns this, unlike the paper
+
+        if probability:
+            probability = numpy.array(probability)
+            probability = probability[probability[:,0] > 0]
+            coupling_index = numpy.sum(probability, axis=0)
+            mean_coupling_distance = 0
+            if coupling_index[0] > 0:
+                mean_coupling_distance = numpy.sum(numpy.prod(probability, axis=1)) / coupling_index[0]
+            raw_mean_distance = coupling_index[1] / probability[:, 1].shape[0]  # Icy/SODA returns this, unlike the paper
+        else:
+            coupling_index = numpy.array([0,0])
+            mean_coupling_distance = None
+            raw_mean_distance = None
+
         return prob_write, (coupling_index[0] / n1, coupling_index[0] / n2), mean_coupling_distance, raw_mean_distance, coupling, n_couples
 
     def data_boxplot(self, prob_write):
