@@ -16,7 +16,7 @@
     <session id="472894983">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="10" />
+          <entry key="project.closed" value="11" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.11" value="2" />
@@ -24,35 +24,35 @@
           <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="17" />
+          <entry key="project.open.time.9" value="2" />
+          <entry key="project.opened" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="144" />
           <entry key="dummy" value="57" />
-          <entry key="py" value="29384" />
+          <entry key="py" value="31285" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="57" />
-          <entry key="Python" value="27963" />
+          <entry key="Python" value="29864" />
           <entry key="Scratch" value="1565" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="png" value="17" />
-          <entry key="py" value="28" />
+          <entry key="py" value="32" />
           <entry key="tif" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Image" value="24" />
-          <entry key="Python" value="23" />
+          <entry key="Python" value="27" />
           <entry key="Scratch" value="5" />
         </counts>
       </usages-collector>
@@ -60,11 +60,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_soda.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="305">
-              <caret line="288" column="64" selection-start-line="288" selection-start-column="64" selection-end-line="288" selection-end-column="64" />
+            <state relative-caret-position="1086">
+              <caret line="842" column="38" lean-forward="true" selection-start-line="842" selection-start-column="38" selection-end-line="842" selection-end-column="38" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -73,42 +73,15 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/axes/_base.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="354" selection-start-line="354" selection-end-line="354" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="166">
-              <caret line="1854" selection-start-line="1854" selection-end-line="1854" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="358" column="91" selection-start-line="358" selection-start-column="91" selection-end-line="358" selection-end-column="91" />
+            <state relative-caret-position="174">
+              <caret line="357" selection-start-line="357" selection-end-line="357" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
-                <marker date="1535484022339" expanded="true" signature="37363:37368" ph="..." />
-                <marker date="1535484022339" expanded="true" signature="41367:41373" ph="..." />
+                <marker date="1535556205904" expanded="true" signature="37711:37716" ph="..." />
+                <marker date="1535556205904" expanded="true" signature="41715:41721" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/Desktop/wavelet.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="61" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
             </state>
           </provider>
         </entry>
@@ -121,7 +94,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
+            <state relative-caret-position="85">
               <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
@@ -146,25 +119,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>self.detections =</find>
-      <find>detections</find>
-      <find>show_roi</find>
-      <find>math</find>
-      <find>raise spots</find>
-      <find>write_hist</find>
-      <find>def main</find>
-      <find>moveaxis</find>
-      <find>elemlist</find>
-      <find>.close</find>
-      <find>channel</find>
-      <find>channels</find>
-      <find>def mark</find>
-      <find>find_roi</find>
-      <find>MEAN</find>
-      <find>+=</find>
-      <find>MEAN:</find>
-      <find>volume of</find>
-      <find>io.imread</find>
       <find>self.image</find>
       <find>imread</find>
       <find>imshow</find>
@@ -176,6 +130,25 @@
       <find>diameter</find>
       <find>Prickly Pears</find>
       <find>major</find>
+      <find>analysis</find>
+      <find>min_axis</find>
+      <find>spatialdis</find>
+      <find>raise s</find>
+      <find>raise spots</find>
+      <find>computing staist</find>
+      <find>channels</find>
+      <find>probabilities</find>
+      <find>shape_fact</find>
+      <find>mark</find>
+      <find>def mark</find>
+      <find>index</find>
+      <find>isoperimetric</find>
+      <find>os.path</find>
+      <find>isop</find>
+      <find>show_roi</find>
+      <find>is_low_contrast</find>
+      <find>show_</find>
+      <find>shape_factor</find>
     </findStrings>
     <replaceStrings>
       <replace>(14,1)</replace>
@@ -192,7 +165,6 @@
       <replace>spots_ch</replace>
       <replace>17</replace>
       <replace>ax</replace>
-      <replace>pickeledBears</replace>
       <replace>KCl</replace>
       <replace>0Mg + Bicc + Gly</replace>
       <replace>draw_iso_density</replace>
@@ -206,8 +178,9 @@
       <replace>binary_detection_result</replace>
       <replace>detections</replace>
       <replace>masked_detections</replace>
-      <replace>elem_list</replace>
       <replace>Block</replace>
+      <replace>elem_list</replace>
+      <replace>pickeledBears</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -230,15 +203,15 @@
         <option value="$PROJECT_DIR$/synth_image.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py" />
         <option value="$PROJECT_DIR$/wavelet.py" />
-        <option value="$PROJECT_DIR$/run_soda.py" />
         <option value="$PROJECT_DIR$/wavelet_SODA.py" />
+        <option value="$PROJECT_DIR$/run_soda.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="617" />
+    <option name="x" value="-10" />
     <option name="width" value="980" />
-    <option name="height" value="1038" />
+    <option name="height" value="1040" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -450,7 +423,7 @@
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.32907802" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.17021276" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.483807" visible="true" weight="0.24113475" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.483807" visible="true" weight="0.2397163" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.25531915" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -465,10 +438,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/hist_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_3.msr_STED640_STED561_merged.tif.png" />
-    <entry file="file://$PROJECT_DIR$/hist_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_5.msr_STED640_STED561_merged.tif.png" />
-    <entry file="file://$PROJECT_DIR$/hist_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_7.msr_STED640_STED561_merged.tif.png" />
-    <entry file="file://$PROJECT_DIR$/hist_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_6.msr_STED640_STED561_merged.tif.png" />
     <entry file="file://$PROJECT_DIR$/hist_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_4.msr_STED640_STED561_merged.tif.png" />
     <entry file="file://$PROJECT_DIR$/hist_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_2.msr_STED640_STED561_merged.tif.png" />
     <entry file="file://$PROJECT_DIR$/hist_1_R-RIM1-2_1-500_GAR-STAR-635P_1-250_M-PSD95_1-250_GAM-AlexaFluor594_1-500_10min_MeOH_+4C_Block_10.msr_STED640_STED561_merged.tif.png" />
@@ -598,13 +567,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/measure/_regionprops.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="122">
           <caret line="282" selection-start-line="282" selection-end-line="282" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wavelet.py" />
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/axes/_base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5372">
+          <caret line="354" selection-start-line="354" selection-end-line="354" />
         </state>
       </provider>
     </entry>
@@ -613,7 +587,7 @@
     </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
+        <state relative-caret-position="85">
           <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
@@ -621,52 +595,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/axes/_base.py">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/wavelet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="354" selection-start-line="354" selection-end-line="354" />
+        <state relative-caret-position="306">
+          <caret line="18" column="28" lean-forward="true" selection-start-line="18" selection-start-column="28" selection-end-line="18" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
+        <state relative-caret-position="283">
           <caret line="1854" selection-start-line="1854" selection-end-line="1854" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wavelet.py">
+    <entry file="file://P:/#PUBLIC/rbernatchez/images_score/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret lean-forward="true" />
+        <state relative-caret-position="174">
+          <caret line="357" selection-start-line="357" selection-end-line="357" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+            <marker date="1535556205904" expanded="true" signature="37711:37716" ph="..." />
+            <marker date="1535556205904" expanded="true" signature="41715:41721" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/wavelet.py">
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/io/_io.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="61" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
+        <state relative-caret-position="136">
+          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/exposure/exposure.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-442">
+          <caret line="458" column="4" selection-start-line="458" selection-start-column="4" selection-end-line="458" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/external/tifffile/tifffile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="339" selection-start-line="339" selection-end-line="339" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/run_soda.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="305">
-          <caret line="288" column="64" selection-start-line="288" selection-start-column="64" selection-end-line="288" selection-end-column="64" />
+        <state relative-caret-position="1086">
+          <caret line="842" column="38" lean-forward="true" selection-start-line="842" selection-start-column="38" selection-end-line="842" selection-end-column="38" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="358" column="91" selection-start-line="358" selection-start-column="91" selection-end-line="358" selection-end-column="91" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-            <marker date="1535484022339" expanded="true" signature="37363:37368" ph="..." />
-            <marker date="1535484022339" expanded="true" signature="41367:41373" ph="..." />
           </folding>
         </state>
       </provider>
