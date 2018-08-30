@@ -16,7 +16,7 @@
     <session id="472894983">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="11" />
+          <entry key="project.closed" value="12" />
           <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.11" value="2" />
@@ -24,35 +24,35 @@
           <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="5" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.open.time.9" value="2" />
-          <entry key="project.opened" value="18" />
+          <entry key="project.open.time.9" value="3" />
+          <entry key="project.opened" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="144" />
           <entry key="dummy" value="57" />
-          <entry key="py" value="31285" />
+          <entry key="py" value="33914" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="57" />
-          <entry key="Python" value="29864" />
+          <entry key="Python" value="32493" />
           <entry key="Scratch" value="1565" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="png" value="17" />
-          <entry key="py" value="32" />
+          <entry key="py" value="34" />
           <entry key="tif" value="7" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Image" value="24" />
-          <entry key="Python" value="27" />
+          <entry key="Python" value="29" />
           <entry key="Scratch" value="5" />
         </counts>
       </usages-collector>
@@ -63,8 +63,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_soda.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1086">
-              <caret line="842" column="38" lean-forward="true" selection-start-line="842" selection-start-column="38" selection-end-line="842" selection-end-column="38" />
+            <state relative-caret-position="-17">
+              <caret line="26" column="27" lean-forward="true" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -75,12 +75,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="357" selection-start-line="357" selection-end-line="357" />
+            <state relative-caret-position="5083">
+              <caret line="922" column="35" selection-start-line="922" selection-start-column="35" selection-end-line="922" selection-end-column="35" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
-                <marker date="1535556205904" expanded="true" signature="37711:37716" ph="..." />
-                <marker date="1535556205904" expanded="true" signature="41715:41721" ph="..." />
+                <marker date="1535649685978" expanded="true" signature="37708:37713" ph="..." />
+                <marker date="1535649685978" expanded="true" signature="41712:41718" ph="..." />
               </folding>
             </state>
           </provider>
@@ -119,39 +119,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>self.image</find>
-      <find>imread</find>
-      <find>imshow</find>
-      <find>mean:</find>
-      <find>spots in channel</find>
-      <find>SPOT</find>
-      <find>SPOTserr</find>
-      <find>skipp</find>
-      <find>diameter</find>
-      <find>Prickly Pears</find>
-      <find>major</find>
-      <find>analysis</find>
-      <find>min_axis</find>
-      <find>spatialdis</find>
-      <find>raise s</find>
-      <find>raise spots</find>
-      <find>computing staist</find>
-      <find>channels</find>
-      <find>probabilities</find>
-      <find>shape_fact</find>
-      <find>mark</find>
-      <find>def mark</find>
-      <find>index</find>
-      <find>isoperimetric</find>
-      <find>os.path</find>
-      <find>isop</find>
-      <find>show_roi</find>
-      <find>is_low_contrast</find>
-      <find>show_</find>
-      <find>shape_factor</find>
+      <find>melo</find>
+      <find>melon_3</find>
+      <find>HIST</find>
+      <find>get_sp</find>
+      <find>PROBABILITIES</find>
+      <find>probs</find>
+      <find>print</find>
+      <find>SODAIMAGE</find>
+      <find>SCALE_THRESHOLD</find>
+      <find>self.al</find>
+      <find>all_couples_</find>
+      <find>all_couples_list</find>
+      <find>self.all_couples</find>
+      <find>print(</find>
+      <find>print(all_s</find>
+      <find>prob_write</find>
+      <find>write</find>
+      <find>write_</find>
+      <find>coupling_prob</find>
+      <find>def coup</find>
+      <find>171,907039907139</find>
+      <find>171,90703990713</find>
+      <find>4.55</find>
+      <find>6.45</find>
+      <find>6.</find>
+      <find>6.64</find>
+      <find>6.64699147707</find>
+      <find>6.6</find>
+      <find>why</find>
+      <find>(6, 7)</find>
     </findStrings>
     <replaceStrings>
-      <replace>(14,1)</replace>
       <replace>stack</replace>
       <replace>1,14</replace>
       <replace>np.ndarray((0</replace>
@@ -178,9 +177,10 @@
       <replace>binary_detection_result</replace>
       <replace>detections</replace>
       <replace>masked_detections</replace>
-      <replace>Block</replace>
       <replace>elem_list</replace>
       <replace>pickeledBears</replace>
+      <replace>PrickleyPears</replace>
+      <replace>Block</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -209,9 +209,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
+    <option name="x" value="583" />
+    <option name="y" value="53" />
     <option name="width" value="980" />
-    <option name="height" value="1040" />
+    <option name="height" value="1039" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -423,7 +424,7 @@
       <window_info anchor="bottom" id="Terminal" order="3" weight="0.32907802" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" weight="0.17021276" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.483807" visible="true" weight="0.2397163" />
+      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.483807" visible="true" weight="0.1858156" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.25531915" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -449,24 +450,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/axes/_axes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="4242" selection-start-line="4242" selection-end-line="4242" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/select_ROI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="206">
           <caret line="24" column="35" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/pyplot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="3469" selection-start-line="3469" selection-end-line="3469" />
         </state>
       </provider>
     </entry>
@@ -582,22 +569,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/synth_image.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$USER_HOME$/Desktop/wavelet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -612,21 +583,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://P:/#PUBLIC/rbernatchez/images_score/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="357" selection-start-line="357" selection-end-line="357" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-            <marker date="1535556205904" expanded="true" signature="37711:37716" ph="..." />
-            <marker date="1535556205904" expanded="true" signature="41715:41721" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://P:/#PUBLIC/rbernatchez/images_score/__init__.py" />
     <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/skimage/io/_io.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -648,10 +605,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/axes/_axes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="2232" selection-start-line="2232" selection-end-line="2232" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/ProgramData/Anaconda3/Lib/site-packages/matplotlib/pyplot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="2769" selection-start-line="2769" selection-end-line="2769" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/synth_image.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5083">
+          <caret line="922" column="35" selection-start-line="922" selection-start-column="35" selection-end-line="922" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+            <marker date="1535649685978" expanded="true" signature="37708:37713" ph="..." />
+            <marker date="1535649685978" expanded="true" signature="41712:41718" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/run_soda.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1086">
-          <caret line="842" column="38" lean-forward="true" selection-start-line="842" selection-start-column="38" selection-end-line="842" selection-end-column="38" />
+        <state relative-caret-position="-17">
+          <caret line="26" column="27" lean-forward="true" selection-start-line="26" selection-start-column="27" selection-end-line="26" selection-end-column="27" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>

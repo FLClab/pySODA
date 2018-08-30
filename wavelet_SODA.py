@@ -935,9 +935,9 @@ class SpatialRelations:
             for c2, s2, (y2, x2) in self.MPP2_ROI:
                 dist = self.distance(x1, x2, y1, y2)
                 p = 0
-                if (s1, (y1, x1)) != (s2, (y2, x2)):
+                if not (s1 == s2 and y1 == y2 and x1 == x2):
                     for i in range(len(self.rings) - 1):
-                        if (dist >= self.rings[i]) & (dist < self.rings[i + 1]):
+                        if self.rings[i] <= dist < self.rings[i + 1]:
                             p += coupling[i]
                             probability.append([p, dist])
 
@@ -1181,21 +1181,23 @@ class SpatialRelations:
         titles = ['X1', 'Y1', 'Area', 'Distance to Neighbor Same Ch', 'Distance to Neighbor Other Ch', 'Eccentricity',
                   'Max intensity', 'Min intensity', 'Mean intensity',
                   'Major axis length', 'Minor axis length', 'Orientation',
-                  'Perimeter', 'Coupled']
+                  'Perimeter', 'Coupled', 'Coupling probability']
         for t in range(len(titles)):
             spots1.write(0, t, titles[t])
         row = 1
         for (p1, s1, (y1, x1)) in self.MPP1_ROI:
             coupled = 0
+            coupling_prob = 0
             for xa, ya, xb, yb, dist, p in prob_write:
                 if (y1, x1) == (ya, xa):
                     coupled = 1
+                    coupling_prob = p
             dnn1, nn1, angle = self.neighbors[0][row-1]
             dnn2, nn2, angle = self.neighbors[1][row-1]
             datarow = [x1, y1, s1, dnn1, dnn2, p1.eccentricity,
                        p1.max_intensity, p1.min_intensity, p1.mean_intensity,
                        p1.major_axis_length, p1.minor_axis_length, p1.orientation,
-                       p1.perimeter, coupled]
+                       p1.perimeter, coupled, coupling_prob]
             for i in range(len(datarow)):
                 spots1.write(row, i, datarow[i])
             row += 1
@@ -1203,21 +1205,24 @@ class SpatialRelations:
         titles = ['X2', 'Y2', 'Area', 'Distance to Neighbor Same Ch', 'Distance to Other Ch', 'Eccentricity',
                   'Max intensity', 'Min intensity', 'Mean intensity',
                   'Major axis length', 'Minor axis length', 'Orientation',
-                  'Perimeter', 'Coupled']
+                  'Perimeter', 'Coupled', 'Coupling probability']
         for t in range(len(titles)):
             spots2.write(0, t, titles[t])
         row = 1
+
         for p2, s2, (y2, x2) in self.MPP2_ROI:
             coupled = 0
+            coupling_prob = 0
             for xc, yc, xd, yd, dist, p in prob_write:
                 if (y2, x2) == (yd, xd):
                     coupled = 1
-            dnn1, nn1, angle = self.neighbors[2][row-1]
-            dnn2, nn2, angle = self.neighbors[3][row-1]
+                    coupling_prob = p
+            dnn1, nn1, angle = self.neighbors[3][row-1]
+            dnn2, nn2, angle = self.neighbors[2][row-1]
             datarow = [x2, y2, s2, dnn1, dnn2, p2.eccentricity,
                        p2.max_intensity, p2.min_intensity, p2.mean_intensity,
                        p2.major_axis_length, p2.minor_axis_length, p2.orientation,
-                       p2.perimeter, coupled]
+                       p2.perimeter, coupled, coupling_prob]
             for i in range(len(datarow)):
                 spots2.write(row, i, datarow[i])
             row += 1
