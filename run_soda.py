@@ -20,7 +20,7 @@ DIRECTORY = r"C:\Users\Renaud\Pictures\WAVELETS_IMAGES\outputunmixing"  # Path c
 SCALE_LIST = [[2],  # Channel 0  # Scales to be used for wavelet transform for spot detection
               [2],  # Channel 1  # Higher values mean less details.
               [2]]  # Channel 2  # Multiple scales can be used (e.g. [1,2]). Scales must be integers.
-SCALE_THRESHOLD = [30,  # Channel 0  # Percent modifier of wavelet transform threshold.
+SCALE_THRESHOLD = [100,  # Channel 0  # Percent modifier of wavelet transform threshold.
                    100,  # Channel 1  # Higher value = more pixels detected.
                    100]  # Channel 2
 MIN_SIZE = [5,  # Channel 0 # Minimum area (pixels) of spots to analyse
@@ -545,7 +545,7 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
                 row += 1
             img_index += 1
 
-    # Write graphs
+    # Draw graphs here
     display = DataDisplay(spots_results_list, couples_results_list, soda_results_list, all_spots_list, all_couples_list)
     display.couples_in_distances()
     display.intensity_by_distance()
@@ -787,6 +787,10 @@ class DataDisplay:
             ch += 1
 
     def draw_iso_density(self):
+        """
+        Isoperimetric quotient 2D histogram. It often looks like different clusters can be seen, but the calculation
+        is off because the perimeter and area measurements aren't consistent with each other.
+        """
         ch = 0
         for channel in self.spots_data:
             ax_x = 0
@@ -885,6 +889,10 @@ class DataDisplay:
         plt.close()
 
     def proportion_couples_in_distances(self):
+        """
+        Histogram of coupled spots/all spots ratio for each channel. Calculated as the sum of coupling probabilities
+        of all couples for each ring divided by the total number of spots in each channel
+        """
         dists = [i * RING_WIDTH for i in range(N_RINGS)]
         dists.append(RING_WIDTH*N_RINGS)
         ch = 0
@@ -893,7 +901,7 @@ class DataDisplay:
             for i in range(1,len(dists)):
                 couples_in_dist = self.all_couples[self.all_couples[:, 4] > dists[i-1]]
                 couples_in_dist = couples_in_dist[couples_in_dist[:, 4] <= dists[i]]
-                n_couples.append(np.sum(couples_in_dist[:,5])/(np.shape(channel)[0]))
+                n_couples.append(np.sum(couples_in_dist[:, 5])/(np.shape(channel)[0])) # Ratio calculated here
 
             plt.bar(dists[:-1], n_couples, align='edge', width=RING_WIDTH, edgecolor='black', linewidth=0.75)
             plt.locator_params(axis='x', nbins=N_RINGS)
@@ -904,6 +912,9 @@ class DataDisplay:
             plt.close()
 
     def intensity_by_distance(self):
+        """
+        Box plots of intensity of all spots by distance to nearest neighbor
+        """
         dists = [i * RING_WIDTH for i in range(N_RINGS+1)]
         labels = [dists[d]-1 for d in range(1, len(dists))]
         ch = 0
