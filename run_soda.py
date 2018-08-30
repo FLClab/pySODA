@@ -20,7 +20,7 @@ DIRECTORY = r"C:\Users\Renaud\Pictures\WAVELETS_IMAGES\outputunmixing"  # Path c
 SCALE_LIST = [[2],  # Channel 0  # Scales to be used for wavelet transform for spot detection
               [2],  # Channel 1  # Higher values mean less details.
               [2]]  # Channel 2  # Multiple scales can be used (e.g. [1,2]). Scales must be integers.
-SCALE_THRESHOLD = [100,  # Channel 0  # Percent modifier of wavelet transform threshold.
+SCALE_THRESHOLD = [30,  # Channel 0  # Percent modifier of wavelet transform threshold.
                    100,  # Channel 1  # Higher value = more pixels detected.
                    100]  # Channel 2
 MIN_SIZE = [5,  # Channel 0 # Minimum area (pixels) of spots to analyse
@@ -32,12 +32,12 @@ MIN_AXIS_LENGTH = [3,  # Channel 0  # Minimum length of both ellipse axes of spo
 
 # For SODA analysis
 ROI_THRESHOLD = 200  # Percent modifier of ROI threshold. Higher value = more pixels taken.
-N_RINGS = 10  # Number of rings around spots (int)
+N_RINGS = 20  # Number of rings around spots (int)
 RING_WIDTH = 1  # Width of rings in pixels
 SELF_SODA = False  # Set to True to compute SODA for couples of spots in the same channel as well
 
 # Display and graphs
-SHOW_ROI = True  # Set to True to display the ROI mask contour and detected spots for every image
+SHOW_ROI = False  # Set to True to display the ROI mask contour and detected spots for every image
 SAVE_ROI = True  # Set to True to save TIF images of all spots and filtered spots for each channel
 WRITE_HIST = True  # Set to True to create a .png of the coupling probabilities by distance histogram
 
@@ -117,11 +117,14 @@ class SodaImageAnalysis:
         spots0, spots1, couples_data = SR.get_spots_data(prob_write)
 
         # Display spot detection, ROI and couples
+        save = False
+        show = False
         if SAVE_ROI:
-            show=False
-            if SHOW_ROI:
-                show=True
-            self.show_roi(contours, masked_detections, couples_data, show, ch0, ch1)
+            save = True
+        if SHOW_ROI:
+            show = True
+        if save or show:
+            self.show_roi(contours, masked_detections, couples_data, show, save, ch0, ch1)
             # self.show_roi_shape_factor(contours, masked_detections, ch0, ch1)
 
         # Write Excel file for spots and couples
@@ -143,7 +146,7 @@ class SodaImageAnalysis:
                  for d, i, ch in (detections[ch0], detections[ch1])]
         for m in range(len(marks)):
             print("\tSpots in channel {}:".format(m), len(marks[m]))
-            if range(len(marks[m]) < 5):
+            if range(len(marks[m]) < 100):  # Minimum number of spots necessary to compute SODA
                 raise SpotsError
         return marks
 
@@ -195,9 +198,9 @@ class SodaImageAnalysis:
 
         # Coupling prob. by distance histogram
         if WRITE_HIST:
-            dists = [i for i in range(N_RINGS)]
+            dists = [i*RING_WIDTH for i in range(N_RINGS)]
             plt.ylim(0, 1.0)
-            plt.bar(dists, probs, align='edge', width=1, edgecolor='black', linewidth=0.75)
+            plt.bar(dists, probs, align='edge', width=RING_WIDTH, edgecolor='black', linewidth=0.75)
             plt.locator_params(axis='x', nbins=N_RINGS)
             plt.xlabel('Distance (pixels)')
             plt.ylabel('Coupling probability')
@@ -217,20 +220,14 @@ class SodaImageAnalysis:
         # Filtered image for masking: gaussian filter + threshold + fill holes
         filt = np.copy(self.image[0])
         for ch in range(1, len(self.image)):
-            print(ch)
             filt += self.image[ch]
-        print('MEAN:', np.mean(filt))
         filt = (filters.gaussian(filt, 10))  # Higher sigma for smoother edges
-        print('MEAN:', np.mean(filt))
 
         threshold = np.mean(filt) * (100/ROI_THRESHOLD)
-        print(threshold)
-
         filt[filt < threshold] = 0
         filt[filt >= threshold] = 1
         filt = morphology.binary_closing(filt)
         # filt = morphology.binary_fill_holes(filt)
-
 
         # Keep only areas with a significant volume
         labels = label(filt, connectivity=2)
@@ -265,7 +262,7 @@ class SodaImageAnalysis:
 
         return cont, roivolume, masked_detections
     
-    def show_roi(self, contour, masked_detections, couples, show, ch0, ch1):
+    def show_roi(self, contour, masked_detections, couples, show, save, ch0, ch1):
         """
         Displays 3 figures in matplotlib, from left to right:
         Spot detection images, ROI and filtered spots (min size and shape), Marked couples
@@ -292,9 +289,10 @@ class SodaImageAnalysis:
             filtered_spots.append(labels)
 
         # Save images with all spots and filtered spots for both channels.
-        for ch in [ch0, ch1]:
-            io.imsave("{}_all_spots_ch{}.tif".format(os.path.basename(self.file), ch), self.detections[ch][0].astype('uint16'))
-            io.imsave("{}_filtered_spots_ch{}.tif".format(os.path.basename(self.file), ch), filtered_spots[ch].astype('uint16'))
+        if save:
+            for ch in [ch0, ch1]:
+                io.imsave("{}_all_spots_ch{}.tif".format(os.path.basename(self.file), ch), self.detections[ch][0].astype('uint16'))
+                io.imsave("{}_filtered_spots_ch{}.tif".format(os.path.basename(self.file), ch), filtered_spots[ch].astype('uint16'))
 
         if show:
             fig, axs = plt.subplots(1, 3, sharex='all', sharey='all')
@@ -426,6 +424,7 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
     """
     spots_results_list = [[np.ndarray((0, 18)), np.ndarray((0, 18)), np.ndarray((0, 18))],
                           [np.ndarray((0, 18)), np.ndarray((0, 18)), np.ndarray((0, 18))]]
+    all_spots_list = [np.ndarray((0, 18)), np.ndarray((0, 18))]
 
     # couples_results_list contains three numpy arrays, one for each condition. Every numpy array contains data on a
     # couple in each row:
@@ -442,6 +441,7 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
     6           Index of image containing spots
     """
     couples_results_list = [np.ndarray((0, 7)), np.ndarray((0, 7)), np.ndarray((0, 7))]
+    all_couples_list = np.ndarray((0, 7))
 
     # soda_results_list contains three numpy arrays, one for each condition. Every numpy array contains data on the
     # SODA analysis of an image in each row:
@@ -524,12 +524,15 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
                                 if couples_data.shape != (0,):
                                     couples_results_list[1] = np.append(couples_results_list[1], couples_data, axis=0)
                                 soda_results_list[1] = np.append(soda_results_list[1], elem_array, axis=0)
-                            elif 'pickeledBears' in file:
+                            elif 'PrickleyPears' in file:
                                 spots_results_list[0][2] = np.append(spots_results_list[0][2], spots_data0, axis=0)
                                 spots_results_list[1][2] = np.append(spots_results_list[1][2], spots_data1, axis=0)
                                 if couples_data.shape != (0,):
                                     couples_results_list[2] = np.append(couples_results_list[2], couples_data, axis=0)
                                 soda_results_list[2] = np.append(soda_results_list[2], elem_array, axis=0)
+                            all_spots_list[0] = np.append(all_spots_list[0], spots_data0, axis=0)
+                            all_spots_list[1] = np.append(all_spots_list[1], spots_data1, axis=0)
+                            all_couples_list = np.append(all_couples_list, couples_data, axis=0)
 
                         except ImageError:  # Skips image if it doesn't have the right shape (multiple channels)
                             write_row = False
@@ -543,16 +546,19 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
             img_index += 1
 
     # Write graphs
-    display = DataDisplay(spots_results_list, couples_results_list, soda_results_list)
-    display.index_ecc_boxplots()
-    display.ecc_boxplots()
-    display.draw_density_ecc()
-    display.coupling_dist_boxplots()
-    display.coupling_prob_boxplots()
-    display.coupling_index_boxplots()
-    display.draw_iso_density()
-    display.coupling_prob_scatter()
-    # display.draw_eq_diameter_density()
+    display = DataDisplay(spots_results_list, couples_results_list, soda_results_list, all_spots_list, all_couples_list)
+    display.couples_in_distances()
+    display.intensity_by_distance()
+    display.proportion_couples_in_distances()
+    # display.index_ecc_boxplots()
+    # display.ecc_boxplots()
+    # display.draw_density_ecc()
+    # display.coupling_dist_boxplots()
+    # display.coupling_prob_boxplots()
+    # display.coupling_index_boxplots()
+    # display.draw_iso_density()
+    # display.coupling_prob_scatter()
+    # # display.draw_eq_diameter_density()
     try:
         results_workbook.close()
     except PermissionError:
@@ -563,11 +569,13 @@ class DataDisplay:
     """
     Class containing the functions related to the display of data
     """
-    def __init__(self, spots_data, couples_data, soda_data):
+    def __init__(self, spots_data, couples_data, soda_data, all_spots, all_couples):
         self.spots_data = spots_data
         self.couples_data = couples_data
         self.soda_data = soda_data
-        self.conditions = ['groundCherry', 'Melon', 'pickeledBears']
+        self.conditions = ['0Mg + Bicc + Gly', 'KCl', 'Block']
+        self.all_spots = all_spots
+        self.all_couples = all_couples
 
     def ecc_boxplots(self):
         """
@@ -580,9 +588,9 @@ class DataDisplay:
                 ax_i = 0
                 fig, axs = plt.subplots(1, 3)
                 plt.subplots_adjust(wspace=0.4)
-                axs[0].set_title('groundCherry')
-                axs[1].set_title('Melon')
-                axs[2].set_title('pickeledBears')
+                axs[0].set_title(self.conditions[0])
+                axs[1].set_title(self.conditions[1])
+                axs[2].set_title(self.conditions[2])
                 for c in channel:
                     filt_data = c[c[:, 5] > bin_list[b - 1]]
                     filt_data = filt_data[filt_data[:, 5] <= bin_list[b]]
@@ -595,9 +603,9 @@ class DataDisplay:
                 ax_i = 0
                 fig, axs = plt.subplots(1, 3)
                 plt.subplots_adjust(wspace=0.4)
-                axs[0].set_title('groundCherry')
-                axs[1].set_title('Melon')
-                axs[2].set_title('pickeledBears')
+                axs[0].set_title(self.conditions[0])
+                axs[1].set_title(self.conditions[1])
+                axs[2].set_title(self.conditions[2])
                 for c in channel:
                     if b == 'more':
                         filt_data = c[c[:, 5] > 0.5]
@@ -610,9 +618,9 @@ class DataDisplay:
 
             fig, axs = plt.subplots(1, 3)
             plt.subplots_adjust(wspace=0.4)
-            axs[0].set_title('groundCherry')
-            axs[1].set_title('Melon')
-            axs[2].set_title('pickeledBears')
+            axs[0].set_title(self.conditions[0])
+            axs[1].set_title(self.conditions[1])
+            axs[2].set_title(self.conditions[2])
             ax_i = 0
             for c in channel:
                 self.draw_boxplot_axis(c, axs[ax_i])
@@ -669,9 +677,9 @@ class DataDisplay:
         fig.set_size_inches(15, 5)
         plt.subplots_adjust(wspace=0.5)
         ax_i = 0
-        axs[0].set_title('groundCherry')
-        axs[1].set_title('Melon')
-        axs[2].set_title('pickeledBears')
+        axs[0].set_title('0Mg + Bicc + Gly')
+        axs[1].set_title('KCl')
+        axs[2].set_title('Block')
         for cond in self.couples_data:
             data_prob = cond[:, 5]
             data_dist = cond[:, 4]
@@ -744,15 +752,15 @@ class DataDisplay:
             fig, axs = plt.subplots(3, 3)
             fig.set_size_inches(15,10)
             plt.subplots_adjust(hspace=0.5)
-            axs[0,0].set_title('groundCherry (Coupled)')
-            axs[0,1].set_title('Melon (Coupled)')
-            axs[0,2].set_title('pickeledBears (Coupled)')
-            axs[1,0].set_title('groundCherry (Uncoupled)')
-            axs[1,1].set_title('Melon (Uncoupled)')
-            axs[1,2].set_title('pickeledBears (Uncoupled)')
-            axs[2,0].set_title('groundCherry (All)')
-            axs[2,1].set_title('Melon (All)')
-            axs[2,2].set_title('pickeledBears (All)')
+            axs[0,0].set_title('0Mg + Bicc + Gly (Coupled)')
+            axs[0,1].set_title('KCl (Coupled)')
+            axs[0,2].set_title('Block (Coupled)')
+            axs[1,0].set_title('0Mg + Bicc + Gly (Uncoupled)')
+            axs[1,1].set_title('KCl (Uncoupled)')
+            axs[1,2].set_title('Block (Uncoupled)')
+            axs[2,0].set_title('0Mg + Bicc + Gly (All)')
+            axs[2,1].set_title('KCl (All)')
+            axs[2,2].set_title('Block (All)')
             for cond in channel:
                 coupled = cond[cond[:, -1] == 1]
                 non_coupled = cond[cond[:, -1] == 0]
@@ -785,15 +793,15 @@ class DataDisplay:
             fig, axs = plt.subplots(3, 3)
             fig.set_size_inches(15,10)
             plt.subplots_adjust(hspace=0.5)
-            axs[0,0].set_title('groundCherry (Coupled)')
-            axs[0,1].set_title('Melon (Coupled)')
-            axs[0,2].set_title('pickeledBears (Coupled)')
-            axs[1,0].set_title('groundCherry (Uncoupled)')
-            axs[1,1].set_title('Melon (Uncoupled)')
-            axs[1,2].set_title('pickeledBears (Uncoupled)')
-            axs[2,0].set_title('groundCherry (All)')
-            axs[2,1].set_title('Melon (All)')
-            axs[2,2].set_title('pickeledBears (All)')
+            axs[0,0].set_title('0Mg + Bicc + Gly (Coupled)')
+            axs[0,1].set_title('KCl (Coupled)')
+            axs[0,2].set_title('Block (Coupled)')
+            axs[1,0].set_title('0Mg + Bicc + Gly (Uncoupled)')
+            axs[1,1].set_title('KCl (Uncoupled)')
+            axs[1,2].set_title('Block (Uncoupled)')
+            axs[2,0].set_title('0Mg + Bicc + Gly (All)')
+            axs[2,1].set_title('KCl (All)')
+            axs[2,2].set_title('Block (All)')
             for cond in channel:
                 coupled = cond[cond[:, -1] == 1]
                 non_coupled = cond[cond[:, -1] == 0]
@@ -826,15 +834,15 @@ class DataDisplay:
             fig, axs = plt.subplots(3, 3)
             fig.set_size_inches(15,10)
             plt.subplots_adjust(hspace=0.5)
-            axs[0,0].set_title('groundCherry (Coupled)')
-            axs[0,1].set_title('Melon (Coupled)')
-            axs[0,2].set_title('pickeledBears (Coupled)')
-            axs[1,0].set_title('groundCherry (Uncoupled)')
-            axs[1,1].set_title('Melon (Uncoupled)')
-            axs[1,2].set_title('pickeledBears (Uncoupled)')
-            axs[2,0].set_title('groundCherry (All)')
-            axs[2,1].set_title('Melon (All)')
-            axs[2,2].set_title('pickeledBears (All)')
+            axs[0,0].set_title('0Mg + Bicc + Gly (Coupled)')
+            axs[0,1].set_title('KCl (Coupled)')
+            axs[0,2].set_title('Block (Coupled)')
+            axs[1,0].set_title('0Mg + Bicc + Gly (Uncoupled)')
+            axs[1,1].set_title('KCl (Uncoupled)')
+            axs[1,2].set_title('Block (Uncoupled)')
+            axs[2,0].set_title('0Mg + Bicc + Gly (All)')
+            axs[2,1].set_title('KCl (All)')
+            axs[2,2].set_title('Block (All)')
             for cond in channel:
                 coupled = cond[cond[:, -1] == 1]
                 non_coupled = cond[cond[:, -1] == 0]
@@ -857,6 +865,60 @@ class DataDisplay:
                 ax_x += 1
 
             plt.savefig("density_diameter_nn{}".format(ch))
+            plt.close()
+            ch += 1
+
+    def couples_in_distances(self):
+        dists = [i * RING_WIDTH for i in range(N_RINGS)]
+        dists.append(RING_WIDTH*N_RINGS)
+        n_couples = []
+        for i in range(1,len(dists)):
+            couples_in_dist = self.all_couples[self.all_couples[:, 4] > dists[i-1]]
+            couples_in_dist = couples_in_dist[couples_in_dist[:, 4] <= dists[i]]
+            n_couples.append(couples_in_dist.shape[0])
+
+        plt.bar(dists[:-1], n_couples, align='edge', width=RING_WIDTH, edgecolor='black', linewidth=0.75)
+        plt.locator_params(axis='x', nbins=N_RINGS)
+        plt.xlabel('Coupling distance (pixels)')
+        plt.ylabel('Number of couples')
+        plt.savefig(os.path.join(DIRECTORY, 'couples_by_dist.png'))
+        plt.close()
+
+    def proportion_couples_in_distances(self):
+        dists = [i * RING_WIDTH for i in range(N_RINGS)]
+        dists.append(RING_WIDTH*N_RINGS)
+        ch = 0
+        for channel in self.all_spots:
+            n_couples = []
+            for i in range(1,len(dists)):
+                couples_in_dist = self.all_couples[self.all_couples[:, 4] > dists[i-1]]
+                couples_in_dist = couples_in_dist[couples_in_dist[:, 4] <= dists[i]]
+                n_couples.append(np.sum(couples_in_dist[:,5])/(np.shape(channel)[0]))
+
+            plt.bar(dists[:-1], n_couples, align='edge', width=RING_WIDTH, edgecolor='black', linewidth=0.75)
+            plt.locator_params(axis='x', nbins=N_RINGS)
+            plt.xlabel('Coupling distance (pixels)')
+            plt.ylabel('Couples/Spots ratio')
+            plt.savefig(os.path.join(DIRECTORY, 'proportion_couples_by_dist_ch{}.png'.format(ch)))
+            ch += 1
+            plt.close()
+
+    def intensity_by_distance(self):
+        dists = [i * RING_WIDTH for i in range(N_RINGS+1)]
+        labels = [dists[d]-1 for d in range(1, len(dists))]
+        ch = 0
+        for channel in self.all_spots:
+            plot_data = []
+            for d in range(1, len(dists)):
+                mean_int_data = channel[channel[:, 3] > dists[d-1]]
+                mean_int_data = mean_int_data[mean_int_data[:, 3] <= dists[d]][:,10]
+                plot_data.append(mean_int_data)
+
+            plt.title('Channel {}'.format(ch))
+            plt.boxplot(plot_data, labels=labels, showmeans=True)
+            plt.ylabel('Mean intensity of spots')
+            plt.xlabel('Min distance to nearest neighbor')
+            plt.savefig(os.path.join(DIRECTORY, 'intensity_by_dist_ch{}.png'.format(ch)))
             plt.close()
             ch += 1
 
