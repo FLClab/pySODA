@@ -1,6 +1,7 @@
 import wavelet_SODA as wv
 from skimage import io, filters
 from scipy.ndimage import morphology
+from scipy.spatial import distance
 from matplotlib import patches
 from skimage.measure import find_contours, regionprops, label, subdivide_polygon
 import os
@@ -14,14 +15,14 @@ This file contains all the code related to running the SODA method using the cla
 """
 
 """ Change parameters here! """
-DIRECTORY = r"C:\Users\Renaud\Pictures\WAVELETS_IMAGES\outputunmixing"  # Path containing TIF files
+DIRECTORY = r"figure_image"  # Path containing TIF files
 
 # For spot detection
-SCALE_LIST = [[2],  # Channel 0  # Scales to be used for wavelet transform for spot detection
-              [2],  # Channel 1  # Higher values mean less details.
+SCALE_LIST = [[3,4],  # Channel 0  # Scales to be used for wavelet transform for spot detection
+              [3,4],  # Channel 1  # Higher values mean less details.
               [2]]  # Channel 2  # Multiple scales can be used (e.g. [1,2]). Scales must be integers.
-SCALE_THRESHOLD = [100,  # Channel 0  # Percent modifier of wavelet transform threshold.
-                   100,  # Channel 1  # Higher value = more pixels detected.
+SCALE_THRESHOLD = [200,  # Channel 0  # Percent modifier of wavelet transform threshold.
+                   200,  # Channel 1  # Higher value = more pixels detected.
                    100]  # Channel 2
 MIN_SIZE = [5,  # Channel 0 # Minimum area (pixels) of spots to analyse
             5,  # Channel 1
@@ -32,12 +33,14 @@ MIN_AXIS_LENGTH = [3,  # Channel 0  # Minimum length of both ellipse axes of spo
 
 # For SODA analysis
 ROI_THRESHOLD = 200  # Percent modifier of ROI threshold. Higher value = more pixels taken.
-N_RINGS = 20  # Number of rings around spots (int)
-RING_WIDTH = 1  # Width of rings in pixels
-SELF_SODA = False  # Set to True to compute SODA for couples of spots in the same channel as well
+N_RINGS = 16  # Number of rings around spots (int)
+RING_WIDTH = 1  # Width of rings in pixels (15nm)
+SELF_SODA = True  # Set to True to compute SODA for couples of spots in the same channel as well
+SELF_CHANNELS = [0]  # Enter channels for which to run SODA on themselves
+SELF_ONLY = False  # Set to True to only run SODA on each channel with themselves
 
 # Display and graphs
-SHOW_ROI = False  # Set to True to display the ROI mask contour and detected spots for every image
+SHOW_ROI = True  # Set to True to display the ROI mask contour and detected spots for every image
 SAVE_ROI = True  # Set to True to save TIF images of all spots and filtered spots for each channel
 WRITE_HIST = True  # Set to True to create a .png of the coupling probabilities by distance histogram
 
@@ -76,13 +79,20 @@ class SodaImageAnalysis:
 
         z, y, x = self.image.shape
         print('X:', x, '\nY:', y)
+        ch0_mask = io.imread(r"figure_image/all_spots_composite.tif")[0]
+        ch1_mask = io.imread(r"figure_image/all_spots_composite.tif")[1]
+        mask_list = [ch0_mask, ch1_mask]
 
         # Create the binary spots image using wavelet transform
         print("Computing wavelet spot detection...\nScales: {}".format(self.scale_list))
+        self.detections = [(mask_list[i], self.image[i]) for i in range(z)]
 
-        self.detections = [(wv.DetectionWavelets((self.image[i]), J_list=self.scale_list[i],
-                                                 scale_threshold=self.scale_threshold[i]).computeDetection(),
-                            self.image[i]) for i in range(z)]
+        #self.detections = [(wv.DetectionWavelets((self.image[i]), J_list=self.scale_list[i],
+        #                                         scale_threshold=self.scale_threshold[i]).computeDetection(),
+        #                    self.image[i]) for i in range(z)]
+
+        io.imsave('ch0.tif', self.detections[0][0].astype('uint16'))
+        io.imsave('ch1.tif', self.detections[1][0].astype('uint16'))
 
     def analysis(self, ch0, ch1, n_rings, step, img_index):
         """
@@ -112,19 +122,15 @@ class SodaImageAnalysis:
                                  roivolume, contours, self.image,
                                  n_rings, step, os.path.basename(self.file), img_index)
 
+        print(roivolume)
+
         # Calls SODA spatial relations analysis
         prob_write, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = self.spatial_relations(SR, ch0, ch1)
         spots0, spots1, couples_data = SR.get_spots_data(prob_write)
 
         # Display spot detection, ROI and couples
-        save = False
-        show = False
-        if SAVE_ROI:
-            save = True
-        if SHOW_ROI:
-            show = True
-        if save or show:
-            self.show_roi(contours, masked_detections, couples_data, show, save, ch0, ch1)
+        if SAVE_ROI or SHOW_ROI:
+            self.show_roi(contours, masked_detections, couples_data, SHOW_ROI, SAVE_ROI, ch0, ch1)
             # self.show_roi_shape_factor(contours, masked_detections, ch0, ch1)
 
         # Write Excel file for spots and couples
@@ -166,21 +172,30 @@ class SodaImageAnalysis:
         """
         print("Computing G...")
         G = SR.correlation_new()
-        print("G ------------------------------\n", G[0, :], '\n')
+        print(G)
+        print('Done! \n')
 
         print("Computing variance...")
         var = SR.variance_theo_delta_new()
-        print("VAR ----------------------------\n", var, '\n')
+        print(var)
+        print('Done! \n')
 
         print("Computing A...")
         A = SR.intersection2D_new()
-        print("A ------------------------------\n", A, '\n')
+        print(A)
+        print('Done! \n')
 
         print("Computing G0...")
         arg_dict = {'G': G, 'var': var, 'A': A}
         G0 = SR.reduced_Ripley_vector(**arg_dict)
-        print("G0 -----------------------------\n", G0, '\n')
-        # SR.draw_G0(G0)
+        print('Done! \n')
+        print(G0)
+        plt.bar(np.arange(0, G0.size)*15, G0, 14)
+        plt.xticks(np.arange(-7.5,232.5,15), np.arange(0,240,15))
+        plt.axhline(y=np.sqrt(2*np.log(G0.size)))
+        plt.savefig(os.path.join(r"figure_image", 'g0_bars.pdf'), transparent=True, bbox_inches='tight')
+        plt.show()
+        SR.draw_G0(G0)
 
         print("Computing statistics...")
         prob_write, CIndex, mean_dist, raw_mean_dist, coupling, n_couples = SR.coupling_prob(**arg_dict, G0=G0)
@@ -190,9 +205,6 @@ class SodaImageAnalysis:
               "\nMean Coupling Distance:", mean_dist, "pixels",
               "\nUnweighted Mean Coupling Distance:", raw_mean_dist, "pixels")
 
-        # SR.data_scatter(mean_dist, prob_write)
-        # SR.data_boxplot(prob_write)
-        # print('Probabilities (Javascript version):', SR.main2D_corr(G, var, A))
         probs = np.ndarray.tolist(coupling)
         print('Probabilities', probs, '\n\n')
 
@@ -241,6 +253,8 @@ class SodaImageAnalysis:
                 mask[mask == i + 1] = 0
         mask[mask > 0] = 1
 
+        io.imsave('mask.tif', (mask*255).astype('uint8'))
+
         roivolume = len(mask[np.nonzero(mask)])
 
         # Find contours around the mask. Padding is used to properly find contours near maximum edges
@@ -273,7 +287,6 @@ class SodaImageAnalysis:
         :param ch0: int; first channel used in analysis
         :param ch1: int; second channel used in analysis
         """
-
         # Filtered spots image; checks if spots are too small or too linear for proper analysis and removes rejected
         # spots from image. Image is masked using detected ROI mask.
         filtered_spots = []
@@ -284,8 +297,8 @@ class SodaImageAnalysis:
                 if label_props[i].area < self.min_size[ch] \
                         or label_props[i].minor_axis_length < self.min_axis[ch] \
                         or label_props[i].major_axis_length < self.min_axis[ch]:
-                    labels[labels == i + 1] = 0
-            labels[labels > 0] = 255
+                    labels[labels == label_props[i].label] = 0
+            labels[labels > 0] = 1
             filtered_spots.append(labels)
 
         # Save images with all spots and filtered spots for both channels.
@@ -295,30 +308,86 @@ class SodaImageAnalysis:
                 io.imsave("{}_filtered_spots_ch{}.tif".format(os.path.basename(self.file), ch), filtered_spots[ch].astype('uint16'))
 
         if show:
-            fig, axs = plt.subplots(1, 3, sharex='all', sharey='all')
+            fig, axs = plt.subplots(2, 3, sharex='all', sharey='all')
 
             # Add patches in second in third images for ROI contour
-            for ax in (axs[1], axs[2]):
+            for ax in (axs[0,1], axs[0,2], axs[1,0], axs[1,1], axs[1,2]):
                 patch = [patches.Polygon(np.fliplr(c), fill=False, color='white', linewidth=1) for c in contour]
                 for p in patch:
                     ax.add_patch(p)
 
             # Original spot detection binary image
-            axs[0].imshow(((self.detections[ch0][0] * 2) + (self.detections[ch1][0])), cmap='nipy_spectral')
+            spots_composite = np.zeros((self.detections[ch0][0].shape[0], self.detections[ch0][0].shape[1], 3))
+            spots_composite[:,:,0] = self.detections[ch0][0]
+            spots_composite[:,:,1] = self.detections[ch1][0]
+            spots_composite = spots_composite
+            io.imsave('all_spots.tif', (spots_composite).astype('uint8'))
+            axs[0,0].imshow(spots_composite)
 
             # Display filtered spots
-            axs[1].imshow(((filtered_spots[ch0] * 2) + (filtered_spots[ch1])), cmap='nipy_spectral')
+            filtered_composite = np.zeros((filtered_spots[ch0].shape[0], filtered_spots[ch0].shape[1], 3))
+            filtered_composite[:,:,0] = self.detections[ch0][0]
+            filtered_composite[:,:,1] = self.detections[ch1][0]
+            filtered_composite = filtered_composite/(2**16-1)*255
+            io.imsave('filtered_spots.tif', (filtered_composite*255).astype('uint8'))
+            axs[0,1].imshow(filtered_composite)
 
             # Same as second image with marker on coupled spots.
             if couples.any():
-                axs[2].plot(couples[:, 0], couples[:, 1], 'g.')
-                axs[2].plot(couples[:, 2], couples[:, 3], 'm.')
-                axs[2].imshow(((filtered_spots[ch0] * 2) + (filtered_spots[ch1])), cmap='nipy_spectral')
-            else:
-                axs[2].imshow(((filtered_spots[ch0] * 2) + (filtered_spots[ch1])), cmap='nipy_spectral')
+                axs[0,2].plot(couples[:, 0], couples[:, 1], 'g.')
+                axs[0,2].plot(couples[:, 2], couples[:, 3], 'm.')
+            axs[0,2].imshow(filtered_composite)
+
+            coupled_points_ch0 = np.array((couples[:, 0], couples[:, 1]))
+            coupled_points_ch1 = np.array((couples[:, 2], couples[:, 3]))
+
+            coupled_mask_ch0, coupled_centroids_ch0 = self.find_points_to_shapes(filtered_spots[ch0], coupled_points_ch0, ch=ch0)
+            #coupled_mask_ch0 = np.array((coupled_mask_ch0, np.zeros(coupled_mask_ch0.shape), np.zeros(coupled_mask_ch0.shape)))
+            io.imsave('coupled_ch0.tif', (coupled_mask_ch0).astype('uint8'))
+            io.imsave('centers_ch0.tif', (coupled_centroids_ch0).astype('uint8'))
+
+            coupled_mask_ch1, coupled_centroids_ch1 = self.find_points_to_shapes(filtered_spots[ch1], coupled_points_ch1, ch=ch1)
+            #coupled_mask_ch1 = np.array((np.zeros(coupled_mask_ch1.shape), coupled_mask_ch1, np.zeros(coupled_mask_ch0.shape)))
+            io.imsave('coupled_ch1.tif', (coupled_mask_ch1).astype('uint8'))
+            io.imsave('centers_ch1.tif', (coupled_centroids_ch1).astype('uint8'))
+
+
+            axs[1,0].imshow(coupled_mask_ch0)
+            axs[1,1].imshow(coupled_mask_ch1)
+
+            not_coupled_composite = np.zeros((filtered_spots[ch0].shape[0], filtered_spots[ch0].shape[1], 3))
+            not_coupled_composite[:,:,0] = filtered_spots[ch0] - coupled_mask_ch0
+            not_coupled_composite[:,:,1] = filtered_spots[ch1] - coupled_mask_ch1
+            not_coupled_composite = not_coupled_composite/(2**16-1)
+            io.imsave('uncoupled.tif', (not_coupled_composite).astype('uint8'))
+            axs[1,2].imshow(not_coupled_composite)
 
             plt.show()
         plt.close()
+
+    def find_points_to_shapes(self, image, points, ch):
+        mask_lab, num = label(image, return_num=True)
+        mask_props = regionprops(mask_lab, intensity_image=self.image[ch])
+
+        all_spots_positions = np.ndarray((2, num))
+        for i in range(num):
+            all_spots_positions[:, i] = np.flip(np.array(mask_props[i].weighted_centroid))
+
+        dists = distance.cdist(all_spots_positions.transpose(), points.transpose())
+        dists = np.sort(dists, axis=1)
+        good_spots = np.argwhere(dists[:,0] < 0.1) + 1
+
+        coupled_mask = np.zeros(mask_lab.shape)
+        coupled_mask[np.isin(mask_lab, good_spots)] = 1
+
+        mask_lab, num = label(coupled_mask, return_num=True)
+        mask_props = regionprops(mask_lab, intensity_image=self.image[ch])
+        coupled_centroids = np.zeros(mask_lab.shape)
+        for p in mask_props:
+            y, x = p.weighted_centroid
+            coupled_centroids[int(y),int(x)] = 255
+
+        return coupled_mask, coupled_centroids
 
     def show_roi_shape_factor(self, contour, masked_detections, ch0, ch1):
         """
@@ -463,6 +532,8 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
     img_index = 0
     # Loops through all files in directory and run analysis only on TIF files
     for file in os.listdir(directory):
+        if 'filtered' in file or 'all_spots' in file:
+            continue
         if file.lower().endswith('.tif') or file.lower().endswith('.tiff'):
             print("*****************Computing SODA*****************")
             print(file)
@@ -487,6 +558,8 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
             for ch0 in range(img.shape[0]):
                 for ch1 in range(img.shape[0]):
                     if ((SELF_SODA is False and ch0 != ch1) or SELF_SODA is True) and {ch0, ch1} not in progress_list:
+                        if SELF_ONLY and ch0 != ch1 or SELF_SODA and (ch0 not in SELF_CHANNELS or ch1 not in SELF_CHANNELS):
+                            continue
                         try:
                             print("*****Computing SODA for channels {} and {}*****".format(ch0, ch1))
                             # Analysis happens here.
@@ -546,10 +619,10 @@ def main(directory, scale_list, scale_threshold, n_rings, step):
             img_index += 1
 
     # Draw graphs here
-    display = DataDisplay(spots_results_list, couples_results_list, soda_results_list, all_spots_list, all_couples_list)
-    display.couples_in_distances()
-    display.intensity_by_distance()
-    display.proportion_couples_in_distances()
+    #display = DataDisplay(spots_results_list, couples_results_list, soda_results_list, all_spots_list, all_couples_list)
+    #display.couples_in_distances()
+    #display.intensity_by_distance()
+    #display.proportion_couples_in_distances()
     # display.index_ecc_boxplots()
     # display.ecc_boxplots()
     # display.draw_density_ecc()
@@ -935,6 +1008,6 @@ class DataDisplay:
 
 
 if __name__ == '__main__':
-    start_time = time.clock()
+    start_time = time.time()
     main(DIRECTORY, SCALE_LIST, SCALE_THRESHOLD, N_RINGS, RING_WIDTH)
-    print("--- Running time: %s seconds ---" % (time.clock() - start_time))
+    print("--- Running time: %s seconds ---" % (time.time() - start_time))

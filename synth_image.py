@@ -1,5 +1,6 @@
 import skimage.filters
 import numpy as np
+from matplotlib import pyplot as plt
 
 """
 Work in progress of a code to create synthetic images
@@ -31,5 +32,9 @@ def synth_images(y=1000, x=1000):
         image[i] = G+N
 
     return image
+
+if __name__=='__main__':
+    plt.imshow(synth_images())
+    plt.show()
 
 
