@@ -7,12 +7,13 @@ from skimage.measure import regionprops, label
 from skimage.draw import polygon
 from matplotlib import pyplot
 from math import atan2
-from scipy.ndimage import convolve
 import os
-import select_ROI
 
 
 """
+Note: This is the first version of the code. It is very much like the original Java code and takes a much longer time
+to run.
+
 This script is intended to perform a cluster analysis based on the paper
 
 Mapping molecular assemblies with fluorescence microscopy and object-based spatial statistics
@@ -52,23 +53,31 @@ class DetectionWavelets:
         :return image_out: numpy array representing the binary image
         """
 
-        data_in = numpy.copy(self.img).astype('int16')
-        print(data_in.dtype)
+        data_in = numpy.copy(self.img)
         h, w = data_in.shape
-        prev_array = data_in.copy()
+        prev_array = self.array_to_list(data_in)
 
-        scales = self.b3WaveletScales2D(prev_array)
+        scales = self.b3WaveletScales2D(prev_array, h, w)
 
         coefficients = self.b3WaveletCoefficients2D(scales, prev_array, h, w)
-        print(coefficients.shape)
+
         for i in range(len(coefficients)-1):
-            coefficients[i] = self.filter_wat(coefficients[i], i)
-        coefficients[-1] *= 0
+            coefficients[i] = self.filter_wat(coefficients[i], i, w, h)
+
+        for i in range(len(coefficients[-1])):
+            coefficients[-1][i] = 0
 
         binary_detection_result = self.spot_construction(coefficients)
-        binary_detection_result[binary_detection_result != 0] = 255
 
-        return binary_detection_result
+        for i in range(len(binary_detection_result)):
+            if binary_detection_result[i] != 0:
+                binary_detection_result[i] = 255
+            else:
+                binary_detection_result[i] = 0
+
+        image_out = self.list_to_array(binary_detection_result, h, w)
+
+        return image_out
 
     @staticmethod
     def array_to_list(array_in):
@@ -102,7 +111,7 @@ class DetectionWavelets:
                 a += 1
         return image_out
 
-    def b3WaveletScales2D(self, data_in):
+    def b3WaveletScales2D(self, data_in, h, w):
         """
         Computes the convolution images for scales J
         :param data_in: Base image as 1D list
@@ -117,7 +126,7 @@ class DetectionWavelets:
         for s in range(1, self.J+1):
             stepS = 2**(s-1)
 
-            current_array = self.filter_and_swap(prev_array, stepS)
+            current_array = self.filter_and_swap(prev_array, w, h, stepS)
 
             if s == 1:
                 prev_array = current_array
@@ -125,7 +134,7 @@ class DetectionWavelets:
                 tmp = current_array
                 prev_array = tmp
 
-            current_array = self.filter_and_swap(prev_array, stepS)
+            current_array = self.filter_and_swap(prev_array, h, w, stepS)
             tmp = current_array
             prev_array = tmp
 
@@ -133,7 +142,7 @@ class DetectionWavelets:
 
         return res_array
 
-    def b3WaveletCoefficients2D2(self, scale_coefficients, original_image, h, w):
+    def b3WaveletCoefficients2D(self, scale_coefficients, original_image, h, w):
         """
         Computes wavelet images as 1D lists
         :param scale_coefficients: List of  convoluted images as 1D lists
@@ -155,28 +164,7 @@ class DetectionWavelets:
         wavelet_coefficients.append(scale_coefficients[self.J-1])
         return wavelet_coefficients
 
-    def b3WaveletCoefficients2D(self, scale_coefficients, original_image, h, w):
-        """
-        Computes wavelet images as 1D lists
-        :param scale_coefficients: List of  convoluted images as 1D lists
-        :param original_image: Original image as 1D list
-        :param h: Image height
-        :param w: Image width
-        :return wavelet_coefficients: List of wavelet images as 1D lists
-        """
-
-        wavelet_coefficients = []
-        iter_prev = original_image.copy()
-        for j in range(self.J):
-            iter_current = scale_coefficients[j]
-            w_coefficients = iter_prev - iter_current
-            wavelet_coefficients.append(w_coefficients)
-            iter_prev = iter_current
-        wavelet_coefficients.append(scale_coefficients[self.J-1])
-        wavelet_coefficients = numpy.stack(wavelet_coefficients, 0)
-        return wavelet_coefficients
-
-    def filter_wat2(self, data, depth, width, height):
+    def filter_wat(self, data, depth, width, height):
         """
         Wavelet transform coefficient matrix filter from Icy Spot Detector code
         :param data: image data
@@ -199,7 +187,6 @@ class DetectionWavelets:
         for i in range(len(data)):
             s = data[i] - mean
             a += numpy.abs(s)
-
         mad = a/size
 
         dcoeff = (self.scale_threshold/100.0)
@@ -212,39 +199,7 @@ class DetectionWavelets:
 
         return output
 
-    def filter_wat(self, data, depth):
-        """
-        Wavelet transform coefficient matrix filter from Icy Spot Detector code
-        :param data: image data
-        :param depth: number of scale
-        :param width: image width
-        :param height: image height
-        :return output: filtered image
-        """
-
-        output = data.copy()
-        lambdac = []
-
-        for i in range(self.J + 2):
-            lambdac.append(numpy.sqrt(2 * numpy.log(data.size / (1 << (2 * i)))))
-
-        # mad
-        size = data.size
-        mean = numpy.mean(data)
-        s = data - mean
-        a = numpy.sum(numpy.abs(s))
-
-        mad = a / size
-
-        dcoeff = (self.scale_threshold / 100.0)
-
-        coeff_thr = (lambdac[depth + 1] * mad) / dcoeff
-
-        output[output < coeff_thr] = 0
-
-        return output
-
-    def spot_construction2(self, input_coefficients):
+    def spot_construction(self, input_coefficients):
         """
         Reconstructs correlation image
         :param input_coefficients: List of wavelet coefficient images as 1D lists
@@ -267,21 +222,8 @@ class DetectionWavelets:
 
         return output
 
-    def spot_construction(self, input_coefficients):
-        """
-        Reconstructs correlation image
-        :param input_coefficients: List of wavelet coefficient images as 1D lists
-        :return output: Correlation image as 1D list
-        """
-        J_array = numpy.array(self.J_list)-1
-        #zero_coords = numpy.prod(input_coefficients[J_array], axis=0) > 0
-
-        output = numpy.sum(input_coefficients[J_array], axis=0)
-        #output *= zero_coords
-        return output
-
     @staticmethod
-    def filter_and_swap2(array_in, w, h, stepS):
+    def filter_and_swap(array_in, w, h, stepS):
         """
         Convolves the image in one dimension (filter) and rotates it 90 degrees (swap) as in java code
         :param array_in: 1D list containing image data
@@ -374,22 +316,6 @@ class DetectionWavelets:
 
         return array_out
 
-    @staticmethod
-    def filter_and_swap(array_in, stepS):
-        kernel = numpy.array([1/16, 1/4, 3/8, 1/4, 1/16])
-        inter = numpy.array([1, 2, 3, 4])
-        for s in range(stepS):
-            if s > 0:
-                kernel = numpy.insert(kernel, inter, 0)
-                inter = inter + numpy.array([1, 2, 3, 4])
-        kernel_base = numpy.zeros((kernel.size, kernel.size))
-        kernel_base[int((kernel.size-1)/2)] = kernel
-        new_img = convolve(array_in, kernel_base)
-        new_img = numpy.transpose(new_img)
-
-        return new_img
-
-
 
 class SpatialDistribution:
     """ This is based on the Marked Point Process as shown in the cited above paper
@@ -442,6 +368,37 @@ class SpatialDistribution:
                         )
                 except IndexError:
                     print('Index error: spot was ignored.')
+
+        # for m in range(100):
+        #     p, s, (y,x) = random.choice(mark)
+        #     y2,x2 = p.weighted_local_centroid
+        #     y3, x3 = p.local_centroid
+        #     fig, axs = pyplot.subplots(1,2)
+        #
+        #     axs[0].imshow(p.intensity_image)
+        #     axs[0].plot(x2, y2, 'ro')
+        #     axs[0].plot(x3, y3, 'bo')
+        #     axs[1].imshow(p.image)
+        #     vol = p.area - p.perimeter / 2
+        #     iso = (4*numpy.pi*vol)/(p.perimeter**2)
+        #
+        #
+        #     print("""Spot info:
+        #     Number: {}
+        #     X: {}
+        #     Y: {}
+        #     Area: {}
+        #     Adjusted area: {}
+        #     Convex area: {}
+        #     Eccentricity: {}
+        #     Isoperimetric quotient: {}
+        #     Minor axis length: {}
+        #     Major axis length: {}
+        #     Min/Max: {}
+        #     Perimeter: {}""".format(mark.index((p, s, (y,x))), y,x,p.area, vol, p.convex_area, p.eccentricity, iso, p.minor_axis_length,
+        #                             p.major_axis_length,p.minor_axis_length/p.major_axis_length,p.perimeter))
+        #
+        #     pyplot.show()
 
         return mark
 
@@ -999,16 +956,13 @@ class SpatialRelations:
             mean_coupling_distance = 0
             if coupling_index[0] > 0:
                 mean_coupling_distance = numpy.sum(numpy.prod(probability, axis=1)) / coupling_index[0]
+            raw_mean_distance = coupling_index[1] / probability[:, 1].shape[0]  # Icy/SODA returns this, unlike the paper
         else:
             coupling_index = numpy.array([0,0])
             mean_coupling_distance = None
+            raw_mean_distance = None
 
-        return prob_write, {'n_spots_0': len(self.MPP1_ROI),
-                            'n_spots_1': len(self.MPP2_ROI),
-                            'coupling_index': (coupling_index[0] / n1, coupling_index[0] / n2),
-                            'mean_coupling_distance': mean_coupling_distance,
-                            'coupling_probabilities': coupling,
-                            'n_couples': n_couples}
+        return prob_write, (coupling_index[0] / n1, coupling_index[0] / n2), mean_coupling_distance, raw_mean_distance, coupling, n_couples
 
     def data_boxplot(self, prob_write):
         """
@@ -1106,103 +1060,6 @@ class SpatialRelations:
         couples_array = numpy.asarray(couples_list)
 
         return mpp1_array, mpp2_array, couples_array
-
-    def data_scatter(self, mean_coupling_dist, prob_write):
-        """
-        Plots a scatter plot of two spot proprieties. Saves the resulting plot in a .png
-        :param mean_coupling_dist: Mean coupling distance
-        :param prob_write: List of couples and their properties
-        """
-        X = []
-        Y = []
-
-        blue = []
-        dist_tot = 0
-        dist_to_border = self.nearest_contour(self.MPP1_ROI)
-
-        # for i in range(len(self.MPP1_ROI)):
-        #     p1, s1, (y, x) = self.MPP1_ROI[i]
-        #     for xa, ya, xb, yb, dist, p in prob_write:
-        #         if (y, x) == (ya, xa) and p1.minor_axis_length > 0:
-        #             X.append(dist)
-        #             Y.append(p1.eccentricity)
-        #             blue.append('blue')
-        #
-        # pyplot.scatter(X, Y, color=blue, marker='.', linewidths=0.5, edgecolors='black')
-        # pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        # pyplot.xlabel('Coupling distance')
-        # pyplot.ylabel('Eccentricity')
-        # pyplot.title('Channel 0')
-        # pyplot.savefig('scatter_{}_ch0.tif'.format(self.filename))
-        # pyplot.close()
-        #
-        # X = []
-        # Y = []
-        # red = []
-        # for i in range(len(self.MPP2_ROI)):
-        #     p1, s1, (y, x) = self.MPP2_ROI[i]
-        #     for xa, ya, xb, yb, dist, p in prob_write:
-        #         if (y, x) == (yb, xb):
-        #             X.append(dist)
-        #             Y.append(p1.eccentricity)
-        #             red.append('red')
-        #
-        # pyplot.scatter(X, Y, color=red, marker='.', linewidths=0.5, edgecolors='black')
-        # pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        # pyplot.xlabel('Coupling distance')
-        # pyplot.ylabel('Eccentricity')
-        # pyplot.title('Channel 1')
-        # pyplot.savefig('scatter_{}_ch1.tif'.format(self.filename))
-        # pyplot.close()
-
-        for i in range(len(self.MPP1_ROI)):
-            p1, s1, (y,x) = self.MPP1_ROI[i]
-            if p1.minor_axis_length > 0:
-                neighbor = self.neighbors[1][i][1]
-                #r1, c1 = p1.centroid
-                #r2, c2 = p1.weighted_centroid
-                #d = self.distance(c1, c2, r1, r2)
-                p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
-                Y.append(p1.eccentricity)
-                X.append(self.neighbors[1][i][0])
-                dist_tot += self.neighbors[1][i][0]
-                blue.append('blue')
-
-        pyplot.scatter(X, Y, color=blue, marker='.', linewidths=0.5, edgecolors='black')
-        pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        pyplot.xlabel('Distance to nearest neighbor (pixels)')
-        pyplot.ylabel('Eccentricity')
-        pyplot.title('Channel 0')
-        pyplot.savefig('scatter_{}_ch0.tif'.format(self.filename))
-        pyplot.close()
-
-        X = []
-        Y = []
-        red = []
-        for i in range(len(self.MPP2_ROI)):
-            p1, s1, (y,x) = self.MPP2_ROI[i]
-            if p1.minor_axis_length > 0:
-                neighbor = self.neighbors[2][i][1]
-                #r1, c1 = p1.centroid
-                #r2, c2 = p1.weighted_centroid
-                #d = self.distance(c1, c2, r1, r2)
-                p2, s2, (y2, x2) = self.MPP1_ROI[neighbor]
-                Y.append(p1.eccentricity)
-                X.append(self.neighbors[2][i][0])
-                dist_tot += self.neighbors[2][i][0]
-                red.append('red')
-
-        pyplot.scatter(X, Y, color=red, marker='.', linewidths=0.5, edgecolors='black')
-        pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        pyplot.xlabel('Distance to nearest neighbor (pixels)')
-        pyplot.ylabel('Eccentricity')
-        pyplot.title('Channel 1')
-        pyplot.savefig('scatter_{}_ch1.tif'.format(self.filename))
-        pyplot.close()
-
-        #dist_mean = dist_tot/(len(red)+len(blue))
-
-        #pyplot.show()
 
     def write_spots_and_probs(self, prob_write, directory, title):
         """
@@ -1309,45 +1166,6 @@ class SpatialRelations:
         """
         return numpy.sqrt((x1 - x2)**2 + (y1 - y2)**2)
 
-    # Not used
-    def distance_pl(self, polygon, x0, y0):
-        """ This function computes the shortest distance between a point and a line
-        :param polygon: A polygon object
-        :param x0, y0: x and y coordinate of the points
-        :return min_dist: minimum distance between the point and the edge of the polygon
-        """
-        min_dist = sys.maxsize
-        for i in range(polygon.shape[0]):
-            if i < polygon.shape[0] - 1:
-                x1, y1 = polygon[i]
-                x2, y2 = polygon[i + 1]
-            else:
-                x1, y1 = polygon[i]
-                x2, y2 = polygon[0]
-            temp1 = abs((y2 - y1)*x0 - (x2 - x1)*y0 - x2*y1 - y2*x1)
-            temp2 = numpy.sqrt((y2 - y1)**2 + (x2 - x1)**2)
-            dist = temp1 / temp2
-
-            if dist < min_dist:
-                min_dist = dist
-        return min_dist
-
-    # def distance_pl(self, polygon, x0, y0):
-    #     """ This function computes the shortest distance between a point and a polygon
-    #
-    #     :param polygon: A polygon object
-    #     :param x0, y0: x and y coordinate of the points
-    #     """
-    #     min_dist = sys.maxsize
-    #     for i in range(polygon.shape[0]):
-    #         y1, x1 = polygon[i]
-    #         disttmp = numpy.sqrt((x0 - x1)**2 + (y0 - y1)**2)
-    #
-    #         if disttmp < min_dist:
-    #             min_dist = disttmp
-    #
-    #     return min_dist
-
     def boundary_condition(self, h, x1, x2, y1, y2):
         """ This is to compute the boundary condition (eq 13) in supplementary info
         :param h: The nearest boundary
@@ -1372,29 +1190,3 @@ class SpatialRelations:
         """
         mean = numpy.pi * numpy.diff(numpy.array(self.distance_fit) ** 2)
         return mean
-
-
-# Not used
-def poly_area(x, y):
-    """ This function computes the area of a cluster
-    :param x: A numpy array of x coordinates
-    :param y: A numpy array of y coordinates
-    """
-    return 0.5*numpy.abs(numpy.dot(x,numpy.roll(y,1))-numpy.dot(y,numpy.roll(x,1)))
-
-
-# Not used
-def create_mask(img):
-    """ This function creates a mask for the detection
-
-    :param img: A 2D numpy array
-
-    :returns : A 2D numpy array of the masked ROI and coordinates of the polygon
-    """
-    mask = numpy.zeros(img.shape)
-    r = select_ROI.ROI(img)
-    poly = r.get()
-    rr, cc = polygon(poly[:,1], poly[:,0])
-    mask[rr, cc] = 1
-    #print(numpy.sum(mask))
-    return mask, poly
