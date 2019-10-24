@@ -8,6 +8,7 @@ from skimage.morphology import closing
 from matplotlib import pyplot
 from math import atan2
 from scipy.ndimage import convolve
+from scipy.spatial.distance import cdist
 import os
 
 
@@ -751,40 +752,45 @@ class SpatialRelations:
         coupling = numpy.array([
             (numpy.sqrt(var[i]) * G0[i]) / G[i] if G0[i] > T else 0 for i in range(len(self.rings)-1)
         ])
-        probability = []
 
+        # Create distance matrix and coupling probability matrix using cdist
+        MPP1_array = numpy.ndarray((n1, 2))
+        for i, (c1, s1, (y1, x1)) in enumerate(self.MPP1_ROI):
+            MPP1_array[i] = numpy.array([y1, x1])
+
+        MPP2_array = numpy.ndarray((n2, 2))
+        for i, (c1, s1, (y2, x2)) in enumerate(self.MPP2_ROI):
+            MPP2_array[i] = numpy.array([y2, x2])
+
+        dist_array = cdist(MPP1_array, MPP2_array)
+        prob_array = numpy.zeros(dist_array.shape)
+        for i in range(len(self.rings) - 1):
+            prob_array[numpy.where(numpy.logical_and(self.rings[i] <= dist_array, dist_array < self.rings[i+1]))] = coupling[i]
+        prob_array[dist_array == 0] = 0
+
+        # Create the list of lines for the couples excel file
+        n_couples = numpy.sum(prob_array > 0)
         prob_write = []
-        for c1, s1, (y1, x1) in self.MPP1_ROI:
-            for c2, s2, (y2, x2) in self.MPP2_ROI:
-                dist = self.distance(x1, x2, y1, y2)
-                p = 0
-                if not (s1 == s2 and y1 == y2 and x1 == x2):
-                    for i in range(len(self.rings) - 1):
-                        if self.rings[i] <= dist < self.rings[i + 1]:
-                            p += coupling[i]
-                            probability.append([p, dist])
+        for i in range(n1):
+            for j in range(n2):
+                if prob_array[i,j] > 0:
+                    prob_write.append([MPP1_array[i][0],
+                                       MPP1_array[i][1],
+                                       MPP2_array[j][0],
+                                       MPP2_array[j][1],
+                                       dist_array[i,j],
+                                       prob_array[i,j]])
 
-                # Prepare information list for writing in excel file
-                if p != 0:
-                    problist = [x1, y1, x2, y2, dist, p]
-                    prob_write.append(problist)
-
-        n_couples = len(probability)
-
-        if probability:
-            probability = numpy.array(probability)
-            probability = probability[probability[:,0] > 0]
-            coupling_index = numpy.sum(probability, axis=0)
-            mean_coupling_distance = 0
-            if coupling_index[0] > 0:
-                mean_coupling_distance = numpy.sum(numpy.prod(probability, axis=1)) / coupling_index[0]
+        if numpy.sum(prob_array) > 0:
+            coupling_index = (numpy.sum(prob_array)/n1, numpy.sum(prob_array)/n2)
+            mean_coupling_distance = numpy.sum(dist_array*prob_array)/numpy.sum(prob_array)
         else:
-            coupling_index = numpy.array([0,0])
+            coupling_index = 0
             mean_coupling_distance = None
 
         return prob_write, {'n_spots_0': len(self.MPP1_ROI),
                             'n_spots_1': len(self.MPP2_ROI),
-                            'coupling_index': (coupling_index[0] / n1, coupling_index[0] / n2),
+                            'coupling_index': coupling_index,
                             'mean_coupling_distance': mean_coupling_distance,
                             'coupling_probabilities': coupling,
                             'n_couples': n_couples}

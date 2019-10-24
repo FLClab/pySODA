@@ -13,8 +13,8 @@ This file contains all the code related to running the SODA method using the cla
 """
 
 """ Change parameters here! """
-DIRECTORY = r""  # Path containing TIF files
-OUTPUT_DIRECTORY = r""  # Path in which to save outputs
+DIRECTORY = r"example_image"  # Path containing TIF files
+OUTPUT_DIRECTORY = r"example_image/example_output"  # Path in which to save outputs
 
 # For spot detection
 # Channel 2 is not used for a 2 color image
@@ -63,6 +63,8 @@ class SodaImageAnalysis:
         self.image = image
         self.directory = directory
         self.output_dir = output_dir
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
         self.params = params
 
         print("Detecting spots using wavelet transform...")
@@ -257,7 +259,7 @@ def main(directory, output_dir, params):
     """
 
     # Writing Excel file
-    results_workbook = xlsxwriter.Workbook(os.path.join(directory, "PySODA_results_{}.xlsx".format(os.path.basename(directory))),
+    results_workbook = xlsxwriter.Workbook(os.path.join(output_dir, "PySODA_results_{}.xlsx".format(os.path.basename(directory))),
                                            {'nan_inf_to_errors': True})
     worksheets = []
     worksheet_names = []
@@ -269,6 +271,7 @@ def main(directory, output_dir, params):
             sheet.write(0, t, titles[t])
 
     for file in os.listdir(directory):
+        #if file.lower().endswith('.tif') or file.lower().endswith('.tiff'):  # ORIGINAL
         if file.lower().endswith('.tif') or file.lower().endswith('.tiff'):
             print('--- Running SODA on image {} ---'.format(file))
 
