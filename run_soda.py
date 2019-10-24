@@ -1,6 +1,5 @@
 import wavelet_SODA as wv
-from skimage import io, filters
-from scipy.ndimage import morphology
+from skimage import io, filters, morphology
 from skimage.measure import find_contours, regionprops, label, subdivide_polygon
 from itertools import combinations, combinations_with_replacement
 import os
@@ -14,9 +13,11 @@ This file contains all the code related to running the SODA method using the cla
 """
 
 """ Change parameters here! """
-DIRECTORY = r"C:\Users\Renaud\Documents\GitHub\pySODA - Copie (2)\figure_image"  # Path containing TIF files
+DIRECTORY = r""  # Path containing TIF files
+OUTPUT_DIRECTORY = r""  # Path in which to save outputs
 
 # For spot detection
+# Channel 2 is not used for a 2 color image
 SCALE_LIST = [[3,4],  # Channel 0  # Scales to be used for wavelet transform for spot detection
               [3,4],  # Channel 1  # Higher values mean less details.
               [3,4]]  # Channel 2  # Multiple scales can be used (e.g. [1,2]). Scales must be integers.
@@ -28,7 +29,7 @@ MIN_SIZE = [5,  # Channel 0 # Minimum area (pixels) of spots to analyse
             5]  # Channel 2
 MIN_AXIS_LENGTH = [3,  # Channel 0  # Minimum length of both ellipse axes of spots to analyse
                    3,  # Channel 1
-                   1]  # Channel 2
+                   3]  # Channel 2
 
 # For SODA analysis
 ROI_THRESHOLD = 200  # Percent modifier of ROI threshold. Higher value = more pixels taken.
@@ -37,8 +38,7 @@ RING_WIDTH = 1  # Width of rings in pixels
 SELF_SODA = False  # Set to True to compute SODA for couples of spots in the same channel as well
 
 # Display and graphs
-SHOW_ROI = False  # Set to True to display the ROI mask contour and detected spots for every image
-SAVE_ROI = False  # Set to True to save TIF images of all spots and filtered spots for each channel
+SAVE_ROI = False  # Set to True to save TIF images of spots detection and masks in OUTPUT_DIRECTORY
 WRITE_HIST = False  # Set to True to create a .png of the coupling probabilities by distance histogram
 
 
@@ -58,15 +58,16 @@ class SodaImageAnalysis:
     """
     This class contains the steps to run the SODA analysis on a multichannel image.
     """
-    def __init__(self, file, image, directory, params):
+    def __init__(self, file, image, directory, output_dir, params):
         self.file = file
         self.image = image
         self.directory = directory
+        self.output_dir = output_dir
         self.params = params
 
         print("Detecting spots using wavelet transform...")
         self.roi_mask = self.find_ROI(threshold=self.params['roi_thresh'])
-        self.spots_mask = self.detect_spots()
+        self.spots_mask = self.detect_spots(self.params['save_roi'])
         self.marked_point_process = self.spatial_distribution(self.spots_mask)
 
     def find_ROI(self, sigma=10, threshold=100):
@@ -90,9 +91,7 @@ class SodaImageAnalysis:
         arealist = []
         for i in range(len(label_props)):
             arealist.append(label_props[i].area)
-        for i in range(len(label_props)):
-            if label_props[i].area < np.mean(arealist):
-                roi_mask[roi_mask == i + 1] = 0
+        roi_mask = morphology.remove_small_objects(roi_mask.astype(bool), min_size=np.mean(arealist))
         roi_mask[roi_mask > 0] = 1
 
         return roi_mask
@@ -112,9 +111,9 @@ class SodaImageAnalysis:
 
         return roi_contour
 
-    def detect_spots(self):
+    def detect_spots(self, save=False):
         """
-        Detects spots inside the ROI from multi-channel image using the wavelet transform
+        Detects spots inside the ROI from multi-channel image using wavelet transform multiscale product
         :return: 3D numpy array of spots masks. Z dimension is for different channels.
         """
         z, y, x = self.image.shape
@@ -125,7 +124,32 @@ class SodaImageAnalysis:
                                                    self.params['scale_list'][ch],
                                                    self.params['scale_threshold'][ch]).computeDetection()
 
-        return spots_image*self.roi_mask
+        spots_image_filtered = self.filter_spots(spots_image)
+        out_image = spots_image_filtered*self.roi_mask
+        if save:
+            io.imsave(os.path.join(self.output_dir, "{}_all_spots.tif".format(os.path.basename(self.file))), spots_image.astype('uint8'))
+            io.imsave(os.path.join(self.output_dir, "{}_filtered_spots.tif".format(os.path.basename(self.file))), spots_image_filtered.astype('uint8')*255)
+            io.imsave(os.path.join(self.output_dir, "{}_mask.tif".format(os.path.basename(self.file))), self.roi_mask.astype('uint8')*255)
+            io.imsave(os.path.join(self.output_dir, "{}_spots_in_mask.tif".format(os.path.basename(self.file))), out_image.astype('uint8')*255)
+
+        return out_image
+
+    def filter_spots(self, mask):
+        """
+        Removes the spots that are too small or too linear (using parameters min_size and min_axis)
+        :param mask: 3D binary mask of spots to filter
+        :return: Filtered 3D binary mask
+        """
+        out_mask = np.copy(mask).astype(bool)
+        for i, img in enumerate(out_mask):
+            morphology.remove_small_objects(img, min_size=self.params['min_size'][i], in_place=True)
+            mask_lab, num = label(img, connectivity=1, return_num=True)
+            mask_props = regionprops(mask_lab)
+            for p in mask_props:
+                if p.minor_axis_length < self.params['min_axis'][i]:
+                    mask_lab[mask_lab == p.label] = 0
+            out_mask[i] = mask_lab > 0
+        return out_mask
 
     def spatial_distribution(self, mask):
         """
@@ -199,7 +223,7 @@ class SodaImageAnalysis:
             plt.locator_params(axis='x', nbins=N_RINGS)
             plt.xlabel('Distance (pixels)')
             plt.ylabel('Coupling probability')
-            plt.savefig(os.path.join(DIRECTORY, 'hist_{}_ch{}{}.png'.format(os.path.basename(self.file), ch0, ch1)))
+            plt.savefig(os.path.join(self.output_dir, 'hist_{}_ch{}{}.png'.format(os.path.basename(self.file), ch0, ch1)))
             plt.close()
 
         return SR, prob_write, results_dict
@@ -219,13 +243,13 @@ class SodaImageAnalysis:
             print('- Channels {} and {} -'.format(ch0, ch1))
             SR, prob_write, results_dict = self.spatial_relations(ch0, ch1, index)
             #spots0, spots1, couples_data = SR.get_spots_data(prob_write)
-            SR.write_spots_and_probs(prob_write, self.directory, self.file + '_{}_{}.xlsx'.format(ch0, ch1))
+            SR.write_spots_and_probs(prob_write, self.output_dir, self.file + '_{}_{}.xlsx'.format(ch0, ch1))
             out_results['ch{}-ch{}'.format(ch0, ch1)] = results_dict
 
         return out_results
 
 
-def main(directory, params):
+def main(directory, output_dir, params):
     """
     Loop through all files in directory to run SODA analysis using chosen parameters
     :param directory: Directory
@@ -262,7 +286,7 @@ def main(directory, params):
 
             ### Analysis happens here! ###
             try:
-                out_dict = SodaImageAnalysis(file, img, directory, params).soda_analysis(0)
+                out_dict = SodaImageAnalysis(file, img, directory, output_dir, params).soda_analysis(0)
             except SpotsError:
                 print("Not enough spots in image! Skipping...\n")
                 continue
@@ -294,6 +318,7 @@ if __name__ == '__main__':
     start_time = time.time()
 
     directory = DIRECTORY
+    output_dir = OUTPUT_DIRECTORY
     params = {'scale_list': SCALE_LIST,
               'scale_threshold': SCALE_THRESHOLD,
               'min_size': MIN_SIZE,
@@ -301,7 +326,8 @@ if __name__ == '__main__':
               'roi_thresh': ROI_THRESHOLD,
               'n_rings': N_RINGS,
               'ring_width': RING_WIDTH,
-              'self_soda': SELF_SODA}
+              'self_soda': SELF_SODA,
+              'save_roi': SAVE_ROI}
 
-    main(directory, params)
+    main(directory, output_dir, params)
     print("--- Running time: %s seconds ---" % (time.time() - start_time))
