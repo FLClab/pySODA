@@ -2,14 +2,13 @@ import numpy
 import math
 import sys
 import xlsxwriter
+import os
 
 from skimage.measure import regionprops, label
-from skimage.morphology import closing
 from matplotlib import pyplot
 from math import atan2
 from scipy.ndimage import convolve
 from scipy.spatial.distance import cdist
-import os
 
 
 """
@@ -242,7 +241,7 @@ class SpatialRelations:
     objects (spots or localisations), we use the Ripley’s K function, a gold standard for analysing
     the second-order properties (i.e., distance to neighbours) of point processes.
     """
-    def __init__(self, MPP1, MPP2, sROI, roivolume, poly, img, n_rings, step, filename, img_index):
+    def __init__(self, MPP1, MPP2, sROI, roivolume, poly, img, n_rings, step, filename):
         """ The init function
         :param MPP1: The marked point process of every clusters in the first channel
         :param MPP2: The marked point process of every clusters in the second channel
@@ -257,8 +256,6 @@ class SpatialRelations:
 
         self.img = img
         self.filename = filename
-
-        self.img_index = img_index
 
         self.MPP1 = MPP1
         self.MPP2 = MPP2
@@ -785,7 +782,7 @@ class SpatialRelations:
             coupling_index = (numpy.sum(prob_array)/n1, numpy.sum(prob_array)/n2)
             mean_coupling_distance = numpy.sum(dist_array*prob_array)/numpy.sum(prob_array)
         else:
-            coupling_index = 0
+            coupling_index = (0,0)
             mean_coupling_distance = None
 
         return prob_write, {'n_spots_0': len(self.MPP1_ROI),
@@ -837,157 +834,6 @@ class SpatialRelations:
 
         pyplot.savefig('boxplot_{}'.format(self.filename))
         pyplot.close()
-
-    def get_spots_data(self, prob_write):
-        """
-        Used to get information on all spots and couples as numpy arrays
-        :param prob_write: List of couples and their properties
-        :return mpp1_array: Numpy array of information on all spots in channel 1 (1 spot/row)
-        :return mpp2_array: Numpy array of information on all spots in channel 2 (1 spot/row)
-        :return couples_array: Numpy array of information on all couples (1 couple/row)
-        """
-        mpp1_array = numpy.ndarray((len(self.MPP1_ROI), 18))
-        mpp2_array = numpy.ndarray((len(self.MPP2_ROI), 18))
-
-        couples_list = []
-        # couples_array = numpy.array((0, 0, 0, 0, 0, 0))
-
-        for i in range(len(self.MPP1_ROI)):
-            p1, s1, (y1, x1) = self.MPP1_ROI[i]
-            coupled = 0
-            for xa, ya, xb, yb, dist, p in prob_write:
-                if (y1, x1) == (ya, xa):
-                    coupled = 1
-            dnn11, nn11, angle = self.neighbors[0][i]
-            dnn12, nn12, angle = self.neighbors[1][i]
-            datarow = [x1, y1, s1, dnn12, dnn11, p1.eccentricity, nn12, nn11,
-                       p1.max_intensity, p1.min_intensity, p1.mean_intensity,
-                       p1.major_axis_length, p1.minor_axis_length, p1.orientation,
-                       p1.perimeter, p1.equivalent_diameter, self.img_index, coupled]
-
-            for j in range(len(datarow)):
-                mpp1_array[i, j] = datarow[j]
-
-        for i in range(len(self.MPP2_ROI)):
-            p1, s1, (y1, x1) = self.MPP2_ROI[i]
-            coupled = 0
-            for xa, ya, xb, yb, dist, p in prob_write:
-                if (y1, x1) == (yb, xb):
-                    coupled = 1
-            dnn21, nn21, angle = self.neighbors[2][i]
-            dnn22, nn22, angle = self.neighbors[3][i]
-            datarow = [x1, y1, s1, dnn21, dnn22, p1.eccentricity, nn21, nn22,
-                       p1.max_intensity, p1.min_intensity, p1.mean_intensity,
-                       p1.major_axis_length, p1.minor_axis_length, p1.orientation,
-                       p1.perimeter, p1.equivalent_diameter, self.img_index, coupled]
-
-            for j in range(len(datarow)):
-                mpp2_array[i, j] = datarow[j]
-
-        for xa, ya, xb, yb, dist, p in prob_write:
-            couple_data = [xa, ya, xb, yb, dist, p, self.img_index]
-            couples_list.append(couple_data)
-
-        couples_array = numpy.asarray(couples_list)
-
-        return mpp1_array, mpp2_array, couples_array
-
-    def data_scatter(self, mean_coupling_dist, prob_write):
-        """
-        Plots a scatter plot of two spot proprieties. Saves the resulting plot in a .png
-        :param mean_coupling_dist: Mean coupling distance
-        :param prob_write: List of couples and their properties
-        """
-        X = []
-        Y = []
-
-        blue = []
-        dist_tot = 0
-        dist_to_border = self.nearest_contour(self.MPP1_ROI)
-
-        # for i in range(len(self.MPP1_ROI)):
-        #     p1, s1, (y, x) = self.MPP1_ROI[i]
-        #     for xa, ya, xb, yb, dist, p in prob_write:
-        #         if (y, x) == (ya, xa) and p1.minor_axis_length > 0:
-        #             X.append(dist)
-        #             Y.append(p1.eccentricity)
-        #             blue.append('blue')
-        #
-        # pyplot.scatter(X, Y, color=blue, marker='.', linewidths=0.5, edgecolors='black')
-        # pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        # pyplot.xlabel('Coupling distance')
-        # pyplot.ylabel('Eccentricity')
-        # pyplot.title('Channel 0')
-        # pyplot.savefig('scatter_{}_ch0.tif'.format(self.filename))
-        # pyplot.close()
-        #
-        # X = []
-        # Y = []
-        # red = []
-        # for i in range(len(self.MPP2_ROI)):
-        #     p1, s1, (y, x) = self.MPP2_ROI[i]
-        #     for xa, ya, xb, yb, dist, p in prob_write:
-        #         if (y, x) == (yb, xb):
-        #             X.append(dist)
-        #             Y.append(p1.eccentricity)
-        #             red.append('red')
-        #
-        # pyplot.scatter(X, Y, color=red, marker='.', linewidths=0.5, edgecolors='black')
-        # pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        # pyplot.xlabel('Coupling distance')
-        # pyplot.ylabel('Eccentricity')
-        # pyplot.title('Channel 1')
-        # pyplot.savefig('scatter_{}_ch1.tif'.format(self.filename))
-        # pyplot.close()
-
-        for i in range(len(self.MPP1_ROI)):
-            p1, s1, (y,x) = self.MPP1_ROI[i]
-            if p1.minor_axis_length > 0:
-                neighbor = self.neighbors[1][i][1]
-                #r1, c1 = p1.centroid
-                #r2, c2 = p1.weighted_centroid
-                #d = self.distance(c1, c2, r1, r2)
-                p2, s2, (y2, x2) = self.MPP2_ROI[neighbor]
-                Y.append(p1.eccentricity)
-                X.append(self.neighbors[1][i][0])
-                dist_tot += self.neighbors[1][i][0]
-                blue.append('blue')
-
-        pyplot.scatter(X, Y, color=blue, marker='.', linewidths=0.5, edgecolors='black')
-        pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        pyplot.xlabel('Distance to nearest neighbor (pixels)')
-        pyplot.ylabel('Eccentricity')
-        pyplot.title('Channel 0')
-        pyplot.savefig('scatter_{}_ch0.tif'.format(self.filename))
-        pyplot.close()
-
-        X = []
-        Y = []
-        red = []
-        for i in range(len(self.MPP2_ROI)):
-            p1, s1, (y,x) = self.MPP2_ROI[i]
-            if p1.minor_axis_length > 0:
-                neighbor = self.neighbors[2][i][1]
-                #r1, c1 = p1.centroid
-                #r2, c2 = p1.weighted_centroid
-                #d = self.distance(c1, c2, r1, r2)
-                p2, s2, (y2, x2) = self.MPP1_ROI[neighbor]
-                Y.append(p1.eccentricity)
-                X.append(self.neighbors[2][i][0])
-                dist_tot += self.neighbors[2][i][0]
-                red.append('red')
-
-        pyplot.scatter(X, Y, color=red, marker='.', linewidths=0.5, edgecolors='black')
-        pyplot.axvline(x=mean_coupling_dist, color='green', linestyle='dashed')
-        pyplot.xlabel('Distance to nearest neighbor (pixels)')
-        pyplot.ylabel('Eccentricity')
-        pyplot.title('Channel 1')
-        pyplot.savefig('scatter_{}_ch1.tif'.format(self.filename))
-        pyplot.close()
-
-        #dist_mean = dist_tot/(len(red)+len(blue))
-
-        #pyplot.show()
 
     def write_spots_and_probs(self, prob_write, directory, title):
         """

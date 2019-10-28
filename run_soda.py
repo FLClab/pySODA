@@ -38,8 +38,8 @@ RING_WIDTH = 1  # Width of rings in pixels
 SELF_SODA = False  # Set to True to compute SODA for couples of spots in the same channel as well
 
 # Display and graphs
-SAVE_ROI = False  # Set to True to save TIF images of spots detection and masks in OUTPUT_DIRECTORY
-WRITE_HIST = False  # Set to True to create a .png of the coupling probabilities by distance histogram
+SAVE_ROI = True  # Set to True to save TIF images of spots detection and masks in OUTPUT_DIRECTORY
+WRITE_HIST = True  # Set to True to create a .pdf of the coupling probabilities by distance histogram
 
 
 class ImageError(ValueError):
@@ -67,7 +67,7 @@ class SodaImageAnalysis:
             os.makedirs(output_dir)
         self.params = params
 
-        print("Detecting spots using wavelet transform...")
+        print("Detecting spots using multiscale product...")
         self.roi_mask = self.find_ROI(threshold=self.params['roi_thresh'])
         self.spots_mask = self.detect_spots(self.params['save_roi'])
         self.marked_point_process = self.spatial_distribution(self.spots_mask)
@@ -86,7 +86,7 @@ class SodaImageAnalysis:
         filt[filt >= threshold] = 1
         filt = morphology.binary_closing(filt)
 
-        # Keep only areas with a significant volume
+        # Keep only areas with a significant volume (> mean)
         labels = label(filt, connectivity=2)
         label_props = regionprops(labels)
         roi_mask = np.copy(labels)
@@ -116,12 +116,12 @@ class SodaImageAnalysis:
     def detect_spots(self, save=False):
         """
         Detects spots inside the ROI from multi-channel image using wavelet transform multiscale product
+        :param save: True to save .tif images of spots and mask
         :return: 3D numpy array of spots masks. Z dimension is for different channels.
         """
-        z, y, x = self.image.shape
-        spots_image = np.ndarray((z, y, x))
+        spots_image = np.ndarray(self.image.shape)
 
-        for ch in range(z):
+        for ch in range(self.image.shape[0]):
             spots_image[ch] = wv.DetectionWavelets(self.image[ch],
                                                    self.params['scale_list'][ch],
                                                    self.params['scale_threshold'][ch]).computeDetection()
@@ -167,14 +167,14 @@ class SodaImageAnalysis:
             marks_list.append(marks)
             if len(marks) < 100:
                 raise SpotsError
+        print('\n')
         return marks_list
 
-    def spatial_relations(self, ch0, ch1, index):
+    def spatial_relations(self, ch0, ch1):
         """
         Measure the Spatial Relations of spots. This is the actual SODA analysis.
         :param ch0: first channel index to use in analysis
         :param ch1: second channel index to use in analysis
-        :param index: something?
         :return SR: Spatial relations object
         :return prob_write: Information on all couples and spots
         :return results_dict: Global results
@@ -191,8 +191,7 @@ class SodaImageAnalysis:
                                  self.image,
                                  self.params['n_rings'],
                                  self.params['ring_width'],
-                                 self.file,
-                                 index)
+                                 self.file)
 
         print("Computing G...")
         G = SR.correlation_new()
@@ -210,32 +209,36 @@ class SodaImageAnalysis:
         print("Computing statistics...")
         prob_write, results_dict = SR.coupling_prob(**arg_dict, G0=G0)
         print("================================"
-              "\nCoupling Index 1:", results_dict['coupling_index'][0],
-              "\nCoupling Index 2:", results_dict['coupling_index'][1],
+              "\nCoupling Index 0:", results_dict['coupling_index'][0],
+              "\nCoupling Index 1:", results_dict['coupling_index'][1],
               "\nMean Coupling Distance:", results_dict['mean_coupling_distance'], "pixels")
 
         probs = np.ndarray.tolist(results_dict['coupling_probabilities'])
-        print('Probabilities', probs, '\n\n')
+        print('Coupling probabilities: ', probs, '\n\n')
 
         # Coupling prob. by distance histogram
-        if WRITE_HIST:
-            dists = [i * RING_WIDTH for i in range(N_RINGS)]
-            plt.ylim(0, 1.0)
-            plt.bar(dists, probs, align='edge', width=RING_WIDTH, edgecolor='black', linewidth=0.75)
-            plt.locator_params(axis='x', nbins=N_RINGS)
-            plt.xlabel('Distance (pixels)')
-            plt.ylabel('Coupling probability')
-            plt.savefig(os.path.join(self.output_dir, 'hist_{}_ch{}{}.png'.format(os.path.basename(self.file), ch0, ch1)))
-            plt.close()
+        if self.params['write_hist']:
+            self.write_prob_histogram(probs, ch0, ch1)
 
         return SR, prob_write, results_dict
 
-    def soda_analysis(self, index):
+    def write_prob_histogram(self, probs, ch0, ch1):
+        dists = [i * self.params['ring_width'] for i in range(self.params['n_rings'])]
+        plt.ylim(0, 1.0)
+        plt.bar(dists, probs, align='edge', width=self.params['ring_width'], edgecolor='black', linewidth=0.75)
+        plt.locator_params(axis='x', nbins=self.params['n_rings'])
+        plt.xlabel('Distance (pixels)')
+        plt.ylabel('Coupling probability')
+        plt.savefig(os.path.join(self.output_dir, 'hist_{}_ch{}{}.pdf'.format(os.path.basename(self.file), ch0, ch1)),
+                    bbox_inches='tight', transparent=True, dpi=600)
+        plt.close()
+
+    def soda_analysis(self):
         """
         The main analysis function; runs SODA on all chosen combinations of channels on the current image
         """
         channel_list = [n for n in range(self.image.shape[0])]
-        if SELF_SODA:
+        if self.params['self_soda']:
             channel_pairs = combinations_with_replacement(channel_list, 2)
         else:
             channel_pairs = combinations(channel_list, 2)
@@ -243,9 +246,8 @@ class SodaImageAnalysis:
         out_results = {}
         for ch0, ch1 in channel_pairs:
             print('- Channels {} and {} -'.format(ch0, ch1))
-            SR, prob_write, results_dict = self.spatial_relations(ch0, ch1, index)
-            #spots0, spots1, couples_data = SR.get_spots_data(prob_write)
-            SR.write_spots_and_probs(prob_write, self.output_dir, self.file + '_{}_{}.xlsx'.format(ch0, ch1))
+            SR, prob_write, results_dict = self.spatial_relations(ch0, ch1)
+            SR.write_spots_and_probs(prob_write, self.output_dir, 'PySODA_' + self.file + '_ch{}{}.xlsx'.format(ch0, ch1))
             out_results['ch{}-ch{}'.format(ch0, ch1)] = results_dict
 
         return out_results
@@ -271,7 +273,6 @@ def main(directory, output_dir, params):
             sheet.write(0, t, titles[t])
 
     for file in os.listdir(directory):
-        #if file.lower().endswith('.tif') or file.lower().endswith('.tiff'):  # ORIGINAL
         if file.lower().endswith('.tif') or file.lower().endswith('.tiff'):
             print('--- Running SODA on image {} ---'.format(file))
 
@@ -285,11 +286,12 @@ def main(directory, output_dir, params):
                 if img.shape.index(min(img.shape)) == 2:
                     img = np.moveaxis(img, 2, 0)
             except ImageError:
+                print('Image has invalid dimensions. Skipping...\n')
                 continue
 
             ### Analysis happens here! ###
             try:
-                out_dict = SodaImageAnalysis(file, img, directory, output_dir, params).soda_analysis(0)
+                out_dict = SodaImageAnalysis(file, img, directory, output_dir, params).soda_analysis()
             except SpotsError:
                 print("Not enough spots in image! Skipping...\n")
                 continue
@@ -330,7 +332,8 @@ if __name__ == '__main__':
               'n_rings': N_RINGS,
               'ring_width': RING_WIDTH,
               'self_soda': SELF_SODA,
-              'save_roi': SAVE_ROI}
+              'save_roi': SAVE_ROI,
+              'write_hist': WRITE_HIST}
 
     main(directory, output_dir, params)
     print("--- Running time: %s seconds ---" % (time.time() - start_time))
