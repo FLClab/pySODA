@@ -136,7 +136,7 @@ class DetectionWavelets:
 
         mad = a / size
 
-        dcoeff = (self.scale_threshold / 100.0)
+        dcoeff = self.scale_threshold
 
         coeff_thr = (lambdac[depth + 1] * mad) / dcoeff
 

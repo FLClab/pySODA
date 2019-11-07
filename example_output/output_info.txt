@@ -1,0 +1,25 @@
+These output files were obtained using the following parameters:
+
+
+ROI_THRESHOLD = 2.0
+SCALE_LIST = [[3,4], 
+              [3,4],
+              [3,4]]
+SCALE_THRESHOLD = [2.0,
+                   2.0,
+                   2.0]
+
+
+MIN_SIZE = [5,
+            5,
+            5]
+MIN_AXIS_LENGTH = [3,
+                   3,
+                   3]
+N_RINGS = 16
+RING_WIDTH = 1
+SELF_SODA = False
+
+
+SAVE_ROI = True
+WRITE_HIST = True
