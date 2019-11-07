@@ -23,6 +23,7 @@ The Anaconda distribution of Python covers all of these.
   - `steps_SODA`: This file contains the SODA analysis pipeline.
   - `wavelet_SODA`: This file implements the base functions for the segmentation and the SODA statistical analysis.
   - `example_image`: An example two-color STED image is provided to test the algorithm.
+  - `example_output`: The pySODA output of the example image. Parameters are specified in the `output_info` text file.
 
 ## How to use pySODA:
 
