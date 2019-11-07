@@ -68,6 +68,9 @@ chosen parameters.
 **2 -** Execute run_soda.py. This will run the SODA analysis on every .tif image in the chosen DIRECTORY using the specified
 parameters.
 
+### Examples of segmentation parameters
+![Parameter examples](docs/images/param_ex.png)
+
 ## Output:
 
 **For each TIF file**: An excel file `pySODA_[image name]_chXY.xlsx` containing information on each individual spot 
