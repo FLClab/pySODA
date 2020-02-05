@@ -19,9 +19,9 @@ The Anaconda distribution of Python covers all of these.
   - Two- or three-channel super-resolution microscopy images. The analysis will run on all combinations of two channels.
 
 ## Contents:
-  - `run_SODA`: This is the script to execute in order to run the SODA analysis. Parameters are also set within this file.
-  - `steps_SODA`: This file contains the SODA analysis pipeline.
-  - `wavelet_SODA`: This file implements the base functions for the segmentation and the SODA statistical analysis.
+  - `run_SODA.py`: This is the script to execute in order to run the SODA analysis. Parameters are also set within this file.
+  - `steps_SODA.py`: This file contains the SODA analysis pipeline.
+  - `wavelet_SODA.py`: This file implements the base functions for the segmentation and the SODA statistical analysis.
   - `example_image`: An example two-color STED image is provided to test the algorithm.
   - `example_output`: The pySODA output of the example image. Parameters are specified in the `output_info` text file.
 
@@ -65,7 +65,7 @@ chosen parameters.
         SAVE_ROI : Whether to save TIF images of spots detection and masks in OUTPUT_DIRECTORY (bool)
         WRITE_HIST : Whether to create a .pdf of the coupling probabilities by distance histogram (bool)
 
-**2 -** Execute run_soda.py. This will run the SODA analysis on every .tif image in the chosen DIRECTORY using the specified
+**2 -** Execute run_soda.py. This will run the SODA analysis on every .tif image in the chosen `DIRECTORY` using the specified
 parameters.
 
 ### Examples of segmentation parameters
