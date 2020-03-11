@@ -3,16 +3,16 @@ import time
 
 """ Change parameters here """
 DIRECTORY = r"example_image"  # Path containing TIF files
-OUTPUT_DIRECTORY = r"example_output_roi_1"  # Path in which to save outputs
+OUTPUT_DIRECTORY = r"example_output"  # Path in which to save outputs
 
 # For spot detection
 # Channel 2 is not used for a 2 color image
-ROI_THRESHOLD = 3.0  # Multiplier of ROI threshold. Higher value = more pixels taken.
+ROI_THRESHOLD = 2.0  # Multiplier of ROI threshold. Higher value = more pixels taken.
 SCALE_LIST = [[3,4],  # Channel 0  # Scales to be used for wavelet transform for spot detection
               [3,4],  # Channel 1  # Higher values mean less details.
               [3,4]]  # Channel 2  # Multiple scales can be used (e.g. [1,2]). Scales must be integers.
-SCALE_THRESHOLD = [3.0,  # Channel 0  # Multiplier of wavelet transform threshold.
-                   3.0,  # Channel 1  # Higher value = more pixels detected.
+SCALE_THRESHOLD = [2.0,  # Channel 0  # Multiplier of wavelet transform threshold.
+                   2.0,  # Channel 1  # Higher value = more pixels detected.
                    2.0]  # Channel 2
 
 # For SODA analysis
@@ -28,7 +28,7 @@ SELF_SODA = False  # Set to True to compute SODA for couples of spots in the sam
 
 # Display and graphs
 SAVE_ROI = True  # Set to True to save TIF images of spots detection and masks in OUTPUT_DIRECTORY
-WRITE_HIST = False  # Set to True to create a .pdf of the coupling probabilities by distance histogram
+WRITE_HIST = True  # Set to True to create a .pdf of the coupling probabilities by distance histogram
 
 if __name__ == '__main__':
     start_time = time.time()

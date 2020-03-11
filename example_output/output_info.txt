@@ -1,4 +1,4 @@
-These output files were obtained using the following parameters:
+# These output files were obtained using the following parameters:
 
 
 ROI_THRESHOLD = 2.0

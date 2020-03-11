@@ -771,10 +771,10 @@ class SpatialRelations:
         for i in range(n1):
             for j in range(n2):
                 if prob_array[i,j] > 0:
-                    prob_write.append([MPP1_array[i][0],
-                                       MPP1_array[i][1],
-                                       MPP2_array[j][0],
+                    prob_write.append([MPP1_array[i][1],
+                                       MPP1_array[i][0],
                                        MPP2_array[j][1],
+                                       MPP2_array[j][0],
                                        dist_array[i,j],
                                        prob_array[i,j]])
 
