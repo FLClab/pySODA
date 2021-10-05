@@ -73,9 +73,6 @@ class SodaImageAnalysis:
         roi_mask = morphology.remove_small_objects(roi_mask.astype(bool), min_size=np.mean(arealist))
         roi_mask[roi_mask > 0] = 1
 
-        plt.imshow(roi_mask)
-        plt.show()
-
         return roi_mask
 
     def find_roi_contour(self):
