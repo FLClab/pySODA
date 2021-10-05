@@ -37,18 +37,26 @@ class SodaImageAnalysis:
         self.params = params
 
         print("Detecting spots using multiscale product...")
-        self.roi_mask = self.find_ROI(threshold=self.params['roi_thresh'])
+        self.roi_mask = self.find_ROI(threshold=self.params['roi_thresh'], channel_mask=self.params['channel_mask'])
+
+        if self.params['remove_channel'] is not None:
+            self.image = np.delete(self.image, self.params['remove_channel'], 0)
+
         self.spots_mask = self.detect_spots(self.params['save_roi'])
         self.marked_point_process = self.spatial_distribution(self.spots_mask)
 
-    def find_ROI(self, sigma=10, threshold=1.0):
+    def find_ROI(self, sigma=10, threshold=1.0, channel_mask=False):
         """
         Find the region of interest for the analysis using a gaussian blur and thresholding.
         :param sigma: Sigma of the gaussian blur
         :param threshold: Threshold multiplier
         :return roi_mask: mask of the ROI as 2D numpy array.
         """
-        stack = np.sum(self.image, axis=0)
+        if channel_mask is not None:
+            stack = self.image[channel_mask]
+        else:
+            stack = np.sum(self.image, axis=0)
+
         filt = filters.gaussian(stack, sigma=sigma)
         threshold = np.mean(filt) * (1.0 / threshold)
         filt[filt < threshold] = 0
@@ -64,6 +72,9 @@ class SodaImageAnalysis:
             arealist.append(label_props[i].area)
         roi_mask = morphology.remove_small_objects(roi_mask.astype(bool), min_size=np.mean(arealist))
         roi_mask[roi_mask > 0] = 1
+
+        plt.imshow(roi_mask)
+        plt.show()
 
         return roi_mask
 
@@ -135,7 +146,7 @@ class SodaImageAnalysis:
             marks = wv.SpatialDistribution(m, self.image[i], self.params['min_size'][i], self.params['min_axis'][i]).mark()
             print('Spots in channel {}: {}'.format(i, len(marks)))
             marks_list.append(marks)
-            if len(marks) < 100:
+            if len(marks) < 50:
                 raise SpotsError
         print('\n')
         return marks_list
@@ -209,6 +220,7 @@ class SodaImageAnalysis:
         :return out_results: Dictionary with input channels as keys and results dictionaries as values
         """
         channel_list = [n for n in range(self.image.shape[0])]
+        channel_list = [0,1]
         if self.params['self_soda']:
             channel_pairs = combinations_with_replacement(channel_list, 2)
         else:

@@ -2,12 +2,16 @@ import steps_SODA
 import time
 
 """ Change parameters here """
-DIRECTORY = r"example_image"  # Path containing TIF files
-OUTPUT_DIRECTORY = r"example_output"  # Path in which to save outputs
+DIRECTORY = r"./example_image"  # Path containing TIF files
+OUTPUT_DIRECTORY = r"./example_output"  # Path in which to save outputs
+
+# For ROI mask generation
+ROI_THRESHOLD = 2.0  # Multiplier of ROI threshold. Higher value = more pixels taken.
+CHANNEL_MASK = 2 # Channel to use as mask. This channel won't be used for SODA analysis. Set to None to generate mask from all channels.
+REMOVE_CHANNEL = 2 # Channel to remove from SODA analysis (for example, channel used for mask generation).
 
 # For spot detection
 # Channel 2 is not used for a 2 color image
-ROI_THRESHOLD = 2.0  # Multiplier of ROI threshold. Higher value = more pixels taken.
 SCALE_LIST = [[3,4],  # Channel 0  # Scales to be used for wavelet transform for spot detection
               [3,4],  # Channel 1  # Higher values mean less details.
               [3,4]]  # Channel 2  # Multiple scales can be used (e.g. [1,2]). Scales must be integers.
@@ -16,8 +20,8 @@ SCALE_THRESHOLD = [2.0,  # Channel 0  # Multiplier of wavelet transform threshol
                    2.0]  # Channel 2
 
 # For SODA analysis
-MIN_SIZE = [5,  # Channel 0 # Minimum area (pixels) of spots to analyse
-            5,  # Channel 1
+MIN_SIZE = [30,  # Channel 0 # Minimum area (pixels) of spots to analyse
+            30,  # Channel 1
             5]  # Channel 2
 MIN_AXIS_LENGTH = [3,  # Channel 0  # Minimum length of both ellipse axes of spots to analyse
                    3,  # Channel 1
@@ -25,6 +29,7 @@ MIN_AXIS_LENGTH = [3,  # Channel 0  # Minimum length of both ellipse axes of spo
 N_RINGS = 16  # Number of rings around spots (int)
 RING_WIDTH = 1  # Width of rings in pixels
 SELF_SODA = False  # Set to True to compute SODA for couples of spots in the same channel as well
+CONTOUR = False  # Set to False to avoid considering the cell contour
 
 # Display and graphs
 SAVE_ROI = True  # Set to True to save TIF images of spots detection and masks in OUTPUT_DIRECTORY
@@ -40,6 +45,8 @@ if __name__ == '__main__':
               'min_size': MIN_SIZE,
               'min_axis': MIN_AXIS_LENGTH,
               'roi_thresh': ROI_THRESHOLD,
+              'channel_mask': CHANNEL_MASK,
+              'remove_channel': REMOVE_CHANNEL,
               'n_rings': N_RINGS,
               'ring_width': RING_WIDTH,
               'self_soda': SELF_SODA,

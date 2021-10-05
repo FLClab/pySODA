@@ -40,6 +40,11 @@ chosen parameters.
   - Segmentation parameters:
   
         ROI_THRESHOLD : Multiplier of ROI threshold. Higher value means more pixels considered. (float)
+
+        CHANNEL_MASK : Channel to use as mask. This channel won't be used for SODA analysis. Set to None to generate mask from all channels.
+
+        REMOVE_CHANNEL : Channel to remove from SODA analysis (for example, channel used for mask generation).
+
         
         SCALE_LIST : List of scales to be used for the multiscale product segmentation of spots.
                      Takes the form of a list containing a list of integers for each channel.
