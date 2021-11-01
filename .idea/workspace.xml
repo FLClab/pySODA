@@ -2,18 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9ee34f15-c711-4903-9e31-f14f16b63956" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_all_spots.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_filtered_spots.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_mask.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_spots_in_mask.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/hist_0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_ch01.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/example_output/hist_0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_ch01.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/output_info.txt" beforeDir="false" afterPath="$PROJECT_DIR$/example_output/output_info.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/pySODA_0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_ch01.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/example_output/pySODA_0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_ch01.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/pySODA_results_example_image.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/example_output/pySODA_results_example_image.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_SODA.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_SODA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wavelet_SODA.py" beforeDir="false" afterPath="$PROJECT_DIR$/wavelet_SODA.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,8 +17,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="459">
+              <caret line="27" column="34" lean-forward="true" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -36,22 +27,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="1037">
-                <caret line="61" column="3" selection-start-line="61" selection-start-column="3" selection-end-line="61" selection-end-column="3" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/steps_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3740">
-              <caret line="220" column="31" selection-start-line="220" selection-start-column="31" selection-end-line="220" selection-end-column="31" />
+            <state relative-caret-position="136">
+              <caret line="8" selection-start-line="8" selection-end-line="8" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -60,10 +39,31 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="22" selection-end-line="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="50" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="778" column="56" selection-start-line="778" selection-start-column="56" selection-end-line="778" selection-end-column="56" />
+            <state relative-caret-position="841">
+              <caret line="867" column="25" selection-start-line="867" selection-start-column="12" selection-end-line="867" selection-end-column="25" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -82,18 +82,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_{}_{}</find>
-      <find>get_spots_data</find>
-      <find>combinations</find>
-      <find>coupling_index</find>
-      <find>spots in channel</find>
-      <find>results</find>
-      <find>.png</find>
-      <find>.pdf</find>
-      <find>index</find>
-      <find>self.img_index</find>
-      <find>img_index</find>
-      <find>channel_list</find>
       <find>pair</find>
       <find>threshold</find>
       <find>roi_thresh</find>
@@ -112,6 +100,18 @@
       <find>computing A</find>
       <find>spatial_relations</find>
       <find>prob_write</find>
+      <find>subdivide</find>
+      <find>coupling_prob</find>
+      <find>self.marked_point_process</find>
+      <find>&lt; 10</find>
+      <find>&lt;</find>
+      <find>combinations</find>
+      <find>Fi</find>
+      <find>STED</find>
+      <find>&lt; 100</find>
+      <find>REMOVE</find>
+      <find>find_ROI</find>
+      <find>plt.</find>
     </findStrings>
     <replaceStrings>
       <replace>stack</replace>
@@ -158,7 +158,6 @@
         <option value="$PROJECT_DIR$/select_ROI.py" />
         <option value="$PROJECT_DIR$/../wavelets_backup/wavelet_SODA.py" />
         <option value="$PROJECT_DIR$/test_program.py" />
-        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/wavelet.py" />
         <option value="$PROJECT_DIR$/self_soda_from_masks.py" />
@@ -166,7 +165,6 @@
         <option value="$PROJECT_DIR$/make_coupled_watershed.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_2.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py" />
-        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_4.py" />
         <option value="$PROJECT_DIR$/../synaptic-proteins/plotting/plot_pfile_ctrl_clusternumber.py" />
         <option value="$PROJECT_DIR$/plot_pfile_ctrl_clusternumber.py" />
@@ -183,25 +181,27 @@
         <option value="$PROJECT_DIR$/../pySODA - Copie (2)/plot_pfile_ctrl_Ratio_clustersArea.py" />
         <option value="$PROJECT_DIR$/../pySODA - Copie (2)/plot_pfile_ctrl_Ratio_coupledVSuncoupled - Copie.py" />
         <option value="$PROJECT_DIR$/run_soda.py" />
-        <option value="$PROJECT_DIR$/steps_SODA.py" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_5.py" />
         <option value="$PROJECT_DIR$/wavelet_SODA.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
+        <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+        <option value="$PROJECT_DIR$/steps_SODA.py" />
         <option value="$PROJECT_DIR$/run_SODA.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
-    <option name="y" value="-10" />
-    <option name="width" value="980" />
-    <option name="height" value="1040" />
+    <option name="x" value="888" />
+    <option name="width" value="1039" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -209,43 +209,17 @@
               <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
               <item name="pySODA" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pySODA" type="462c0819:PsiDirectoryNode" />
-              <item name="docs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pySODA" type="462c0819:PsiDirectoryNode" />
-              <item name="docs" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pySODA" type="462c0819:PsiDirectoryNode" />
-              <item name="old_version" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-            </path>
-            <path>
-              <item name="pySODA" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Python" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Anaconda3/envs/caiman_venv" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../synaptic-proteins/plotting" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -295,27 +269,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="plot_pfile_ctrl_Ratio_coupledVSuncoupled - Copie" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="pySODA" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$ - Copie (2)" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$ - Copie (2)/plot_pfile_ctrl_Ratio_coupledVSuncoupled - Copie.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="run_SODA" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pySODA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -337,6 +290,48 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pySODA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_1" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pySODA" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="scratch_5" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="pySODA" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -350,27 +345,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_5.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="steps_SODA" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="pySODA" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/steps_SODA.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -403,18 +377,18 @@
     <list>
       <item itemvalue="Python.synth_image" />
       <item itemvalue="Python.caimanmanager" />
-      <item itemvalue="Python.plot_pfile_ctrl_Ratio_coupledVSuncoupled - Copie" />
       <item itemvalue="Python.run_SODA" />
+      <item itemvalue="Python.scratch" />
+      <item itemvalue="Python.scratch_1" />
       <item itemvalue="Python.scratch_5" />
-      <item itemvalue="Python.steps_SODA" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.run_SODA" />
+        <item itemvalue="Python.scratch" />
+        <item itemvalue="Python.scratch_1" />
         <item itemvalue="Python.scratch_5" />
         <item itemvalue="Python.caimanmanager" />
-        <item itemvalue="Python.steps_SODA" />
-        <item itemvalue="Python.plot_pfile_ctrl_Ratio_coupledVSuncoupled - Copie" />
       </list>
     </recent_temporary>
   </component>
@@ -445,15 +419,15 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.14436248" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.10695469" />
       <window_info id="Structure" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Event Log" order="0" sideWeight="0.32349843" side_tool="true" visible="true" weight="0.36619717" />
+      <window_info anchor="bottom" id="Event Log" order="0" sideWeight="0.3256059" side_tool="true" weight="0.40520042" />
       <window_info anchor="bottom" id="Version Control" order="1" sideWeight="0.49947312" weight="0.32827735" />
       <window_info anchor="bottom" id="Python Console" order="2" sideWeight="0.49841937" weight="0.3261105" />
       <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.4963119" weight="0.32719395" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" sideWeight="0.4993395" weight="0.16973126" />
-      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.6765016" weight="0.36619717" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.674921" weight="0.2881907" />
       <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.4980185" weight="0.2545969" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -465,8 +439,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/testimage/couples_by_dist.png" />
-    <entry file="file://$PROJECT_DIR$/testimage/intensity_by_dist_ch0.png" />
     <entry file="file://$PROJECT_DIR$/testimage/intensity_by_dist_ch1.png" />
     <entry file="file://$PROJECT_DIR$/testimage/proportion_couples_by_dist_ch0.png" />
     <entry file="file://$PROJECT_DIR$/testimage/proportion_couples_by_dist_ch1.png" />
@@ -481,24 +453,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/skimage/measure/_regionprops.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="297">
           <caret line="106" selection-start-line="106" selection-end-line="106" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
         </state>
       </provider>
     </entry>
@@ -646,58 +604,83 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Anaconda3/envs/caiman/bin/caimanmanager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="195" column="30" lean-forward="true" selection-start-line="195" selection-start-column="30" selection-end-line="195" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Anaconda3/envs/caiman/bin/caimanmanager.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_5.py" />
-    <entry file="file://$PROJECT_DIR$/old_version/run_soda_old.py">
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/scipy/signal/signaltools.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5355">
-          <caret line="315" column="21" selection-start-line="315" selection-start-column="15" selection-end-line="315" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="186">
+          <caret line="972" column="4" selection-start-line="972" selection-start-column="4" selection-end-line="972" selection-end-column="4" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="1037">
-            <caret line="61" column="3" selection-start-line="61" selection-start-column="3" selection-end-line="61" selection-end-column="3" />
+          <first_editor relative-caret-position="666">
+            <caret line="61" column="2" selection-start-line="61" selection-start-column="2" selection-end-line="61" selection-end-column="2" />
           </first_editor>
           <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/steps_SODA.py">
+    <entry file="file://$USER_HOME$/Anaconda3/Lib/site-packages/skimage/measure/_polygon.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3740">
-          <caret line="220" column="31" selection-start-line="220" selection-start-column="31" selection-end-line="220" selection-end-column="31" />
+        <state relative-caret-position="607">
+          <caret line="152" column="45" selection-start-line="152" selection-start-column="45" selection-end-line="152" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/old_version/run_soda_old.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3666">
+          <caret line="274" column="66" lean-forward="true" selection-start-line="274" selection-start-column="66" selection-end-line="274" selection-end-column="66" />
           <folding>
-            <element signature="e#0#25#0" expanded="true" />
+            <element signature="e#0#29#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="778" column="56" selection-start-line="778" selection-start-column="56" selection-end-line="778" selection-end-column="56" />
+        <state relative-caret-position="841">
+          <caret line="867" column="25" selection-start-line="867" selection-start-column="12" selection-end-line="867" selection-end-column="25" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="50" selection-start-line="6" selection-start-column="50" selection-end-line="6" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/steps_SODA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/run_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        <state relative-caret-position="459">
+          <caret line="27" column="34" lean-forward="true" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>
