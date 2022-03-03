@@ -217,7 +217,7 @@ class SodaImageAnalysis:
         :return out_results: Dictionary with input channels as keys and results dictionaries as values
         """
         channel_list = [n for n in range(self.image.shape[0])]
-        channel_list = [0,1]
+
         if self.params['self_soda']:
             channel_pairs = combinations_with_replacement(channel_list, 2)
         else:
