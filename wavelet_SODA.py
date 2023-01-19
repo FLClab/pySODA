@@ -864,8 +864,8 @@ class SpatialRelations:
             dnn1_1, nn1, angle = self.neighbors[0][idx_1]
             dnn2_1, nn2, angle = self.neighbors[1][idx_1]
 
-            dnn1_2, nn1, angle = self.neighbors[0][idx_2]
-            dnn2_2, nn2, angle = self.neighbors[1][idx_2]
+            dnn1_2, nn1, angle = self.neighbors[3][idx_2]
+            dnn2_2, nn2, angle = self.neighbors[2][idx_2]
 
             for index in range(len(p_list)):
                 datarow =[x1, y1, s1, dnn1_1, dnn2_1, p1.eccentricity,
