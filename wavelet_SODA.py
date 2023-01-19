@@ -776,7 +776,9 @@ class SpatialRelations:
                                        MPP2_array[j][1],
                                        MPP2_array[j][0],
                                        dist_array[i,j],
-                                       prob_array[i,j]])
+                                       prob_array[i,j],
+                                       i,
+                                       j])
 
         if numpy.sum(prob_array) > 0:
             coupling_index = (numpy.sum(prob_array)/n1, numpy.sum(prob_array)/n2)
@@ -803,7 +805,7 @@ class SpatialRelations:
         dataU = []
         for p1, s1, (y1, x1) in self.MPP1_ROI:
             coupled = False
-            for xa, ya, xb, yb, dist, p in prob_write:
+            for xa, ya, xb, yb, dist, p, _, _ in prob_write:
                 if (y1, x1) == (ya, xa) and p1.minor_axis_length > 0:
                     dataC.append(p1.eccentricity)
                     coupled = True
@@ -816,7 +818,7 @@ class SpatialRelations:
         dataU = []
         for p1, s1, (y1, x1) in self.MPP2_ROI:
             coupled = False
-            for xa, ya, xb, yb, dist, p in prob_write:
+            for xa, ya, xb, yb, dist, p, _, _ in prob_write:
                 if (y1, x1) == (yb, xb) and p1.minor_axis_length > 0:
                     dataC.append(p1.eccentricity)
                     coupled = True
@@ -845,13 +847,41 @@ class SpatialRelations:
         workbook = xlsxwriter.Workbook(os.path.join(directory, title), {'nan_inf_to_errors': True})
         couples = workbook.add_worksheet(name='Couples')
         titles = ['X1', 'Y1', 'X2', 'Y2', 'Distance', 'Coupling probability']
+
+        titles = ['X1', 'Y1', 'Area_1', 'Distance to Neighbor Same Ch_1', 'Distance to Neighbor Other Ch_1', 'Eccentricity_1', 'Max intensity_1', 'Min intensity_1', 'Mean intensity_1', 'Major axis length_1', 'Minor axis length_1', 'Orientation_1', 'Perimeter_1',
+                  'X2', 'Y2', 'Area_2', 'Distance to Neighbor Same Ch_2', 'Distance to Neighbor Other Ch_2', 'Eccentricity_2', 'Max intensity_2', 'Min intensity_2', 'Mean intensity_2', 'Major axis length_2', 'Minor axis length_2', 'Orientation_2', 'Perimeter', 'Coupling Distance', 'Coupling probability']
+
+
         for t in range(len(titles)):
             couples.write(0, t, titles[t])
 
         row = 1
         for p_list in prob_write:
+            idx_1, idx_2 = p_list[6], p_list[7]
+            (p1, s1, (y1, x1)) = self.MPP1_ROI[idx_1]
+            (p2, s2, (y2, x2)) = self.MPP2_ROI[idx_2]
+
+            dnn1_1, nn1, angle = self.neighbors[0][idx_1]
+            dnn2_1, nn2, angle = self.neighbors[1][idx_1]
+
+            dnn1_2, nn1, angle = self.neighbors[0][idx_2]
+            dnn2_2, nn2, angle = self.neighbors[1][idx_2]
+
             for index in range(len(p_list)):
-                couples.write(row, index, p_list[index])
+                datarow =[x1, y1, s1, dnn1_1, dnn2_1, p1.eccentricity,
+                         p1.max_intensity, p1.min_intensity, p1.mean_intensity,
+                         p1.major_axis_length, p1.minor_axis_length, p1.orientation,
+                         p1.perimeter,
+
+                         x2, y2, s2, dnn1_2, dnn2_2, p2.eccentricity,
+                         p2.max_intensity, p2.min_intensity, p2.mean_intensity,
+                         p2.major_axis_length, p2.minor_axis_length, p2.orientation,
+                         p2.perimeter,
+
+                         p_list[4], p_list[5]
+                         ]
+                for i in range(len(datarow)):
+                    couples.write(row, i, datarow[i])
             row += 1
 
         spots1 = workbook.add_worksheet(name="Spots ch0")
@@ -866,7 +896,7 @@ class SpatialRelations:
         for (p1, s1, (y1, x1)) in self.MPP1_ROI:
             coupled = 0
             coupling_prob = 0
-            for xa, ya, xb, yb, dist, p in prob_write:
+            for xa, ya, xb, yb, dist, p, _, _ in prob_write:
                 if (y1, x1) == (ya, xa):
                     coupled = 1
                     coupling_prob = p
@@ -891,7 +921,7 @@ class SpatialRelations:
         for p2, s2, (y2, x2) in self.MPP2_ROI:
             coupled = 0
             coupling_prob = 0
-            for xc, yc, xd, yd, dist, p in prob_write:
+            for xc, yc, xd, yd, dist, p, _, _ in prob_write:
                 if (y2, x2) == (yd, xd):
                     coupled = 1
                     coupling_prob = p

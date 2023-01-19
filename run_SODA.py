@@ -7,17 +7,17 @@ OUTPUT_DIRECTORY = r"./example_output"  # Path in which to save outputs
 
 # For ROI mask generation
 ROI_THRESHOLD = 2.0  # Multiplier of ROI threshold. Higher value = more pixels taken.
-CHANNEL_MASK = 1 # Channel to use as mask. This channel won't be used for SODA analysis. Set to None to generate mask from all channels.
-REMOVE_CHANNEL = 1 # Channel to remove from SODA analysis (for example, channel used for mask generation). Set to None to remove no channel.
+CHANNEL_MASK = None # Channel to use as mask. This channel won't be used for SODA analysis. Set to None to generate mask from all channels.
+REMOVE_CHANNEL = None # Channel to remove from SODA analysis (for example, channel used for mask generation). Set to None to remove no channel.
 
 # For spot detection
 # Channel 2 is not used for a 2 color image
-SCALE_LIST = [[3,4],  # Channel 0  # Scales to be used for wavelet transform for spot detection
-              [3,4],  # Channel 1  # Higher values mean less details.
-              [3,4]]  # Channel 2  # Multiple scales can be used (e.g. [1,2]). Scales must be integers.
-SCALE_THRESHOLD = [2.0,  # Channel 0  # Multiplier of wavelet transform threshold.
-                   2.0,  # Channel 1  # Higher value = more pixels detected.
-                   2.0]  # Channel 2
+SCALE_LIST = [[4],  # Channel 0  # Scales to be used for wavelet transform for spot detection
+              [4],  # Channel 1  # Higher values mean less details.
+              [4]]  # Channel 2  # Multiple scales can be used (e.g. [1,2]). Scales must be integers.
+SCALE_THRESHOLD = [4.0,  # Channel 0  # Multiplier of wavelet transform threshold.
+                   4.0,  # Channel 1  # Higher value = more pixels detected.
+                   4.0]  # Channel 2
 
 # For SODA analysis
 MIN_SIZE = [30,  # Channel 0 # Minimum area (pixels) of spots to analyse
