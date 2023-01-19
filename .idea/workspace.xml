@@ -3,18 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9ee34f15-c711-4903-9e31-f14f16b63956" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_image/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_image/14daysPostInfection_Noinfection_TH488-Bassoon594-PSD95635_PFA20min_c2_img4_CompositeSTED.tiff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_all_spots.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_filtered_spots.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_mask.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_spots_in_mask.tif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/hist_0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_ch01.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/output_info.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/pySODA_0_M-PSD_GAMA594-R-Bassoon-GARSTAR635_15nm_naive(noTTX)_block_02.msr_2_STED_merged.tif_ch01.xlsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_output/pySODA_results_example_image.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/example_output/pySODA_results_example_image.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run_SODA.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_SODA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wavelet_SODA.py" beforeDir="false" afterPath="$PROJECT_DIR$/wavelet_SODA.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/run_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="34" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
+            <state relative-caret-position="306">
+              <caret line="18" column="33" lean-forward="true" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -39,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/steps_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="135" column="34" selection-start-line="135" selection-start-column="34" selection-end-line="135" selection-end-column="34" />
+            <state relative-caret-position="2550">
+              <caret line="228" column="26" selection-start-line="228" selection-start-column="16" selection-end-line="228" selection-end-column="26" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -48,11 +37,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="900" column="31" lean-forward="true" selection-start-line="900" selection-start-column="31" selection-end-line="900" selection-end-column="31" />
+            <state relative-caret-position="281">
+              <caret line="898" column="59" selection-start-line="898" selection-start-column="49" selection-end-line="898" selection-end-column="59" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -80,7 +69,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>roi_thresh</find>
       <find>thresh</find>
       <find>pdf</find>
       <find>make</find>
@@ -108,8 +96,9 @@
       <find>plt.</find>
       <find>spatial_relations</find>
       <find>for ch in</find>
-      <find>prob_write</find>
       <find>in prob_write</find>
+      <find>write_prob</find>
+      <find>prob_write</find>
     </findStrings>
     <replaceStrings>
       <replace>stack</replace>
@@ -184,8 +173,8 @@
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.py" />
         <option value="$PROJECT_DIR$/steps_SODA.py" />
-        <option value="$PROJECT_DIR$/run_SODA.py" />
         <option value="$PROJECT_DIR$/wavelet_SODA.py" />
+        <option value="$PROJECT_DIR$/run_SODA.py" />
       </list>
     </option>
   </component>
@@ -200,6 +189,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -216,7 +206,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -379,12 +368,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.synth_image" />
       <item itemvalue="Python.caimanmanager" />
       <item itemvalue="Python.run_SODA" />
       <item itemvalue="Python.scratch" />
       <item itemvalue="Python.scratch_1" />
       <item itemvalue="Python.scratch_5" />
+      <item itemvalue="Python.synth_image" />
     </list>
     <recent_temporary>
       <list>
@@ -431,7 +420,7 @@
       <window_info anchor="bottom" id="Terminal" order="3" sideWeight="0.4963119" weight="0.32719395" />
       <window_info anchor="bottom" id="Message" order="4" />
       <window_info anchor="bottom" id="Find" order="5" sideWeight="0.4993395" weight="0.16973126" />
-      <window_info active="true" anchor="bottom" id="Run" order="6" sideWeight="0.674921" visible="true" weight="0.3066089" />
+      <window_info anchor="bottom" id="Run" order="6" sideWeight="0.674921" weight="0.3066089" />
       <window_info anchor="bottom" id="Debug" order="7" sideWeight="0.4980185" weight="0.2545969" />
       <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
@@ -643,20 +632,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/run_SODA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="34" selection-start-line="13" selection-start-column="34" selection-end-line="13" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/steps_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="135" column="34" selection-start-line="135" selection-start-column="34" selection-end-line="135" selection-end-column="34" />
+        <state relative-caret-position="2550">
+          <caret line="228" column="26" selection-start-line="228" selection-start-column="16" selection-end-line="228" selection-end-column="26" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
@@ -665,10 +644,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/wavelet_SODA.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="900" column="31" lean-forward="true" selection-start-line="900" selection-start-column="31" selection-end-line="900" selection-end-column="31" />
+        <state relative-caret-position="281">
+          <caret line="898" column="59" selection-start-line="898" selection-start-column="49" selection-end-line="898" selection-end-column="59" />
           <folding>
             <element signature="e#0#12#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_SODA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="33" lean-forward="true" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
           </folding>
         </state>
       </provider>
