@@ -15,6 +15,8 @@ intervals of distances separating them.
     - scipy
     - xlsxwriter
 
+The `requirements.txt` allows to create an environment with the required libraries.
+
 The Anaconda distribution of Python covers all of these.
   - Two- or three-channel super-resolution microscopy images. The analysis will run on all combinations of two channels.
 

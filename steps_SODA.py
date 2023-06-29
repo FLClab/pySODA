@@ -39,10 +39,14 @@ class SodaImageAnalysis:
         print("Detecting spots using multiscale product...")
         self.roi_mask = self.find_ROI(threshold=self.params['roi_thresh'], channel_mask=self.params['channel_mask'])
 
+        self.channels = np.arange(len(self.image))
+
         if self.params['remove_channel'] is not None:
-            self.image = np.delete(self.image, self.params['remove_channel'], 0)
+            self.channels = np.delete(self.channels, self.params['remove_channel'])
+            #self.image = np.delete(self.image, self.params['remove_channel'], 0)
 
         self.spots_mask = self.detect_spots(self.params['save_roi'])
+        print(self.spots_mask.shape)
         self.marked_point_process = self.spatial_distribution(self.spots_mask)
 
     def find_ROI(self, sigma=10, threshold=1.0, channel_mask=False):
@@ -99,7 +103,8 @@ class SodaImageAnalysis:
         """
         spots_image = np.ndarray(self.image.shape)
 
-        for ch in range(self.image.shape[0]):
+        #for ch in range(self.image.shape[0]):
+        for ch in self.channels:
             spots_image[ch] = wv.DetectionWavelets(self.image[ch],
                                                    self.params['scale_list'][ch],
                                                    self.params['scale_threshold'][ch]).computeDetection()
@@ -122,7 +127,7 @@ class SodaImageAnalysis:
         """
         out_mask = np.copy(mask).astype(bool)
         for i, img in enumerate(out_mask):
-            morphology.remove_small_objects(img, min_size=self.params['min_size'][i], in_place=True)
+            img = morphology.remove_small_objects(img, min_size=self.params['min_size'][i])
             mask_lab, num = label(img, connectivity=1, return_num=True)
             mask_props = regionprops(mask_lab)
             for p in mask_props:
@@ -137,12 +142,14 @@ class SodaImageAnalysis:
         :param mask: Image of spots mask
         :return: List of Marked point process of spots for each channel
         """
-        marks_list = []
+        marks_list = [None for _ in range(mask.shape[0])]
 
-        for i, m in enumerate(mask):
+        #for i, m in enumerate(mask):
+        for i in self.channels:
+            m = mask[i]
             marks = wv.SpatialDistribution(m, self.image[i], self.params['min_size'][i], self.params['min_axis'][i]).mark()
             print('Spots in channel {}: {}'.format(i, len(marks)))
-            marks_list.append(marks)
+            marks_list[i] = marks
             if len(marks) < 50:
                 raise SpotsError
         print('\n')
@@ -216,7 +223,8 @@ class SodaImageAnalysis:
         The main analysis function; runs SODA on all chosen combinations of channels on the current image
         :return out_results: Dictionary with input channels as keys and results dictionaries as values
         """
-        channel_list = [n for n in range(self.image.shape[0])]
+        channel_list = [n for n in self.channels]
+        #channel_list = [n for n in range(self.image.shape[0])]
 
         if self.params['self_soda']:
             channel_pairs = combinations_with_replacement(channel_list, 2)
@@ -227,7 +235,7 @@ class SodaImageAnalysis:
         for ch0, ch1 in channel_pairs:
             print('- Channels {} and {} -'.format(ch0, ch1))
             SR, prob_write, results_dict = self.spatial_relations(ch0, ch1)
-            SR.write_spots_and_probs(prob_write, self.output_dir, 'pySODA_' + self.file + '_ch{}{}.xlsx'.format(ch0, ch1))
+            SR.write_spots_and_probs(prob_write, self.output_dir, 'pySODA_' + self.file + '_ch{}{}.xlsx'.format(ch0, ch1), channels=[ch0, ch1])
             out_results['ch{}-ch{}'.format(ch0, ch1)] = results_dict
 
         return out_results

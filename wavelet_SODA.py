@@ -837,7 +837,7 @@ class SpatialRelations:
         pyplot.savefig('boxplot_{}'.format(self.filename))
         pyplot.close()
 
-    def write_spots_and_probs(self, prob_write, directory, title):
+    def write_spots_and_probs(self, prob_write, directory, title, channels):
         """
         Writes informations about couples and single spots
         :param prob_write: list containing lists of information to write about each couple
@@ -884,8 +884,8 @@ class SpatialRelations:
                     couples.write(row, i, datarow[i])
             row += 1
 
-        spots1 = workbook.add_worksheet(name="Spots ch0")
-        spots2 = workbook.add_worksheet(name="Spots ch1")
+        spots1 = workbook.add_worksheet(name=f"Spots ch{channels[0]}")
+        spots2 = workbook.add_worksheet(name=f"Spots ch{channels[1]}")
         titles = ['X1', 'Y1', 'Area', 'Distance to Neighbor Same Ch', 'Distance to Neighbor Other Ch', 'Eccentricity',
                   'Max intensity', 'Min intensity', 'Mean intensity',
                   'Major axis length', 'Minor axis length', 'Orientation',

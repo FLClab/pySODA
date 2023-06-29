@@ -22,7 +22,7 @@ SCALE_THRESHOLD = [2.0,  # Channel 0  # Multiplier of wavelet transform threshol
 # For SODA analysis
 MIN_SIZE = [30,  # Channel 0 # Minimum area (pixels) of spots to analyse
             30,  # Channel 1
-            5]  # Channel 2
+            30]  # Channel 2
 MIN_AXIS_LENGTH = [3,  # Channel 0  # Minimum length of both ellipse axes of spots to analyse
                    3,  # Channel 1
                    3]  # Channel 2
