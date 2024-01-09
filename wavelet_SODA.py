@@ -764,6 +764,9 @@ class SpatialRelations:
         for i in range(len(self.rings) - 1):
             prob_array[numpy.where(numpy.logical_and(self.rings[i] <= dist_array, dist_array < self.rings[i+1]))] = coupling[i]
         prob_array[dist_array == 0] = 0
+        for i in range(prob_array.shape[0]):
+            print(numpy.count_nonzero(prob_array[i]))
+        exit()
 
         # Create the list of lines for the couples excel file
         n_couples = numpy.sum(prob_array > 0)

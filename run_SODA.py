@@ -26,7 +26,7 @@ MIN_SIZE = [30,  # Channel 0 # Minimum area (pixels) of spots to analyse
 MIN_AXIS_LENGTH = [3,  # Channel 0  # Minimum length of both ellipse axes of spots to analyse
                    3,  # Channel 1
                    3]  # Channel 2
-N_RINGS = 16  # Number of rings around spots (int)
+N_RINGS = 64  # Number of rings around spots (int)
 RING_WIDTH = 1  # Width of rings in pixels
 SELF_SODA = False  # Set to True to compute SODA for couples of spots in the same channel as well
 
