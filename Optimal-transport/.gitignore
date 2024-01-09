@@ -1,0 +1,17 @@
+.DS_Store
+*.log
+python-code/results
+python-code/tifffiles
+python-code/jmdata_ot
+python-code/jmdata_ot/bassoon_fus
+python-code/jmdata_ot/bassoon_psd
+python-code/__pycache__
+python-code/.ipynb_checkpoints
+python-code/figures
+python-code/EXP9-GFP-compositeSTED-4-couleurs
+python-code/convert_msr_to_tiff_composite.py
+python-code/convertmsr_bioformats.py
+python-code/testing.py
+pySODA
+results/
+python-code/*.npz
